@@ -1,0 +1,76 @@
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px clamp(20px, 5vw, 64px);
+  transition: background 320ms var(--ease-out), padding 320ms var(--ease-out), box-shadow 320ms var(--ease-out);
+}
+.nav.is-scrolled {
+  background: rgba(255,255,255,0.86);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+}
+.nav__logo { padding: 0; display: flex; }
+.nav__logo img { height: clamp(22px, 3vw, 30px); width: auto; transition: filter 200ms var(--ease-out); }
+
+.nav__links { display: flex; gap: clamp(14px, 2vw, 30px); align-items: center; }
+.nav__link {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  padding: 6px 2px;
+  position: relative;
+  transition: color 200ms var(--ease-out);
+}
+.nav.is-scrolled .nav__link { color: var(--cnp-ink); }
+.nav__link::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 0; height: 3px;
+  background: var(--cnp-acid);
+  transition: width 200ms var(--ease-out);
+}
+.nav__link:hover::after { width: 100%; }
+
+.nav__burger {
+  display: none;
+  width: 44px; height: 44px;
+  align-items: center; justify-content: center;
+  color: #fff;
+}
+.nav.is-scrolled .nav__burger { color: var(--cnp-ink); }
+.nav__burger i { width: 26px; height: 26px; }
+
+@media (max-width: 760px) {
+  .nav__burger { display: flex; }
+  .nav__links {
+    position: absolute;
+    top: 100%; right: clamp(20px, 5vw, 64px);
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 14px;
+    background: var(--cnp-ink);
+    padding: 18px 22px;
+    border: 2px solid var(--cnp-ink);
+    box-shadow: var(--shadow-pop-sm);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+  }
+  .nav__links.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  .nav__links .nav__link { color: #fff; }
+}
