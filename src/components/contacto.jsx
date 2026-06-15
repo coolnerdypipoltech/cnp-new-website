@@ -1,7 +1,8 @@
 // ── CONTACTO + SOCIAL + FOOTER ────────────────────────────────────
 import React, { useState } from 'react';
 import { CNP_SOCIAL } from '../data';
-import SplashCursor from './SplashCursor';
+import Particles from './Particles';
+
 
 const SOCIAL_ICONS = {
   linkedin: (
@@ -10,13 +11,16 @@ const SOCIAL_ICONS = {
   instagram: (
     <svg viewBox="0 0 24 24" fill="none" width="100%"><rect x="2" y="2" width="20" height="20" rx="5.5" stroke="currentColor" strokeWidth="2"/><circle cx="12" cy="12" r="4.5" stroke="currentColor" strokeWidth="2"/><circle cx="17.5" cy="6.5" r="1.4" fill="currentColor"/></svg>
   ),
+  spacer: (
+    <img src={`${process.env.PUBLIC_URL}/assets/icons/Signal.png`} alt="" />
+  ),
 };
 
 function SocialBar() {
   return (
     <div className="social-bar">
       {CNP_SOCIAL.map((s) => (
-        <a key={s.id} className="social-btn" href={s.href} target="_blank" rel="noreferrer noopener" aria-label={s.label}>
+        <a key={s.id} className={s.id === 'spacer' ? 'social-btn_spacer' : 'social-btn'} href={s.href} target="_blank" rel="noreferrer noopener" aria-label={s.label}>
           <span className="social-btn__icon">{SOCIAL_ICONS[s.id]}</span>
         </a>
       ))}
@@ -34,24 +38,37 @@ function Contacto() {
   return (
     <>
       <section className="section contacto" id="contacto" data-screen-label="Contacto" style={{ position: 'relative' }}>
-        <SplashCursor RAINBOW_MODE />
-        <div className="contacto__inner">
+        <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+          <Particles
+            particleColors={['#ffffff', '#aaaaff', '#cccccc']}
+            particleCount={1000}
+            particleSpread={8}
+            speed={0.08}
+            particleBaseSize={80}
+            moveParticlesOnHover={true}
+            alphaParticles={true}
+            disableRotation={false}
+          />
+        </div>
+        <div className="contacto__inner" style={{ position: 'relative', zIndex: 1 }}>
           <div className="contacto__signalmark">
-            <img className="twinkle" src="assets/cursor-acid.png" alt="" />
+            <img className="twinkle" src={`${process.env.PUBLIC_URL}/assets/icons/thecursor.svg`} alt="" />
           </div>
           <h2 className="horizon contacto__head reveal">Drop your signal<br/>We are listening</h2>
 
           <form className="contacto__form" onSubmit={submit}>
             <input className="field" type="email" placeholder="E-mail" aria-label="E-mail" />
             <input className="field" type="text" placeholder="Say hi" aria-label="Say hi" />
+            
             <button className="btn-signal" type="submit">
               {sent ? "Signal received ✦" : "Send signal"}
             </button>
+            <p className="contacto__note">THIS SITE WAS NOT VIBE CODED</p>
             <SocialBar />
           </form>
 
-          <p className="contacto__note">This site was not vibe coded</p>
-          <img className="contacto__logo" src="assets/logo-creativo-white.png" alt="Nerdy People" />
+          
+          <img className="contacto__logo" src={`${process.env.PUBLIC_URL}/assets/logo/CNP_Brand.png`} alt="Nerdy People" />
         </div>
       </section>
 

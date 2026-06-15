@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Icon from './icons';
 import { CNP_PROJECTS } from '../data';
+import ScrollFloat from './ScrollFloat';
 
 
 function PaletteDots({ project }) {
@@ -16,6 +17,8 @@ function PaletteDots({ project }) {
 }
 
 function ProjectModal({ project, onClose }) {
+  const [activePanel, setActivePanel] = useState(null);
+
   useEffect(() => {
     const onKey = (e) => { if (e.key === "Escape") onClose(); };
     document.addEventListener("keydown", onKey);
@@ -24,32 +27,47 @@ function ProjectModal({ project, onClose }) {
   }, [onClose]);
 
   if (!project) return null;
+
+  const togglePanel = (panel) => setActivePanel(prev => prev === panel ? null : panel);
+
   return (
     <div className="modal-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <div className="modal" style={{ "--p-bg": project.bg, "--p-fg": project.fg, "--p-accent": project.accent }}>
-        <button className="modal__close" onClick={onClose} aria-label="Cerrar">
-          <Icon name="x" size={22} />
-        </button>
 
-        <div className="modal__head" style={{ background: project.bg, color: project.fg }}>
-          <span className="eyebrow" style={{ color: project.fg }}>{project.tag} — {project.year}</span>
-          <h2 className="horizon modal__title">{project.name}</h2>
-          <span className="modal__client">{project.client}</span>
-          <PaletteDots project={project} />
+      {/* Close button — floating outside modal, top right */}
+      <button className="modal__close modal__close--outside" onClick={onClose} aria-label="Cerrar">
+        <p>Cerrar</p>
+      </button>
+
+      <div className="modal modal--h" style={{ "--p-bg": project.bg, "--p-fg": project.fg, "--p-accent": project.accent }}>
+
+        {/* Background video fills entire modal */}
+        <div className="modal__bg-video">
+          <iframe
+            src={project.video}
+            title={project.name}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
         </div>
 
-        <div className="modal__body">
-          <div className="modal__video">
-            <iframe
-              src={project.video}
-              title={project.name}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
+        {/* Title overlay — top */}
+        <div className="modal__title-overlay">
+          <span className="eyebrow">{project.tag} — {project.year}</span>
+          <h2 className="horizon modal__title">{project.name}</h2>
+          <span className="modal__client">{project.client}</span>
+        </div>
 
-          <div className="modal__meta">
-            <div className="modal__block">
+        {/* Bottom buttons */}
+        <div className="modal__btns">
+
+          {/* Servicios */}
+          <div
+            className={`modal__btn-wrap${activePanel === 'services' ? ' is-active' : ''}`}
+            onMouseEnter={() => setActivePanel('services')}
+            onMouseLeave={() => setActivePanel(null)}
+            onClick={() => togglePanel('services')}
+          >
+            <div className="modal__btn-panel">
               <span className="eyebrow modal__lab">We worked on the</span>
               <ul className="svc-list">
                 {project.services.map((s) => (
@@ -57,21 +75,28 @@ function ProjectModal({ project, onClose }) {
                 ))}
               </ul>
             </div>
+            <button className="modal__bottom-btn">Development</button>
+          </div>
 
-            <div className="modal__block">
-              <span className="eyebrow modal__lab">Keywords</span>
-              <div className="kw-row">
+          {/* El Brief */}
+          <div
+            className={`modal__btn-wrap${activePanel === 'brief' ? ' is-active' : ''}`}
+            onMouseEnter={() => setActivePanel('brief')}
+            onMouseLeave={() => setActivePanel(null)}
+            onClick={() => togglePanel('brief')}
+          >
+            <div className="modal__btn-panel">
+              <span className="eyebrow modal__lab">The brief</span>
+              <p className="modal__desc" style={{ color: '#fff' }}>{project.desc}</p>
+              <div className="kw-row" style={{ marginTop: '12px' }}>
                 {project.keywords.map((k) => (
-                  <span key={k} className="kw" style={{ borderColor: project.fg, color: project.fg }}>{k}</span>
+                  <span key={k} className="kw" style={{ borderColor: 'rgba(255,255,255,0.5)', color: '#fff' }}>{k}</span>
                 ))}
               </div>
             </div>
-
-            <div className="modal__block">
-              <span className="eyebrow modal__lab">The brief</span>
-              <p className="modal__desc">{project.desc}</p>
-            </div>
+            <button className="modal__bottom-btn">Short description</button>
           </div>
+
         </div>
       </div>
     </div>
@@ -95,51 +120,44 @@ function Proyectos() {
       className="section proyectos"
       id="proyectos"
       data-screen-label="Proyectos"
-      style={{ background: active.bg, color: active.fg }}
+      style={{ background: active.bg, color: "#000000" }}
     >
       {/* background watermark headline */}
-      <h2 className="proy__watermark horizon" style={{ color: active.fg }}>
-        Awakening Human<br/>Potential through<br/>culture, creativity<br/>and tech.
-      </h2>
+      <ScrollFloat
+        animationDuration={0.5}
+        ease="power3.out"
+        scrollStart="center bottom+=50%"
+        scrollEnd="bottom bottom-=40%"
+        stagger={0.09}
+        containerClassName="proy__watermark horizon"
+      >
+        Awakening Human Potential through culture, creativity and tech.
+      </ScrollFloat>
 
       <div className="wrap proy__inner">
-        <div className="proy__topbar">
-          <span className="eyebrow">The Work — Curated Drops</span>
-          <span className="proy__count horizon">{String(index + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}</span>
-        </div>
 
-        <button className="proy__arrow proy__arrow--l" onClick={() => go(-1)} aria-label="Anterior" style={{ borderColor: active.fg, color: active.fg }}>
+
+        <button className="proy__arrow proy__arrow--l" onClick={() => go(-1)} aria-label="Anterior" style={{ borderColor: "#000000", color: "#000000" }}>
           <Icon name="arrow-left" />
         </button>
-        <button className="proy__arrow proy__arrow--r" onClick={() => go(1)} aria-label="Siguiente" style={{ borderColor: active.fg, color: active.fg }}>
+        <button className="proy__arrow proy__arrow--r" onClick={() => go(1)} aria-label="Siguiente" style={{ borderColor: "#000000", color: "#000000" }}>
           <Icon name="arrow-right" />
         </button>
 
         <div className="proy__stage">
           <div key={active.id} className={`proy__card ${dir > 0 ? "in-right" : "in-left"}`}>
-            <span className="proy__tag" style={{ background: active.chip, color: active.chipFg }}>{active.tag}</span>
-            <h3 className="proy__name horizon" style={{ color: active.fg }}>{active.name}</h3>
+             < img className="proy__art__logo" src={active.logo} alt={active.name} draggable="false" />
             <div className="proy__art">
               <img src={active.img} alt={active.name} draggable="false" />
             </div>
-            <span className="proy__client">{active.client} · {active.year}</span>
-            <button className="btn-pop" onClick={() => setOpen(true)} style={{ "--btn-bg": active.fg, "--btn-fg": active.bg }}>
-              Ver más <Icon name="plus" size={18} />
+                        <span className="proy__client">{active.client}</span>
+            <button className="btn-pop" onClick={() => setOpen(true)} style={{ "--btn-bg": "#000000", "--btn-fg": active.bg }}>
+              Ver más 
             </button>
           </div>
         </div>
 
-        <div className="proy__dots">
-          {projects.map((p, i) => (
-            <button
-              key={p.id}
-              className={`proy__dot ${i === index ? "is-active" : ""}`}
-              onClick={() => { setDir(i > index ? 1 : -1); setIndex(i); }}
-              aria-label={p.name}
-              style={{ background: i === index ? active.fg : "transparent", borderColor: active.fg }}
-            />
-          ))}
-        </div>
+
       </div>
 
       {open && <ProjectModal project={active} onClose={() => setOpen(false)} />}

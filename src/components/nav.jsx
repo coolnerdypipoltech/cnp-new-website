@@ -12,7 +12,7 @@ function Nav() {
   return (
     <nav className={`nav ${scrolled ? "is-scrolled" : ""}`}>
       <button className="nav__logo" onClick={toTop} aria-label="Inicio">
-        <img src={scrolled ? "assets/logo-creativo-black.png" : "assets/logo-creativo-white.png"} alt="Nerdy People" />
+        <img src={scrolled ? `${process.env.PUBLIC_URL}/assets/logo-creativo-black.png` : `${process.env.PUBLIC_URL}/assets/logo-creativo-white.png`} alt="Nerdy People" />
       </button>
     </nav>
   );

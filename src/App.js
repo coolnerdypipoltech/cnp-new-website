@@ -6,7 +6,8 @@ import Services from './components/services';
 import Merch from './components/merch';
 import Contacto from './components/contacto';
 import StarCursor from './components/starcursor';
-import WebGLFluid from './components/WebGLFluid';
+import Drops from './components/drops';
+
 import './App.css';
 import './nav.css';
 import './styles.css';
@@ -19,7 +20,7 @@ function App() {
       <Hero />
       <Proyectos />
       <Services />
-      <Merch />
+      <Drops />
       <Contacto />
     </React.Fragment>
   );

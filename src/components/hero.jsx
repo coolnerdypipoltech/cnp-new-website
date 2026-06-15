@@ -1,19 +1,6 @@
 // ── HERO ──────────────────────────────────────────────────────────
-import React from 'react';
-const heroStyles = {
-  hero: {
-    position: "relative",
-    minHeight: "92vh",
-    width: "100%",
-    background: "url(assets/hero-bg.png) center 35% / cover no-repeat",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    overflow: "hidden",
-  },
-};
-
+import React, { useRef, useState } from 'react';
+import SplitText from './SplitText';
 function HeroButton({ kind, img, label, sub, onClick }) {
   const [hover, setHover] = React.useState(false);
   const isPager = kind === "pager";
@@ -29,8 +16,8 @@ function HeroButton({ kind, img, label, sub, onClick }) {
         <img src={img} alt={label} draggable="false" />
       </span>
       <span className="hero-btn__tag" style={{
-        background: isPager ? "var(--cnp-acid)" : "var(--cnp-ink)",
-        color: isPager ? "var(--cnp-ink)" : "var(--cnp-white)",
+        background: isPager ? "#00BF63" : "#00ABFF",
+        color: "var(--cnp-white)",
       }}>
         <span className="horizon">{label}</span>
         <em>{sub}</em>
@@ -40,42 +27,101 @@ function HeroButton({ kind, img, label, sub, onClick }) {
 }
 
 function Hero() {
+  const videoRef = useRef(null);
+  const [muted, setMuted] = useState(true);
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setMuted(videoRef.current.muted);
+    }
+  };
+
   const scrollTo = (id) => {
     const el = document.getElementById(id);
     if (el) window.scrollTo({ top: el.offsetTop, behavior: "smooth" });
   };
   return (
-    <section className="section hero" id="top" style={heroStyles.hero} data-screen-label="Hero">
+    <section
+      className="section hero"
+      id="top"
+      style={{ position: "relative", minHeight: "100vh", width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", overflow: "hidden" }}
+      data-screen-label="Hero"
+      onClick={toggleMute}
+    >
+      {/* Background video */}
+      <video
+        ref={videoRef}
+        className="hero__bg-video"
+        src={`${process.env.PUBLIC_URL}/assets/videos/heroVideo.mp4`}
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+
+      {/* Mute indicator */}
+      <div className={`hero__mute-badge${muted ? '' : ' hero__mute-badge--on'}`}>
+        {muted ? '🔇' : '🔊'}
+      </div>
       <div className="hero__scrim" />
+
+
+
+
       <div className="hero__content">
-        <p className="hero__hello reveal">"Hello, World!"</p>
-        <h1 className="hero__head horizon reveal" style={{ animationDelay: "120ms" }}>
-          "In a world of<br/>infinite generation,<br/>
-          <span className="hero__mark">taste</span> becomes power."
-        </h1>
+        <SplitText
+            tag="p"
+            text="Hello, World!"
+            className="hero__hello reveal"
+            splitType="words"
+            delay={80}
+            duration={1}
+            ease="power3.out"
+            from={{ opacity: 0, y: 30 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.1}
+            rootMargin="-60px"
+            textAlign="left"
+            style={{ color: "#ffffff" }}
+          />
+                  <SplitText
+            tag="h1"
+            text=" 
+            In a world of infinite
+              generation, taste becomes power."
+            className="hero__head horizon reveal"
+            splitType="words"
+            delay={80}
+            duration={0.8}
+            ease="power3.out"
+            from={{ opacity: 0, y: 30 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.1}
+            rootMargin="-60px"
+            textAlign="left"
+            style={{ color: "#ffffff", maxWidth: "1000px" }}
+          />
       </div>
 
       <div className="hero__buttons">
         <HeroButton
           kind="pager"
-          img="assets/btn-contacto.png"
+          img={`${process.env.PUBLIC_URL}/assets/btn-contacto.png`}
           label="Contacto"
-          sub="1 new message →"
+          sub="Send us a message"
           onClick={() => scrollTo("contacto")}
         />
         <HeroButton
           kind="pet"
-          img="assets/btn-game.png"
+          img={`${process.env.PUBLIC_URL}/assets/tamagochi.png`}
           label="Game"
-          sub="feed the pet"
+          sub="Play the game"
           onClick={() => {}}
         />
       </div>
 
-      <button className="hero__scroll" onClick={() => scrollTo("proyectos")} aria-label="Scroll">
-        <span className="eyebrow">Scroll</span>
-        <span className="hero__scroll-line" />
-      </button>
+
     </section>
   );
 }
