@@ -1,9 +1,8 @@
 // ── PROYECTOS (slider) + PopUp ────────────────────────────────────
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import Icon from './icons';
-import { CNP_PROJECTS } from '../data';
-import ScrollFloat from './ScrollFloat';
-
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import Icon from "./icons";
+import { CNP_PROJECTS } from "../data";
+import ScrollFloat from "./ScrollFloat";
 
 function PaletteDots({ project }) {
   const swatches = [project.bg, project.fg, project.accent, project.chipFg];
@@ -18,28 +17,55 @@ function PaletteDots({ project }) {
 
 function ProjectModal({ project, onClose }) {
   const [activePanel, setActivePanel] = useState(null);
+  const [closing, setClosing] = useState(false);
+
+  const handleClose = useCallback(() => {
+    setClosing(true);
+    setTimeout(() => onClose(), 320);
+  }, [onClose]);
 
   useEffect(() => {
-    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    const onKey = (e) => {
+      if (e.key === "Escape") handleClose();
+    };
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
-    return () => { document.removeEventListener("keydown", onKey); document.body.style.overflow = ""; };
-  }, [onClose]);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [handleClose]);
 
   if (!project) return null;
 
-  const togglePanel = (panel) => setActivePanel(prev => prev === panel ? null : panel);
+  const togglePanel = (panel) =>
+    setActivePanel((prev) => (prev === panel ? null : panel));
 
   return (
-    <div className="modal-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-
+    <div
+      className={`modal-backdrop${closing ? " modal-backdrop--closing" : ""}`}
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) handleClose();
+      }}
+    >
       {/* Close button — floating outside modal, top right */}
-      <button className="modal__close modal__close--outside" onClick={onClose} aria-label="Cerrar">
+      <button
+        className="modal__close modal__close--outside"
+        style={{background: project.bg}}
+        onClick={handleClose}
+        aria-label="Cerrar"
+      >
         <p>Cerrar</p>
       </button>
 
-      <div className="modal modal--h" style={{ "--p-bg": project.bg, "--p-fg": project.fg, "--p-accent": project.accent }}>
-
+      <div
+        className="modal modal--h"
+        style={{
+          "--p-bg": project.bg,
+          "--p-fg": project.fg,
+          "--p-accent": project.accent,
+        }}
+      >
         {/* Background video fills entire modal */}
         <div className="modal__bg-video">
           <iframe
@@ -52,51 +78,64 @@ function ProjectModal({ project, onClose }) {
 
         {/* Title overlay — top */}
         <div className="modal__title-overlay">
-          <span className="eyebrow">{project.tag} — {project.year}</span>
+          <span className="eyebrow">
+            {project.tag} — {project.year}
+          </span>
           <h2 className="horizon modal__title">{project.name}</h2>
           <span className="modal__client">{project.client}</span>
         </div>
 
         {/* Bottom buttons */}
         <div className="modal__btns">
+          {/* El Brief */}
+          <div
+            className={`modal__btn-wrap${activePanel === "brief" ? " is-active" : ""}`}
+            onMouseEnter={() => setActivePanel("brief")}
+            onMouseLeave={() => setActivePanel(null)}
+            onClick={() => togglePanel("brief")}
+          >
+            <div className="modal__btn-panel">
+              <span className="eyebrow modal__lab">The brief</span>
+              <p className="modal__desc" style={{ color: "#fff" }}>
+                {project.desc}
+              </p>
+              <div className="kw-row" style={{ marginTop: "12px" }}>
+                {project.keywords.map((k) => (
+                  <span
+                    key={k}
+                    className="kw"
+                    style={{
+                      borderColor: "rgba(255,255,255,0.5)",
+                      color: "#fff",
+                    }}
+                  >
+                    {k}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <button className="modal__bottom-btn" style={{background: project.bg}}>Short description</button>
+          </div>
 
           {/* Servicios */}
           <div
-            className={`modal__btn-wrap${activePanel === 'services' ? ' is-active' : ''}`}
-            onMouseEnter={() => setActivePanel('services')}
+            className={`modal__btn-wrap${activePanel === "services" ? " is-active" : ""}`}
+            onMouseEnter={() => setActivePanel("services")}
             onMouseLeave={() => setActivePanel(null)}
-            onClick={() => togglePanel('services')}
+            onClick={() => togglePanel("services")}
           >
             <div className="modal__btn-panel">
               <span className="eyebrow modal__lab">We worked on the</span>
               <ul className="svc-list">
                 {project.services.map((s) => (
-                  <li key={s} style={{ "--accent": project.accent }}>{s}</li>
+                  <li key={s} style={{ "--accent": project.accent }}>
+                    {s}
+                  </li>
                 ))}
               </ul>
             </div>
-            <button className="modal__bottom-btn">Development</button>
+            <button className="modal__bottom-btn" style={{background: project.bg}}>Development</button>
           </div>
-
-          {/* El Brief */}
-          <div
-            className={`modal__btn-wrap${activePanel === 'brief' ? ' is-active' : ''}`}
-            onMouseEnter={() => setActivePanel('brief')}
-            onMouseLeave={() => setActivePanel(null)}
-            onClick={() => togglePanel('brief')}
-          >
-            <div className="modal__btn-panel">
-              <span className="eyebrow modal__lab">The brief</span>
-              <p className="modal__desc" style={{ color: '#fff' }}>{project.desc}</p>
-              <div className="kw-row" style={{ marginTop: '12px' }}>
-                {project.keywords.map((k) => (
-                  <span key={k} className="kw" style={{ borderColor: 'rgba(255,255,255,0.5)', color: '#fff' }}>{k}</span>
-                ))}
-              </div>
-            </div>
-            <button className="modal__bottom-btn">Short description</button>
-          </div>
-
         </div>
       </div>
     </div>
@@ -110,10 +149,13 @@ function Proyectos() {
   const [open, setOpen] = useState(false);
   const active = projects[index];
 
-  const go = useCallback((d) => {
-    setDir(d);
-    setIndex((i) => (i + d + projects.length) % projects.length);
-  }, [projects.length]);
+  const go = useCallback(
+    (d) => {
+      setDir(d);
+      setIndex((i) => (i + d + projects.length) % projects.length);
+    },
+    [projects.length],
+  );
 
   return (
     <section
@@ -135,29 +177,47 @@ function Proyectos() {
       </ScrollFloat>
 
       <div className="wrap proy__inner">
-
-
-        <button className="proy__arrow proy__arrow--l" onClick={() => go(-1)} aria-label="Anterior" style={{ borderColor: "#000000", color: "#000000" }}>
+        <button
+          className="proy__arrow proy__arrow--l"
+          onClick={() => go(-1)}
+          aria-label="Anterior"
+          style={{ borderColor: "#000000", color: "#000000" }}
+        >
           <Icon name="arrow-left" />
         </button>
-        <button className="proy__arrow proy__arrow--r" onClick={() => go(1)} aria-label="Siguiente" style={{ borderColor: "#000000", color: "#000000" }}>
+        <button
+          className="proy__arrow proy__arrow--r"
+          onClick={() => go(1)}
+          aria-label="Siguiente"
+          style={{ borderColor: "#000000", color: "#000000" }}
+        >
           <Icon name="arrow-right" />
         </button>
 
         <div className="proy__stage">
-          <div key={active.id} className={`proy__card ${dir > 0 ? "in-right" : "in-left"}`}>
-             < img className="proy__art__logo" src={active.logo} alt={active.name} draggable="false" />
+          <div
+            key={active.id}
+            className={`proy__card ${dir > 0 ? "in-right" : "in-left"}`}
+          >
+            <img
+              className="proy__art__logo"
+              src={active.logo}
+              alt={active.name}
+              draggable="false"
+            />
             <div className="proy__art">
               <img src={active.img} alt={active.name} draggable="false" />
             </div>
-                        <span className="proy__client">{active.client}</span>
-            <button className="btn-pop" onClick={() => setOpen(true)} style={{ "--btn-bg": "#000000", "--btn-fg": active.bg }}>
-              Ver más 
+            <span className="proy__client">{active.client}</span>
+            <button
+              className="btn-pop"
+              onClick={() => setOpen(true)}
+              style={{ "--btn-bg": "#000000", "--btn-fg": active.bg }}
+            >
+              Ver más
             </button>
           </div>
         </div>
-
-
       </div>
 
       {open && <ProjectModal project={active} onClose={() => setOpen(false)} />}

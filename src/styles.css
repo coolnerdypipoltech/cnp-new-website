@@ -437,23 +437,41 @@ a { color: inherit; cursor:none; }
 
 /* ---- MODAL ---- */
 .modal-backdrop {
-  position: fixed; inset: 0; z-index: 200;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
   background: rgba(0,0,0,0.72);
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: clamp(10px, 2vw, 24px);
-  animation: fadein 240ms var(--ease-out);
+  animation: backdrop-in 1000ms var(--ease-out) both;
+  -webkit-animation: backdrop-in 1000ms var(--ease-out) both;
 }
-@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+.modal-backdrop--closing {
+  animation: backdrop-out 800ms var(--ease-out) both;
+  -webkit-animation: backdrop-out 800ms var(--ease-out) both;
+}
+.modal-backdrop--closing .modal {
+  animation: pop-out 420ms var(--ease-out) both;
+  -webkit-animation: pop-out 420ms var(--ease-out) both;
+}
+@keyframes backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes backdrop-out { from { opacity: 1; } to { opacity: 0; } }
 .modal {
   position: relative;
   background: var(--cnp-ink);
-
   overflow: hidden;
-  animation: pop-in 320ms var(--ease-bounce) both;
+  animation: pop-in 500ms var(--ease-bounce) both;
+  -webkit-animation: pop-in 500ms var(--ease-bounce) both;
 }
 @keyframes pop-in {
-  from { opacity: 0; transform: translateY(24px) scale(0.97); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: 0; transform: translateY(400px); -webkit-transform: translateY(400px); -moz-transform: translateY(400px); -ms-transform: translateY(400px); -o-transform: translateY(400px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pop-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(350px); -webkit-transform: translateY(350px); -moz-transform: translateY(350px); -ms-transform: translateY(350px); -o-transform: translateY(350px); }
 }
 
 /* Horizontal modal layout */
@@ -857,13 +875,13 @@ a { color: inherit; cursor:none; }
 
 .merch__marquee {
   width: 100%;
-  margin-top: clamp(34px, 6vh, 64px);
   border-top: 2px solid var(--cnp-ink);
   border-bottom: 2px solid var(--cnp-ink);
   background: var(--cnp-ink);
   color: #ffff;
   overflow: hidden;
-  padding: 12px 0;
+  position: absolute;
+  top: 20px;
 }
 .merch__marquee-track {
   display: inline-flex;
@@ -885,6 +903,8 @@ a { color: inherit; cursor:none; }
   padding: clamp(70px, 12vh, 130px) 0;
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 .contacto__inner {
   width: min(880px, 90%);
@@ -1000,6 +1020,11 @@ a { color: inherit; cursor:none; }
   line-height: 1.5;
   padding: 0 24px;
   text-wrap: pretty;
+}
+
+.social-btn--hover {
+  opacity: 0.7;
+  transform: scale(1.1);
 }
 
 /* ============================================================

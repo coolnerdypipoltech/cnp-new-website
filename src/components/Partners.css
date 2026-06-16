@@ -1,0 +1,103 @@
+.patrocinadores-section {
+  width: 100%;
+  padding: 10px 10px;
+  background: #1E1E1E;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.patrocinadores-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  color: #F95C4B;
+  font-weight: bold;
+}
+
+.imageCard{
+  width: 200px;
+}
+
+.text-partners{
+  color: #F95C4B;
+  font-size: 12px;
+  margin-bottom: 1rem;
+  letter-spacing: 2px;
+  padding-top: 30px;
+  font-family: "Horizon", sans-serif;
+}
+
+.partner-image{
+  height: 30px;
+  width: auto;
+}
+
+
+.sponsors-scroll-container {
+  width: 100%;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0);
+  border-radius: 8px;
+  padding: 10px 0;
+  position: relative;
+}
+
+.sponsors-scroll {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem 2rem;
+  animation: scroll-infinite 20s linear infinite;
+  width: fit-content;
+}
+
+.sponsors-scroll:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scroll-infinite {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.sponsor-item {
+  min-width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sponsor-item img {
+  max-width: 100%;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.sponsor-item img:hover {
+  transform: scale(1.1);
+}
+
+
+
+@media (min-width: 1001px) {
+  .text-partners{
+  font-size: 34px; 
+  }
+
+  .partner-image{
+    height: 60px;
+
+  }
+  .patrocinadores-section{
+    height: 300px;
+  }
+  .sponsors-scroll{
+    height: 150px;
+  }
+
+}

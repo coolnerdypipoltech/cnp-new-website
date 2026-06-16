@@ -12,6 +12,8 @@ import './App.css';
 import './nav.css';
 import './styles.css';
 
+import Partners from './components/Partners';
+
 function App() {
   return (
     <React.Fragment>
@@ -19,6 +21,7 @@ function App() {
 
       <Hero />
       <Proyectos />
+      <Partners/>
       <Services />
       <Drops />
       <Contacto />
