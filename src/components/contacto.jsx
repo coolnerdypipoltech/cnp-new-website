@@ -17,7 +17,15 @@ const SOCIAL_ICONS = {
   instagram: {
     icon: (
       <svg viewBox="0 0 24 24" fill="none" width="100%">
-        <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="currentColor" strokeWidth="2" />
+        <rect
+          x="2"
+          y="2"
+          width="20"
+          height="20"
+          rx="5.5"
+          stroke="currentColor"
+          strokeWidth="2"
+        />
         <circle cx="12" cy="12" r="4.5" stroke="currentColor" strokeWidth="2" />
         <circle cx="17.5" cy="6.5" r="1.4" fill="currentColor" />
       </svg>
@@ -37,6 +45,7 @@ const SOCIAL_ICONS = {
 };
 
 function SocialBtn({ s }) {
+  
   const [hovered, setHovered] = React.useState(false);
   const data = SOCIAL_ICONS[s.id];
   if (s.id === "spacer") {
@@ -53,25 +62,22 @@ function SocialBtn({ s }) {
     );
   }
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center"}}>
-    <a
-      className={`social-btn${hovered ? " social-btn--hover" : ""}`}
-      href={data.link || s.href}
-      target="_blank"
-      rel="noreferrer noopener"
-      aria-label={data.label || s.label}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+    <div
+      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      <span className="social-btn__icon">{data.icon}</span>
-      
-    </a>
+      <a
+        className={`social-btn${hovered ? " social-btn--hover" : ""}`}
+        href={data.link || s.href}
+        target="_blank"
+        rel="noreferrer noopener"
+        style={{ background: hovered ? "#00ABFF" : "#1E232C" }}
+        aria-label={data.label || s.label}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
+        <span className="social-btn__icon">{data.icon}</span>
+      </a>
 
-    <span className="social-btn__tag" style={{opacity: hovered ? 1 : 0, position: "absolute", marginTop: "70px", background: "#00ABFF", display: "flex", justifyContent: "center", alignItems: "center", padding: "4px 8px", borderRadius: "4px", flexDirection: "column",
-        color: "var(--cnp-white)", }}>
-          <span className="horizon">{data.label}</span>
-          <em>{data.sub}</em>
-        </span>
     </div>
   );
 }
@@ -94,8 +100,9 @@ function Contacto() {
   const [error, setError] = useState(null);
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-
+  var audio = new Audio(`${process.env.PUBLIC_URL}/assets/audio/sound3.mp3`);
   const submit = async (e) => {
+    audio.play();
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -128,17 +135,6 @@ function Contacto() {
         data-screen-label="Contacto"
         style={{ position: "relative" }}
       >
-        <div className="merch__marquee" aria-hidden="true">
-          <div className="merch__marquee-track">
-            {Array.from({ length: 2 }).map((_, k) => (
-              <span key={k}>
-                THE BEST IDEAS DON’T INTERRUPT CULTURE. THEY JOIN IT — IN A
-                WORLD OF INFINITE GENERATION, TASTE BECOMES POWER — TECHNOLOGY
-                SHOULD FEEL HUMAN —
-              </span>
-            ))}
-          </div>
-        </div>
         <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
           <Particles
             particleColors={["#ffffff", "#aaaaff", "#cccccc"]}
@@ -208,6 +204,17 @@ function Contacto() {
       </section>
 
       <footer className="section footer" data-screen-label="Footer">
+        <div className="merch__marquee" aria-hidden="true">
+          <div className="merch__marquee-track">
+            {Array.from({ length: 2 }).map((_, k) => (
+              <span key={k}>
+                THE BEST IDEAS DON’T INTERRUPT CULTURE. THEY JOIN IT — IN A
+                WORLD OF INFINITE GENERATION, TASTE BECOMES POWER — TECHNOLOGY
+                SHOULD FEEL HUMAN —
+              </span>
+            ))}
+          </div>
+        </div>
         <p className="footer__copy">
           © 2026 Cool Nerdy People. All rights reserved. Unauthorized
           reproduction or use of any content, concept, visual identity or

@@ -1,8 +1,92 @@
 // ── PROYECTOS (slider) + PopUp ────────────────────────────────────
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, useReducer } from "react";
+import { gsap } from "gsap";
 import Icon from "./icons";
 import { CNP_PROJECTS } from "../data";
-import ScrollFloat from "./ScrollFloat";
+
+import SplitText from './SplitText';
+function BtnPop({ onClick, style, children }) {
+  const btnRef = useRef(null);
+  const circleRef = useRef(null);
+  const labelRef = useRef(null);
+  const labelHoverRef = useRef(null);
+  const tlRef = useRef(null);
+  const tweenRef = useRef(null);
+
+  useEffect(() => {
+    const btn = btnRef.current;
+    const circle = circleRef.current;
+    const label = labelRef.current;
+    const labelHover = labelHoverRef.current;
+    if (!btn || !circle) return;
+
+    const layout = () => {
+      const rect = btn.getBoundingClientRect();
+      const { width: w, height: h } = rect;
+      const R = ((w * w) / 4 + h * h) / (2 * h);
+      const D = Math.ceil(2 * R) + 2;
+      const delta = Math.ceil(R - Math.sqrt(Math.max(0, R * R - (w * w) / 4))) + 1;
+      const originY = D - delta;
+
+      circle.style.width = `${D}px`;
+      circle.style.height = `${D}px`;
+      circle.style.bottom = `-${delta}px`;
+
+      gsap.set(circle, { xPercent: -50, scale: 0, transformOrigin: `50% ${originY}px` });
+      if (label) gsap.set(label, { y: 0 });
+      if (labelHover) gsap.set(labelHover, { y: h + 12, opacity: 0 });
+
+      tlRef.current?.kill();
+      const tl = gsap.timeline({ paused: true });
+      tl.to(circle, { scale: 1.2, xPercent: -50, duration: 2, ease: "power3.easeOut", overwrite: "auto" }, 0);
+      if (label) tl.to(label, { y: -(h + 8), duration: 2, ease: "power3.easeOut", overwrite: "auto" }, 0);
+      if (labelHover) {
+        gsap.set(labelHover, { y: Math.ceil(h + 100), opacity: 0 });
+        tl.to(labelHover, { y: 0, opacity: 1, duration: 2, ease: "power3.easeOut", overwrite: "auto" }, 0);
+      }
+      tlRef.current = tl;
+    };
+
+    layout();
+    window.addEventListener("resize", layout);
+    return () => window.removeEventListener("resize", layout);
+  }, []);
+
+  const handleEnter = () => {
+    const tl = tlRef.current;
+    if (!tl) return;
+    tweenRef.current?.kill();
+    tweenRef.current = tl.tweenTo(tl.duration(), { duration: 0.3, ease: "power3.easeOut", overwrite: "auto" });
+  };
+
+  const handleLeave = () => {
+    const tl = tlRef.current;
+    if (!tl) return;
+    tweenRef.current?.kill();
+    tweenRef.current = tl.tweenTo(0, { duration: 0.2, ease: "power3.easeOut", overwrite: "auto" });
+  };
+
+  return (
+    <button
+      ref={btnRef}
+      className="btn-pop"
+      onClick={onClick}
+      style={style}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+    >
+      <span
+        className="btn-pop__circle"
+        ref={circleRef}
+        aria-hidden="true"
+      />
+      <span className="btn-pop__label-stack">
+        <span className="btn-pop__label" ref={labelRef}>{children}</span>
+        <span className="btn-pop__label-hover" ref={labelHoverRef} aria-hidden="true">{children}</span>
+      </span>
+    </button>
+  );
+}
 
 function PaletteDots({ project }) {
   const swatches = [project.bg, project.fg, project.accent, project.chipFg];
@@ -15,9 +99,77 @@ function PaletteDots({ project }) {
   );
 }
 
+function VideoPlayer({ src, title, onPlayingChange }) {
+  const videoRef = useRef(null);
+  const [playing, setPlaying] = useState(false);
+
+  const updatePlaying = (val) => {
+    setPlaying(val);
+    onPlayingChange?.(val);
+  };
+  const [hovered, setHovered] = useState(false);
+  const [cursor, setCursor] = useState({ x: 0, y: 0 });
+
+  const togglePlay = () => {
+    const v = videoRef.current;
+    if (!v) return;
+
+  };
+
+  const onMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setCursor({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  return (
+    <div
+      className="modal__bg-video"
+      style={{ position: "relative", cursor: "none" }}
+      onClick={togglePlay}
+      onMouseMove={onMouseMove}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <video
+        ref={videoRef}
+        width="100%" height="90%"
+        controls={true}
+        onPlay={() => updatePlaying(true)}
+        onPause={() => updatePlaying(false)}
+      >
+        <source src={src} type="video/mp4" />
+      </video>
+      {hovered && (
+        <div
+          style={{
+            position: "absolute",
+            left: cursor.x,
+            top: cursor.y + 20,
+            transform: "translate(-50%, -50%)",
+            pointerEvents: "none",
+            color: "#fff",
+            fontFamily: "var(--font-body)",
+            fontWeight: 700,
+            fontSize: "13px",
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            padding: "10px 18px",
+
+            whiteSpace: "nowrap",
+            transition: "opacity 120ms",
+          }}
+        >
+          {playing ? "Pausa" : "Play"}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ProjectModal({ project, onClose }) {
   const [activePanel, setActivePanel] = useState(null);
   const [closing, setClosing] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
 
   const handleClose = useCallback(() => {
     setClosing(true);
@@ -67,17 +219,10 @@ function ProjectModal({ project, onClose }) {
         }}
       >
         {/* Background video fills entire modal */}
-        <div className="modal__bg-video">
-          <iframe
-            src={project.video}
-            title={project.name}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-        </div>
+        <VideoPlayer src={project.video} title={project.name} onPlayingChange={setVideoPlaying} />
 
         {/* Title overlay — top */}
-        <div className="modal__title-overlay">
+        <div className="modal__title-overlay" style={{ opacity: videoPlaying ? 0 : 1, transition: "opacity 400ms ease" }}>
           <span className="eyebrow">
             {project.tag} — {project.year}
           </span>
@@ -143,6 +288,7 @@ function ProjectModal({ project, onClose }) {
 }
 
 function Proyectos() {
+  var audio = new Audio(`${process.env.PUBLIC_URL}/assets/audio/sound2.mp3`);
   const projects = CNP_PROJECTS;
   const [index, setIndex] = useState(0);
   const [dir, setDir] = useState(1);
@@ -165,21 +311,35 @@ function Proyectos() {
       style={{ background: active.bg, color: "#000000" }}
     >
       {/* background watermark headline */}
-      <ScrollFloat
-        animationDuration={0.5}
-        ease="power3.out"
-        scrollStart="center bottom+=50%"
-        scrollEnd="bottom bottom-=40%"
-        stagger={0.09}
-        containerClassName="proy__watermark horizon"
-      >
-        Awakening Human Potential through culture, creativity and tech.
-      </ScrollFloat>
+
+      <SplitText
+            tag="h1"
+            text=" 
+            Awakening Human Potential through culture, creativity and tech."
+            className=" horizon reveal"
+            splitType="words"
+            delay={120}
+            initialDelay={3.25}
+            duration={2.5}
+            ease="power3.out"
+            from={{ opacity: 0, y: 30 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.1}
+            rootMargin="-60px"
+            textAlign="left"
+            style={{ color: "#000000", fontSize: "60px", maxWidth: "1200px", position: "absolute", left: "50%", transform: "translateX(-50%)", textAlign: "center", zIndex: 0, pointerEvents: "none" }}
+          />
+
+
+
 
       <div className="wrap proy__inner">
         <button
           className="proy__arrow proy__arrow--l"
-          onClick={() => go(-1)}
+          onClick={() => {
+            go(-1);
+            audio.play();
+          }}
           aria-label="Anterior"
           style={{ borderColor: "#000000", color: "#000000" }}
         >
@@ -187,7 +347,10 @@ function Proyectos() {
         </button>
         <button
           className="proy__arrow proy__arrow--r"
-          onClick={() => go(1)}
+          onClick={() => {
+            go(1);
+            audio.play();
+          }}
           aria-label="Siguiente"
           style={{ borderColor: "#000000", color: "#000000" }}
         >
@@ -201,6 +364,7 @@ function Proyectos() {
           >
             <img
               className="proy__art__logo"
+              style={{ height: active.id === "depend" ? "100px" : "70px" }}
               src={active.logo}
               alt={active.name}
               draggable="false"
@@ -208,19 +372,23 @@ function Proyectos() {
             <div className="proy__art">
               <img src={active.img} alt={active.name} draggable="false" />
             </div>
-            <span className="proy__client">{active.client}</span>
-            <button
-              className="btn-pop"
-              onClick={() => setOpen(true)}
+            <div style= {{position: "relative", top: "-12px", display: "flex", flexDirection: "column", alignItems: "center", gap: "16px"}}>
+                        <span className="proy__client">{active.client}</span>
+            <BtnPop
+              onClick={() => {
+                setOpen(true);
+                audio.play();
+              }}
               style={{ "--btn-bg": "#000000", "--btn-fg": active.bg }}
             >
               Ver más
-            </button>
+            </BtnPop>
+            </div>
           </div>
         </div>
       </div>
 
-      {open && <ProjectModal project={active} onClose={() => setOpen(false)} />}
+      {open && <ProjectModal project={active} onClose={() => { setOpen(false); audio.play(); }} />}
     </section>
   );
 }

@@ -2,25 +2,44 @@
    NAV
    ============================================================ */
 .nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 120;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 16px clamp(20px, 5vw, 64px);
-  transition: background 320ms var(--ease-out), padding 320ms var(--ease-out), box-shadow 320ms var(--ease-out);
+  transition: filter 150ms var(--ease-out);
+  animation: navLogoIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  -webkit-animation: navLogoIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  -webkit-transition: filter 150ms var(--ease-out);
+  -moz-transition: filter 150ms var(--ease-out);
+  -ms-transition: filter 150ms var(--ease-out);
+  -o-transition: filter 150ms var(--ease-out);
 }
-.nav.is-scrolled {
-  background: rgba(255,255,255,0.86);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding-top: 10px;
-  padding-bottom: 10px;
-  box-shadow: 0 1px 0 rgba(0,0,0,0.08);
-}
+
 .nav__logo { padding: 0; display: flex; }
-.nav__logo img { height: clamp(22px, 3vw, 30px); width: auto; transition: filter 200ms var(--ease-out); }
+.nav__logo img {
+  height: 40px;
+  width: auto;
+}
+
+@keyframes navLogoIn {
+  from {
+    opacity: 0;
+    transform: translateY(-160px);
+    -webkit-transform: translateY(-160px);
+    -moz-transform: translateY(-160px);
+    -ms-transform: translateY(-160px);
+    -o-transform: translateY(-160px);
+}
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 .nav__links { display: flex; gap: clamp(14px, 2vw, 30px); align-items: center; }
 .nav__link {
@@ -73,4 +92,112 @@
   }
   .nav__links.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
   .nav__links .nav__link { color: #fff; }
+}
+
+/* ── Floating nav menu ── */
+.fnav {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.fnav__trigger {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #1E232C;
+  color: var(--cnp-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  transition: background 200ms, color 200ms, transform 200ms;
+  z-index: 2;
+  opacity: 1;
+}
+
+.fnav__trigger--open {
+  background: var(--cnp-ink);
+  color: #fff;
+  transform: rotate(45deg);
+}
+
+.fnav__icon {
+  position: relative;
+  z-index: 2;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* Pulsing ring */
+.fnav__pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.7);
+  animation: fnav-pulse 2.4s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes fnav-pulse {
+  0%   { transform: scale(1);   opacity: 0.5; }
+  60%  { transform: scale(1.7); opacity: 0; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+
+/* Dropdown menu */
+.fnav__menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--cnp-ink);
+  border-radius: 16px;
+  padding: 32px 16px;
+  min-width: 400px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px) scale(0.96);
+  transform-origin: top right;
+  transition: opacity 220ms var(--ease-out), transform 220ms var(--ease-out);
+}
+
+.fnav__menu--open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.fnav__item {
+  width: 100%;
+  text-align: left;
+  padding: 10px 16px;
+  border-radius: 10px;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: background 150ms;
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+.fnav__menu--open .fnav__item {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    background 150ms,
+    opacity 200ms calc(var(--i) * 40ms) ease,
+    transform 200ms calc(var(--i) * 40ms) ease;
+}
+
+.fnav__item:hover {
+  background: rgba(255,255,255,0.12);
 }

@@ -60,31 +60,18 @@ function Hero() {
         playsInline
       />
 
-      {/* Mute indicator */}
+      {/* Mute indicator 
       <div className={`hero__mute-badge${muted ? '' : ' hero__mute-badge--on'}`}>
         {muted ? '🔇' : '🔊'}
       </div>
+      */}
       <div className="hero__scrim" />
 
 
 
 
       <div className="hero__content">
-        <SplitText
-            tag="p"
-            text="Hello, World!"
-            className="hero__hello reveal"
-            splitType="words"
-            delay={80}
-            duration={1}
-            ease="power3.out"
-            from={{ opacity: 0, y: 30 }}
-            to={{ opacity: 1, y: 0 }}
-            threshold={0.1}
-            rootMargin="-60px"
-            textAlign="left"
-            style={{ color: "#ffffff" }}
-          />
+
                   <SplitText
             tag="h1"
             text=" 
@@ -92,8 +79,9 @@ function Hero() {
               generation, taste becomes power."
             className="hero__head horizon reveal"
             splitType="words"
-            delay={80}
-            duration={0.8}
+            delay={120}
+            initialDelay={3.25}
+            duration={2.5}
             ease="power3.out"
             from={{ opacity: 0, y: 30 }}
             to={{ opacity: 1, y: 0 }}
@@ -105,7 +93,7 @@ function Hero() {
       </div>
 
       <div className="hero__buttons">
-        <HeroButton
+        {/* <HeroButton
           kind="pager"
           img={`${process.env.PUBLIC_URL}/assets/btn-contacto.png`}
           label="Contacto"
@@ -118,7 +106,7 @@ function Hero() {
           label="Game"
           sub="Play the game"
           onClick={() => {}}
-        />
+        />*/}
       </div>
 
 

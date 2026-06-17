@@ -46,27 +46,17 @@
 
 .sponsors-scroll {
   display: flex;
-  gap: 2rem;
+  gap: 4rem;
   padding: 1rem 2rem;
-  animation: scroll-infinite 20s linear infinite;
   width: fit-content;
-}
-
-.sponsors-scroll:hover {
-  animation-play-state: paused;
-}
-
-@keyframes scroll-infinite {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  position: relative;
+  top: -20px;
+  will-change: transform;
 }
 
 .sponsor-item {
-  min-width: 150px;
+  min-width: 80px;
+  opacity: 0.6;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -94,7 +84,7 @@
 
   }
   .patrocinadores-section{
-    height: 300px;
+    height: 150px;
   }
   .sponsors-scroll{
     height: 150px;

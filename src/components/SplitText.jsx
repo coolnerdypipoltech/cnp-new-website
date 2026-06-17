@@ -10,6 +10,7 @@ const SplitText = ({
   text,
   className = '',
   delay = 50,
+  initialDelay = 0,
   duration = 1.25,
   ease = 'power3.out',
   splitType = 'chars',
@@ -82,6 +83,7 @@ const SplitText = ({
           assignTargets(self);
           const tween = gsap.fromTo(targets, { ...from }, {
             ...to,
+            delay: initialDelay,
             duration,
             ease,
             stagger: delay / 1000,
@@ -115,7 +117,7 @@ const SplitText = ({
     },
     {
       dependencies: [
-        text, delay, duration, ease, splitType,
+        text, delay, initialDelay, duration, ease, splitType,
         JSON.stringify(from), JSON.stringify(to),
         threshold, rootMargin, fontsLoaded
       ],

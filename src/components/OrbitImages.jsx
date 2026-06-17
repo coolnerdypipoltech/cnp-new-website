@@ -5,6 +5,7 @@ import { useMemo, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { motion, useMotionValue, useTransform, animate } from 'motion/react';
 import './OrbitImages.css';
 
+
 function generateEllipsePath(cx, cy, rx, ry) {
   return `M ${cx - rx} ${cy} A ${rx} ${ry} 0 1 0 ${cx + rx} ${cy} A ${rx} ${ry} 0 1 0 ${cx - rx} ${cy}`;
 }
@@ -185,13 +186,15 @@ export default function OrbitImages({
   const containerHeight = responsive ? 'auto' : (typeof height === 'number' ? height : (typeof width === 'number' ? width : 'auto'));
 
   const items = images.map((src, index) => (
-    <img
+        <img
       key={src}
       src={src}
       alt={`${altPrefix} ${index + 1}`}
       draggable={false}
       className="orbit-image"
     />
+
+
   ));
 
   return (

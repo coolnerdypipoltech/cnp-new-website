@@ -1,17 +1,36 @@
 // ── CNP shared data ───────────────────────────────────────────────
 // Generic sample video (Big Buck Bunny — Creative Commons) for popups.
-const SAMPLE_VIDEO =
-  "https://www.youtube.com/embed/aqz-KE-bpKQ?rel=0&modestbranding=1";
+
 const A = (p) => `${process.env.PUBLIC_URL}${p}`;
 
 export const CNP_PROJECTS = [
+  {
+    id: "cnp",
+    name: "Cool Nerdy People Collabs",
+    client: "Cool Nerdy People Collabs",
+    year: "2025",
+    img: A("/assets/proyects/CNP.png"),
+    logo: A("/assets/proyects/logos/Logo_CNPBlack.png"),
+    video: A("/assets/proyects/videos/ReelCNP.mp4"),
+    // palette
+    bg: "#00BF63",
+    fg: "#000000",
+    accent: "#d142a4",
+    chip: "#000000",
+    chipFg: "#00BF63",
+    tag: "COOL NERDY PEOPLE",
+    services: ["Brand Identity", "3D / Toy Design", "Art Direction"],
+    keywords: ["streetwear", "collectible", "gaming", "latino culture"],
+    desc: "Una cápsula coleccionable que traduce el barrio a vinilo. Curamos el cruce entre gaming global y cultura local — sin perder el acento.",
+  },
   {
     id: "barrios",
     name: "Barrios Latinos",
     client: "Call of Duty: Mobile",
     year: "2025",
     img: A("/assets/proyects/codm.png"),
-    logo: A("/assets/proyects/logos/CODM.png"),
+    logo: A("/assets/proyects/logos/Logo_CD_M.png"),
+    video: A("/assets/proyects/videos/barrios.mp4"),
     // palette
     bg: "#FFEA2E",
     fg: "#000000",
@@ -29,7 +48,8 @@ export const CNP_PROJECTS = [
     client: "Hot Sale",
     year: "2023",
     img: A("/assets/proyects/hotsale.png"),
-    logo: A("/assets/proyects/logos/CODM.png"),
+    logo: A("/assets/proyects/logos/Logo_Sams.png"),
+    video: A("/assets/proyects/videos/barrios.mp4"),
     bg: "#3979FB",
     fg: "#ffffff",
     accent: "#820cea",
@@ -43,10 +63,11 @@ export const CNP_PROJECTS = [
   {
     id: "depend",
     name: "Depend Podcast",
-    client: "Feminine Depend",
+    client: "Feminine Depend: Podcast de Mujerona a Mujerona",
     year: "2023",
     img: A("/assets/proyects/depend-podcast.png"),
-    logo: A("/assets/proyects/logos/CODM.png"),
+    logo: A("/assets/proyects/logos/Logo_Depend.png"),
+    video: A("/assets/proyects/videos/barrios.mp4"),
     bg: "#CB6CE6",
     fg: "#ffffff",
     accent: "#191919",
@@ -63,7 +84,8 @@ export const CNP_PROJECTS = [
     client: "COSTA Coffee",
     year: "2024",
     img: A("/assets/proyects/costa.png"),
-    logo: A("/assets/proyects/logos/CODM.png"),
+    logo: A("/assets/proyects/logos/Logo_CostaC.png"),
+    video: A("/assets/proyects/videos/CostaCoffee.mp4"),
     bg: "#F38CE5",
     fg: "#ffffff",
     accent: "#191919",
@@ -81,7 +103,8 @@ export const CNP_PROJECTS = [
     client: "AXESS BY AXE",
     year: "2023",
     img: A("/assets/proyects/axe.png"),
-    logo: A("/assets/proyects/logos/CODM.png"),
+    logo: A("/assets/proyects/logos/Logo_AxessbyAxe.png"),
+    video: A("/assets/proyects/videos/AXESS.mp4"),
     bg: "#F95C4B",
     fg: "#ffffff",
     accent: "#820cea",
@@ -93,7 +116,6 @@ export const CNP_PROJECTS = [
     desc: "Una mascota digital que alimentas con criterio, no con clicks. Low ego, high care. El juguete que cuida de vuelta.",
   },
 ];
-CNP_PROJECTS.forEach((p) => (p.video = SAMPLE_VIDEO));
 
 // Merch collage — fashion editorial (text always present per card)
 export const CNP_MERCH = [

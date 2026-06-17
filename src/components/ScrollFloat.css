@@ -4,12 +4,12 @@
 
 .scroll-float-text {
   display: inline-block;
-  font-size: 40px;
+  font-size: 50px;
   font-weight: 900;
   text-align: center;
   line-height: 1.5;
   width: 50%;
-  max-width: 700px;
+  max-width: 1000px;
 }
 
 .char {

@@ -21,11 +21,11 @@ function Services() {
         <OrbitImages
           images={ORBIT_IMAGES}
           shape="ellipse"
-          radiusX={400}
-          radiusY={250}
+          radiusX={380}
+          radiusY={230}
           rotation={0}
           duration={50}
-          itemSize={200}
+          itemSize={180}
           responsive={true}
           showPath={false}
           centerContent={
