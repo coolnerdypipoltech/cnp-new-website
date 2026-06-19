@@ -85,11 +85,11 @@ function SocialBar() {
 
 
 const NAV_SECTIONS = [
-  { label: 'Hello World',    id: 'top' },
-  { label: 'Collabs', id: 'proyectos' },
-  { label: 'The Spark',  id: 'services' },
-  { label: 'Drops',     id: 'drops' },
-  { label: 'Contacto',  id: 'contacto' },
+  { label: 'Home',    id: 'top', color: "#E2FF0D" },
+  { label: 'Collabs', id: 'proyectos', color: "#2892FB" },
+  { label: 'The Spark',  id: 'services', color: "#22B656" },
+  { label: 'Drops',     id: 'drops', color: "#F35544" },
+  { label: 'Contacto',  id: 'contacto', color: "#D142A4" },
 ];
 
 function FloatingMenu() {
@@ -169,13 +169,11 @@ function Nav() {
   }, []);
   const toTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
   return (
-    <nav className={`nav ${scrolled ? "is-scrolled" : ""} ${hidden ? "is-hidden" : ""}`}>
-      <div className="navContainer">
-        <button className="nav__logo" aria-label="Inicio">
+    <nav className={`nav ${scrolled ? "is-scrolled" : ""}`}>
+      <button className="nav__logo" aria-label="Inicio">
         <img src={ `${process.env.PUBLIC_URL}/assets/logo/CNP_Brand.png`} alt="Nerdy People" />
       </button>
       <FloatingMenu />
-      </div>
     </nav>
   );
 }
