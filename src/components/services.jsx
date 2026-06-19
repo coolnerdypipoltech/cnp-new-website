@@ -5,12 +5,12 @@ import OrbitImages from './OrbitImages';
 
 const PU = process.env.PUBLIC_URL;
 const ORBIT_IMAGES = [
-  `${PU}/assets/orbit/orbit.png`,
-  `${PU}/assets/orbit/orbit1.png`,
-  `${PU}/assets/orbit/orbit2.png`,
-  `${PU}/assets/orbit/orbit3.png`,
-  `${PU}/assets/orbit/orbit4.png`,
-  `${PU}/assets/orbit/orbit5.png`,
+  { a: `${PU}/assets/orbit/orbit1A.png`, b: `${PU}/assets/orbit/orbit1B.png`, text: "Our curated playlist" },
+  { a: `${PU}/assets/orbit/orbit2A.png`, b: `${PU}/assets/orbit/orbit2B.png`, text: "Come to the creative-nerd side, we have cookies" },
+  { a: `${PU}/assets/orbit/orbit3A.png`, b: `${PU}/assets/orbit/orbit3B.png`, text: "Feeling lucky?" },
+  { a: `${PU}/assets/orbit/orbit4A.png`, b: `${PU}/assets/orbit/orbit4B.png`, text: "Infinite recommended TBR" },
+  { a: `${PU}/assets/orbit/orbit5A.png`, b: `${PU}/assets/orbit/orbit5B.png`, text: "Contact us" },
+  { a: `${PU}/assets/orbit/orbit6A.png`, b: `${PU}/assets/orbit/orbit6B.png`, text: "Let's play" },
 ];
 
 function Services() {
@@ -25,7 +25,7 @@ function Services() {
           radiusY={230}
           rotation={0}
           duration={50}
-          itemSize={180}
+          itemSize={130}
           responsive={true}
           showPath={false}
           centerContent={

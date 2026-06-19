@@ -10,7 +10,7 @@ const SOCIAL_ICONS = {
     ),
     label: "LinkedIn",
     sub: "Connect with us",
-    link: "https://www.linkedin.com/",
+    link: "https://mx.linkedin.com/company/coolnerdypeople",
   },
   instagram: {
     icon: (
@@ -30,7 +30,7 @@ const SOCIAL_ICONS = {
     ),
     label: "Instagram",
     sub: "Follow our work",
-    link: "https://www.instagram.com/",
+    link: "https://www.instagram.com/coolnerdypeople/",
   },
   spacer: {
     icon: (
@@ -85,7 +85,7 @@ function SocialBar() {
 
 
 const NAV_SECTIONS = [
-  { label: 'Home',    id: 'top' },
+  { label: 'Hello World',    id: 'top' },
   { label: 'Collabs', id: 'proyectos' },
   { label: 'The Spark',  id: 'services' },
   { label: 'Drops',     id: 'drops' },
@@ -134,12 +134,10 @@ function FloatingMenu() {
       <button
         className={`fnav__trigger${open ? ' fnav__trigger--open' : ''}`}
         onClick={() => {setOpen(v => !v) 
+          audio.volume = 0.5;
           audio.play();
         }}
-        onMouseEnter={() => {
-          setOpen(true)
-          audio.play();
-        }}
+
         aria-label="Menu"
         aria-expanded={open}
       >
@@ -152,18 +150,32 @@ function FloatingMenu() {
 
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastY = useRef(0);
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
+    const onScroll = () => {
+      const y = window.scrollY;
+      const atTop = y <= 320;
+      setScrolled(!atTop);
+      if (atTop) {
+        setHidden(false);
+      } else {
+        setHidden(y > lastY.current);
+      }
+      lastY.current = y;
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
   const toTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
   return (
-    <nav className={`nav ${scrolled ? "is-scrolled" : ""}`}>
-      <button className="nav__logo" aria-label="Inicio">
+    <nav className={`nav ${scrolled ? "is-scrolled" : ""} ${hidden ? "is-hidden" : ""}`}>
+      <div className="navContainer">
+        <button className="nav__logo" aria-label="Inicio">
         <img src={ `${process.env.PUBLIC_URL}/assets/logo/CNP_Brand.png`} alt="Nerdy People" />
       </button>
       <FloatingMenu />
+      </div>
     </nav>
   );
 }

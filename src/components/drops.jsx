@@ -5,11 +5,13 @@ import React, { useState, useEffect } from 'react';
 // distinct gallery image; clicking an object scrolls the strip to it,
 // with the neighbouring image peeking in from the left.
 const DROP_ITEMS = [
-  { id: "bolsa",    kind: "video", src: `${process.env.PUBLIC_URL}/assets/videos/Vid_Bolsa.mp4`,   pill: "DROP",    label: "Bolsa",                  panel: "var(--cnp-indigo)" },
-  { id: "phone",    kind: "obj",   img: `${process.env.PUBLIC_URL}/assets/merch/merch2.png`,     pill: "PHONE",   label: "Calling Creative Minds", panel: "var(--cnp-sky)" },
-  { id: "cookie",   kind: "obj",   img: `${process.env.PUBLIC_URL}/assets/merch/merch3.png`,    pill: "COOKIE",  label: "Open for Insight",       panel: "var(--cnp-indigo)" },
-  { id: "cassette", kind: "obj",   img: `${process.env.PUBLIC_URL}/assets/merch/merch2.png`,  pill: "REWIND",  label: "Be Kind Rewind",         panel: "var(--cnp-acid)" },
-  { id: "8ball",    kind: "obj",   img: `${process.env.PUBLIC_URL}/assets/merch/merch3.png`,     pill: "8 BALL",  label: "Confía en tu instinto",  panel: "var(--cnp-green)" },
+  { id: "bolsa",    kind: "video", src: `${process.env.PUBLIC_URL}/assets/videos/Vid_Bolsa.mp4`,   pill: "DROP",    label: "Bolsa",                  },
+  { id: "phone",    kind: "obj",   img: `${process.env.PUBLIC_URL}/assets/merch/merch2.png`,     pill: "PHONE",   label: "Calling Creative Minds", },
+  { id: "cookie",   kind: "obj",   img: `${process.env.PUBLIC_URL}/assets/merch/merch3.png`,    pill: "COOKIE",  label: "Open for Insight",        },
+  { id: "cassette", kind: "obj",   img: `${process.env.PUBLIC_URL}/assets/merch/merch2.png`,  pill: "REWIND",  label: "Be Kind Rewind",         },
+  { id: "8ball",    kind: "obj",   img: `${process.env.PUBLIC_URL}/assets/merch/merch3.png`,     pill: "8 BALL",  label: "Confía en tu instinto",   },
+  { id: "bolsa",    kind: "video", src: `${process.env.PUBLIC_URL}/assets/videos/Vid_Bolsa.mp4`,   pill: "DROP",    label: "Bolsa",                   },
+  
 ];
 
 function Drops() {
@@ -56,9 +58,9 @@ function Drops() {
                     aria-label={isActive ? "Siguiente" : it.label}
                   >
                     {it.kind === "video"
-                      ? <video src={it.src} autoPlay loop muted playsInline style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      ? <video src={it.src} autoPlay loop muted playsInline style={{ width: "100%", height: "100%", objectFit: "cover"}} />
                       : <img src={it.img} alt={it.label} draggable="false" />}
-                    <span className="drops__pill horizon">{it.pill}</span>
+                    <span className="drops__pill horizon" style={{ bottom: it.kind === "video" ? "25px" : "20px" }}>{it.pill}</span>
                   </button>
                 );
               })}
@@ -87,7 +89,7 @@ function Drops() {
                   aria-pressed={active === idx}
                 >
                   {o.kind === "video"
-                    ? <video src={o.src} muted loop playsInline style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} />
+                    ? <video src={o.src} muted loop playsInline style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none", borderRadius: "12px" }} />
                     : <img src={o.img} alt={o.label} draggable="false" />}
                   <figcaption>{o.label}</figcaption>
                 </button>

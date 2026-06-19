@@ -12,7 +12,7 @@ const SOCIAL_ICONS = {
     ),
     label: "LinkedIn",
     sub: "Connect with us",
-    link: "https://www.linkedin.com/",
+    link: "https://mx.linkedin.com/company/coolnerdypeople",
   },
   instagram: {
     icon: (
@@ -32,7 +32,7 @@ const SOCIAL_ICONS = {
     ),
     label: "Instagram",
     sub: "Follow our work",
-    link: "https://www.instagram.com/",
+    link: "https://www.instagram.com/coolnerdypeople/",
   },
   spacer: {
     icon: (
@@ -45,7 +45,6 @@ const SOCIAL_ICONS = {
 };
 
 function SocialBtn({ s }) {
-  
   const [hovered, setHovered] = React.useState(false);
   const data = SOCIAL_ICONS[s.id];
   if (s.id === "spacer") {
@@ -77,7 +76,6 @@ function SocialBtn({ s }) {
       >
         <span className="social-btn__icon">{data.icon}</span>
       </a>
-
     </div>
   );
 }
@@ -204,13 +202,22 @@ function Contacto() {
       </section>
 
       <footer className="section footer" data-screen-label="Footer">
+
         <div className="merch__marquee" aria-hidden="true">
           <div className="merch__marquee-track">
             {Array.from({ length: 2 }).map((_, k) => (
-              <span key={k}>
-                THE BEST IDEAS DON’T INTERRUPT CULTURE. THEY JOIN IT — IN A
-                WORLD OF INFINITE GENERATION, TASTE BECOMES POWER — TECHNOLOGY
-                SHOULD FEEL HUMAN —
+              <span
+                key={k}
+                style={{
+                  fontSize: "14px",
+                  marginTop: "8px",
+                  marginBottom: "8px",
+                }}
+              >
+                ‎ ‎‎ ‎ ‎ THE BEST IDEAS DON’T INTERRUPT CULTURE. THEY JOIN IT ‎
+                ‎‎ ‎ ‎ ✦‎ ‎ ‎ ‎ ‎ ‎ IN A WORLD OF INFINITE GENERATION, TASTE
+                BECOMES POWER ‎ ‎ ‎ ‎ ‎ ✦ ‎ ‎‎ ‎ ‎ TECHNOLOGY SHOULD FEEL HUMAN
+                ‎ ‎‎ ‎ ‎ ✦‎ ‎ ‎‎ ‎ ‎
               </span>
             ))}
           </div>

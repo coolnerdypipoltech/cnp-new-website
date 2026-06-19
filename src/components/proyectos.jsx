@@ -132,7 +132,8 @@ function VideoPlayer({ src, title, onPlayingChange }) {
     >
       <video
         ref={videoRef}
-        width="100%" height="90%"
+        style={{ height: "82vh", objectFit: "cover" }}
+        width="100%" height="100%"
         controls={true}
         onPlay={() => updatePlaying(true)}
         onPause={() => updatePlaying(false)}
@@ -239,7 +240,7 @@ function ProjectModal({ project, onClose }) {
             onMouseLeave={() => setActivePanel(null)}
             onClick={() => togglePanel("brief")}
           >
-            <div className="modal__btn-panel">
+            <div className="modal__btn-panel" style= {{borderRadius: "0px 16px 0px 0px"}}>
               <span className="eyebrow modal__lab">The brief</span>
               <p className="modal__desc" style={{ color: "#fff" }}>
                 {project.desc}
@@ -269,7 +270,7 @@ function ProjectModal({ project, onClose }) {
             onMouseLeave={() => setActivePanel(null)}
             onClick={() => togglePanel("services")}
           >
-            <div className="modal__btn-panel">
+            <div className="modal__btn-panel" >
               <span className="eyebrow modal__lab">We worked on the</span>
               <ul className="svc-list">
                 {project.services.map((s) => (
@@ -334,10 +335,16 @@ function Proyectos() {
 
 
       <div className="wrap proy__inner">
+        <div className="proy__topbar">
+          <span className="eyebrow">Collabs</span>
+          <span className="eyebrow " >{String(index + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}</span>
+        </div>
+
         <button
           className="proy__arrow proy__arrow--l"
           onClick={() => {
             go(-1);
+            audio.volume = 0.2;
             audio.play();
           }}
           aria-label="Anterior"
@@ -349,6 +356,7 @@ function Proyectos() {
           className="proy__arrow proy__arrow--r"
           onClick={() => {
             go(1);
+            audio.volume = 0.2;
             audio.play();
           }}
           aria-label="Siguiente"
@@ -364,7 +372,7 @@ function Proyectos() {
           >
             <img
               className="proy__art__logo"
-              style={{ height: active.id === "depend" ? "100px" : "70px" }}
+              style={{ height: "70px" }}
               src={active.logo}
               alt={active.name}
               draggable="false"
@@ -377,6 +385,7 @@ function Proyectos() {
             <BtnPop
               onClick={() => {
                 setOpen(true);
+                audio.volume = 0.2;
                 audio.play();
               }}
               style={{ "--btn-bg": "#000000", "--btn-fg": active.bg }}
@@ -388,7 +397,7 @@ function Proyectos() {
         </div>
       </div>
 
-      {open && <ProjectModal project={active} onClose={() => { setOpen(false); audio.play(); }} />}
+      {open && <ProjectModal project={active} onClose={() => { setOpen(false); audio.volume = 0.2; audio.play(); }} />}
     </section>
   );
 }
