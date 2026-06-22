@@ -199,5 +199,5 @@
 }
 
 .fnav__item:hover {
-  background: rgba(255,255,255,0.12);
+  background: var(--hover-bg, rgba(255,255,255,0.12));
 }

@@ -10,7 +10,7 @@ const SOCIAL_ICONS = {
     ),
     label: "LinkedIn",
     sub: "Connect with us",
-    link: "https://mx.linkedin.com/company/coolnerdypeople",
+    link: "https://www.linkedin.com/",
   },
   instagram: {
     icon: (
@@ -30,7 +30,7 @@ const SOCIAL_ICONS = {
     ),
     label: "Instagram",
     sub: "Follow our work",
-    link: "https://www.instagram.com/coolnerdypeople/",
+    link: "https://www.instagram.com/",
   },
   spacer: {
     icon: (
@@ -119,7 +119,7 @@ function FloatingMenu() {
           <button
             key={s.id}
             className="fnav__item"
-            style={{ '--i': i }}
+            style={{   '--i': i, '--hover-bg': s.color }}
             onClick={() => {
               scrollTo(s.id);
               audio.play();
@@ -134,10 +134,11 @@ function FloatingMenu() {
       <button
         className={`fnav__trigger${open ? ' fnav__trigger--open' : ''}`}
         onClick={() => {setOpen(v => !v) 
-          audio.volume = 0.5;
           audio.play();
         }}
-
+        onMouseEnter={() => {
+          setOpen(true)
+        }}
         aria-label="Menu"
         aria-expanded={open}
       >
@@ -150,20 +151,8 @@ function FloatingMenu() {
 
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const lastY = useRef(0);
   useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY;
-      const atTop = y <= 320;
-      setScrolled(!atTop);
-      if (atTop) {
-        setHidden(false);
-      } else {
-        setHidden(y > lastY.current);
-      }
-      lastY.current = y;
-    };
+    const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
