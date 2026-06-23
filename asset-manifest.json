@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/cnp-new-website/static/css/main.a633936c.css",
-    "main.js": "/cnp-new-website/static/js/main.a139c8b5.js",
+    "main.js": "/cnp-new-website/static/js/main.44c6f85a.js",
     "static/js/453.c080c17e.chunk.js": "/cnp-new-website/static/js/453.c080c17e.chunk.js",
     "static/media/Montserrat-VariableFont_wght.ttf": "/cnp-new-website/static/media/Montserrat-VariableFont_wght.0ba081b76521874cf46c.ttf",
     "static/media/Horizon.otf": "/cnp-new-website/static/media/Horizon.3d45dd95383aa5807d4b.otf",
     "index.html": "/cnp-new-website/index.html",
     "main.a633936c.css.map": "/cnp-new-website/static/css/main.a633936c.css.map",
-    "main.a139c8b5.js.map": "/cnp-new-website/static/js/main.a139c8b5.js.map",
+    "main.44c6f85a.js.map": "/cnp-new-website/static/js/main.44c6f85a.js.map",
     "453.c080c17e.chunk.js.map": "/cnp-new-website/static/js/453.c080c17e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a633936c.css",
-    "static/js/main.a139c8b5.js"
+    "static/js/main.44c6f85a.js"
   ]
 }
