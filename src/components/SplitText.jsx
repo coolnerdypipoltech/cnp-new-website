@@ -86,7 +86,7 @@ const SplitText = ({
             delay: initialDelay,
             duration,
             ease,
-            stagger: delay / 1000,
+            
             scrollTrigger: {
               trigger: el,
               start,

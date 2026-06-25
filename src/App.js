@@ -1,43 +1,55 @@
-import React, { useState } from 'react';
-import Nav from './components/nav';
-import Hero from './components/hero';
-import Proyectos from './components/proyectos';
-import Services from './components/services';
-import Contacto from './components/contacto';
-import StarCursor from './components/starcursor';
-import Drops from './components/drops';
-import Intro from './components/Intro';
+import React, { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import Nav from "./sections/nav";
+import Hero from "./sections/hero";
+import Proyectos from "./sections/proyectos";
+import Services from "./sections/services";
+import Contacto from "./sections/contacto";
+import StarCursor from "./components/starcursor";
+import Drops from "./sections/drops";
+import Intro from "./sections/Intro";
+import DinoGame from "./sections/DinoGame";
+import { useViewport } from "./context/ViewportContext";
+import "./App.css";
+import "./nav.css";
+import "./styles.css";
 
-import './App.css';
-import './nav.css';
-import './styles.css';
+import Partners from "./sections/Partners";
 
-import Partners from './components/Partners';
-
-const techLogos = [
-  { src: `${process.env.PUBLIC_URL}/assets/proyects/logos/CODM.png`, title: "React", href: "https://react.dev" },
-  { src: `${process.env.PUBLIC_URL}/assets/proyects/logos/CODM.png`, title: "Next.js", href: "https://nextjs.org" },
-  { src: `${process.env.PUBLIC_URL}/assets/proyects/logos/CODM.png`, title: "TypeScript", href: "https://www.typescriptlang.org" },
-  { src: `${process.env.PUBLIC_URL}/assets/proyects/logos/CODM.png`, title: "CODM", href: "https://www.callofduty.com/mobile" },
-];
-
-function App() {
+function Main() {
   const [introDone, setIntroDone] = useState(false);
-
+  const [show, setShow] = useState(false);
+  const { isMobile } = useViewport();
   return (
     <React.Fragment>
-      {!introDone && <Intro onDone={() => setIntroDone(true)} />}
-      {introDone && <Nav/>}
-      <StarCursor />
-      <Hero />
-      <Proyectos />
-      <Partners
-        logos={techLogos}
-      />
-      <Services />
-      <Drops />
-      <Contacto />
+      {!introDone && <Intro onDone={() => {
+        setShow(true);
+        setTimeout(() => setIntroDone(true), 100);
+      }} />}
+      {introDone && show && (
+        <>
+          <Nav />
+          {!isMobile && <StarCursor />}
+          <Hero />
+          <Proyectos />
+          <Partners />
+          <Services />
+          <Drops />
+          <Contacto />
+        </>
+      )}
     </React.Fragment>
+  );
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Main />} />
+      <Route path="/cnp-new-website" element={<Main />} />
+      
+      <Route path="*" element={<Main />} />
+    </Routes>
   );
 }
 

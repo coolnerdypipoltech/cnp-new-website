@@ -71,13 +71,17 @@ function generateWavePath(cx, cy, w, amplitude, waves) {
   return pts.join(" ") + " Z";
 }
 
-function HoverImage({ imgA, imgB, alt, text }) {
+function HoverImage({ imgA, imgB, alt, text, onHover, onLeave }) {
   const [hovered, setHovered] = useState(false);
+  
   return (
     <div
       className={`orbit-image-pair${hovered ? " orbit-image-pair--hovered" : ""}`}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseEnter={() => { if(window.innerWidth > 1000) { setHovered(true); }  }}
+      onMouseLeave={() => { 
+        if(window.innerWidth > 1000) { setHovered(false); onLeave && onLeave(); }
+      }}
+      onClick={() => onHover && onHover()}
     >
       <img
         src={imgA}
@@ -98,26 +102,29 @@ function HoverImage({ imgA, imgB, alt, text }) {
               justifyContent: "center",
               alignItems: "center",
               flexDirection: "column",
-              width: "200px",}}>
+              width: "100%",}}>
           <span
             className="social-btn__tag"
             style={{
               position: "relative",
               background: "#00ABFF",
               display: "flex",
-              right: "30px",
+              top: "30px",
+              alignSelf: "center",
               justifyContent: "center",
               alignItems: "center",
               padding: "4px 8px",
+              paddingTop: "6px",
+              marginLeft: "2px",
               borderRadius: "4px",
               flexDirection: "column",
               color: "var(--cnp-white)",
-              width: "200px",
+              width: "auto",
             }}
           >
             <span
               className="horizon"
-              style={{ textAlign: "center", fontSize: "12px" }}
+              style={{ textAlign: "center", fontSize: "12px", width: text === "Our curated playlist" ? "140px" : "auto",  }}
             >
               {text}
             </span>
@@ -139,7 +146,7 @@ function OrbitItem({
   fill,
 }) {
   const itemOffset = fill ? (index / totalItems) * 100 : 0;
-
+  
   const offsetDistance = useTransform(progress, (p) => {
     const offset = (((p + itemOffset) % 100) + 100) % 100;
     return `${offset}%`;
@@ -173,6 +180,7 @@ function OrbitItem({
 export default function OrbitImages({
   images = [],
   altPrefix = "Orbiting image",
+  itemCallbacks = {},
   shape = "ellipse",
   customPath,
   baseWidth = 1400,
@@ -322,6 +330,8 @@ export default function OrbitImages({
           imgB={src.b}
           text={src.text}
           alt={`${altPrefix} ${index + 1}`}
+          onHover={itemCallbacks[index]?.onHover}
+          onLeave={itemCallbacks[index]?.onLeave}
         />
       );
     }
