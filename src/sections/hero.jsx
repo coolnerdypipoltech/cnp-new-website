@@ -1,8 +1,10 @@
 // ── HERO ──────────────────────────────────────────────────────────
 import React, { useRef, useState } from "react";
 import SplitText from "../components/SplitText";
+import { useViewport } from "../context/ViewportContext";
 function HeroButton({ kind, img, label, sub, onClick }) {
   const [hover, setHover] = React.useState(false);
+
   const isPager = kind === "pager";
   return (
     <button
@@ -32,7 +34,7 @@ function HeroButton({ kind, img, label, sub, onClick }) {
 function Hero() {
   const videoRef = useRef(null);
   const [muted, setMuted] = useState(true);
-
+  const { isMobile } = useViewport();
   const toggleMute = () => {
     if (videoRef.current) {
       videoRef.current.muted = !videoRef.current.muted;
@@ -64,7 +66,7 @@ function Hero() {
       <video
         ref={videoRef}
         className="hero__bg-video"
-        src={`${process.env.PUBLIC_URL}/assets/videos/heroVideo.mp4`}
+        src={isMobile ? `${process.env.PUBLIC_URL}/assets/videos/VIDEO_mobil.mp4` : `${process.env.PUBLIC_URL}/assets/videos/VIDEO_WEB.mp4`}
         autoPlay
         loop
         muted

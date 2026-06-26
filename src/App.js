@@ -47,7 +47,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Main />} />
       <Route path="/cnp-new-website" element={<Main />} />
-      
+      <Route path="/game" element={<DinoGame />} />
       <Route path="*" element={<Main />} />
     </Routes>
   );

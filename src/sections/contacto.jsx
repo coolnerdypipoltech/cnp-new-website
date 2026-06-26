@@ -91,7 +91,7 @@ function SocialBar() {
 }
 
 const MARQUEE_TEXT =
-  " THE BEST IDEAS DON'T INTERRUPT CULTURE. THEY JOIN IT | IN A WORLD OF INFINITE GENERATION, TASTE BECOMES POWER | TECHNOLOGY SHOULD FEEL HUMAN |  ";
+  " E BEST IDEAS DON'T INTERRUPT CULTURE. THEY JOIN IT * IN A WORLD OF INFINITE GENERATION, TASTE BECOMES POWER * TECHNOLOGY SHOULD FEEL HUMAN * TH";
 
 function JSMarquee({ text, speed = 0.6, fontSize }) {
   const outerRef = useRef(null);
@@ -150,13 +150,13 @@ function Contacto() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [visible, setVisible] = useState(false);
-    const { isMobile } = useViewport();
+  const { isMobile } = useViewport();
   const sectionRef = useRef(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => setVisible(entry.isIntersecting),
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
@@ -200,15 +200,15 @@ function Contacto() {
         <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
           {visible && (
             <Particles
-            particleColors={["#ffffff", "#aaaaff", "#cccccc"]}
-            particleCount={1000}
-            particleSpread={8}
-            speed={0.08}
-            particleBaseSize={80}
-            moveParticlesOnHover={true}
-            alphaParticles={true}
-            disableRotation={false}
-          />
+              particleColors={["#ffffff", "#aaaaff", "#cccccc"]}
+              particleCount={1000}
+              particleSpread={8}
+              speed={0.08}
+              particleBaseSize={80}
+              moveParticlesOnHover={true}
+              alphaParticles={true}
+              disableRotation={false}
+            />
           )}
         </div>
         <div
@@ -268,24 +268,74 @@ function Contacto() {
       </section>
 
       <footer className="section footer" data-screen-label="Footer">
-
-         <div className="merch__marquee" aria-hidden="true">
-          <div className="merch__marquee-track">
-            {Array.from({ length: 2 }).map((_, k) => (
-              <span
-                key={k}
+        <div className="merch__marquee" aria-hidden="true">
+          {isMobile ? (
+            <>
+            <div style={{ width: "100%", display: "flex", justifyContent: "space-around", flexDirection: "row", alignItems: "center", height: "40px" }}>
+                           <div
+            style={{ width: "30px", display: "flex", justifyContent: "center", position: "relative", top: "-22px", height: "10px", }}
+          >
+            <div
+              className="social-btn_spacer"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/icons/Signal_2.png`}
+                alt=""
+                style={{ height: "30px",  }}
+              />
+            </div>
+          </div>
+              <p
                 style={{
-                  fontSize: isMobile ? "10px" : "14px",
+                  fontSize: "10px",
                   marginTop: "8px",
                   marginBottom: "8px",
                   fontWeight: "500",
+                  textAlign: "center",
                 }}
               >
-                {MARQUEE_TEXT}
-              </span>
-            ))}
+                TECHNOLOGY SHOULD FEEL HUMAN
+              </p>
+                           <div
+            style={{ width: "30px", display: "flex", justifyContent: "center", position: "relative", top: "-22px", height: "10px" }}
+          >
+            <div
+              className="social-btn_spacer"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/icons/Signal_2.png`}
+                alt=""
+                style={{ height: "30px",  }}
+              />
+            </div>
           </div>
+            </div>
+
+            </>
+            
+          ) : (
+            <div className="merch__marquee-track">
+              {Array.from({ length: 2 }).map((_, k) => (
+                <span
+                  key={k}
+                  style={{
+                    fontSize: "14px",
+                    marginTop: "8px",
+                    marginBottom: "8px",
+                    fontWeight: "500",
+                  }}
+                >
+                  {MARQUEE_TEXT}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
+
         <p className="footer__copy">
           © 2026 Cool Nerdy People. All rights reserved. Unauthorized
           reproduction or use of any content, concept, visual identity or

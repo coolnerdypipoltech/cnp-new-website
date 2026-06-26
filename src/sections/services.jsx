@@ -3,7 +3,9 @@ import React, { useState, useCallback, useEffect } from "react";
 import SplashCursor from "../components/SplashCursor";
 import OrbitImages from "../components/OrbitImages";
 import { useViewport } from "../context/ViewportContext";
+import { useNavigate } from 'react-router-dom'
 const PU = process.env.PUBLIC_URL;
+
 const ORBIT_IMAGES = [
   {
     a: `${PU}/assets/orbit/orbit1A.png`,
@@ -60,6 +62,7 @@ const BallResponses = [
 ];
 
 function Services() {
+  const navigate = useNavigate()
   const [ballImg, setBallImg] = useState(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const { isMobile } = useViewport();
@@ -197,6 +200,7 @@ function Services() {
           showPath={false}
           itemCallbacks={{
             2: { onHover: handleOrbit3Hover, onLeave: handleOrbit3Leave },
+            5: { onHover: () => navigate('/game') },
           }}
           centerContent={
 
