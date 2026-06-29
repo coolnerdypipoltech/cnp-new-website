@@ -19,7 +19,7 @@ import Partners from "./sections/Partners";
 function Main() {
   const [introDone, setIntroDone] = useState(false);
   const [show, setShow] = useState(false);
-  const { isMobile } = useViewport();
+  const { isTrueMobile } = useViewport();
   return (
     <React.Fragment>
       {!introDone && <Intro onDone={() => {
@@ -29,7 +29,7 @@ function Main() {
       {introDone && show && (
         <>
           <Nav />
-          {!isMobile && <StarCursor />}
+          {!isTrueMobile && <StarCursor />}
           <Hero />
           <Proyectos />
           <Partners />

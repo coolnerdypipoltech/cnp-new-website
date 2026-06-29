@@ -1,9 +1,11 @@
 // ── SERVICES — centred phrase with objects orbiting around it ─────
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import SplashCursor from "../components/SplashCursor";
 import OrbitImages from "../components/OrbitImages";
 import { useViewport } from "../context/ViewportContext";
 import { useNavigate } from 'react-router-dom'
+
+
 const PU = process.env.PUBLIC_URL;
 
 const ORBIT_IMAGES = [
@@ -64,14 +66,29 @@ const BallResponses = [
 function Services() {
   const navigate = useNavigate()
   const [ballImg, setBallImg] = useState(null);
+    const [visible, setVisible] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const { isMobile } = useViewport();
+  const { isTrueMobile } = useViewport();
+  const sectionRef = useRef(null);
+  const orbitSectionRef = useRef(null);
+    const [visibleOrbit, setVisibleOrbit] = useState(false);
+
   const handleOrbit3Hover = useCallback(() => {
     const random =
       BallResponses[Math.floor(Math.random() * (BallResponses.length - 1))];
 
       console.log("Selected 8ball response:", random); // Debug log
     setBallImg(random);
+  }, []);
+
+    useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisibleOrbit(entry.isIntersecting),
+      { threshold: 0.1 },
+    );
+    if (orbitSectionRef.current) observer.observe(orbitSectionRef.current);
+    return () => observer.disconnect();
   }, []);
 
   const handleOrbit3Leave = useCallback(() => {
@@ -132,14 +149,29 @@ function Services() {
     return size;
   }
 
+    const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) window.scrollTo({ top: el.offsetTop, behavior: "smooth" });
+  };
+
+    useEffect(() => {
+      const observer = new IntersectionObserver(
+        ([entry]) => setVisible(entry.isIntersecting),
+        { threshold: 0.1 },
+      );
+      if (sectionRef.current) observer.observe(sectionRef.current);
+      return () => observer.disconnect();
+    }, []);
+
 
   return (
     <section
       className="section services"
       id="services"
       data-screen-label="Services"
+      ref={sectionRef}
     >
-      <SplashCursor RAINBOW_MODE />
+      {visible && !isTrueMobile && <SplashCursor />}
 
       {/* 8-ball overlay */}
       {ballImg && (
@@ -187,7 +219,7 @@ function Services() {
       `}</style>
 
       {!ballImg && (
-        <div className="services__stage">
+        <div className="services__stage" ref={orbitSectionRef}>
         <OrbitImages
           images={ORBIT_IMAGES}
           shape="ellipse"
@@ -201,6 +233,7 @@ function Services() {
           itemCallbacks={{
             2: { onHover: handleOrbit3Hover, onLeave: handleOrbit3Leave },
             5: { onHover: () => navigate('/game') },
+            4: { onHover: () => scrollTo("contacto") }
           }}
           centerContent={
 

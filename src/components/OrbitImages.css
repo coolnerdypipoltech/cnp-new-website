@@ -68,6 +68,7 @@
   .ball-container{
     padding-top: 40px;
     height: calc(80dvh - 100px);
+    
   }
 }
 

@@ -91,7 +91,7 @@ function SocialBar() {
 }
 
 const MARQUEE_TEXT =
-  " E BEST IDEAS DON'T INTERRUPT CULTURE. THEY JOIN IT * IN A WORLD OF INFINITE GENERATION, TASTE BECOMES POWER * TECHNOLOGY SHOULD FEEL HUMAN * TH";
+  " E BEST IDEAS DON'T INTERRUPT CULTURE. THEY JOIN IT ✦ IN A WORLD OF INFINITE GENERATION, TASTE BECOMES POWER ✦ TECHNOLOGY SHOULD FEEL HUMAN ✦ TH";
 
 function JSMarquee({ text, speed = 0.6, fontSize }) {
   const outerRef = useRef(null);
@@ -271,21 +271,11 @@ function Contacto() {
         <div className="merch__marquee" aria-hidden="true">
           {isMobile ? (
             <>
-            <div style={{ width: "100%", display: "flex", justifyContent: "space-around", flexDirection: "row", alignItems: "center", height: "40px" }}>
+            <div style={{ width: "100%" }}>
                            <div
-            style={{ width: "30px", display: "flex", justifyContent: "center", position: "relative", top: "-22px", height: "10px", }}
+           
           >
-            <div
-              className="social-btn_spacer"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              <img
-                src={`${process.env.PUBLIC_URL}/assets/icons/Signal_2.png`}
-                alt=""
-                style={{ height: "30px",  }}
-              />
-            </div>
+
           </div>
               <p
                 style={{
@@ -296,23 +286,9 @@ function Contacto() {
                   textAlign: "center",
                 }}
               >
-                TECHNOLOGY SHOULD FEEL HUMAN
+                ✦ TECHNOLOGY SHOULD FEEL HUMAN ✦
               </p>
-                           <div
-            style={{ width: "30px", display: "flex", justifyContent: "center", position: "relative", top: "-22px", height: "10px" }}
-          >
-            <div
-              className="social-btn_spacer"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              <img
-                src={`${process.env.PUBLIC_URL}/assets/icons/Signal_2.png`}
-                alt=""
-                style={{ height: "30px",  }}
-              />
-            </div>
-          </div>
+
             </div>
 
             </>

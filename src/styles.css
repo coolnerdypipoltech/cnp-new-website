@@ -1105,7 +1105,7 @@ a { color: inherit; cursor:none; }
 
 @media  (max-height: 800px) {
   .ball-img{
-    width: 40vh;
+    width: 30vh !important;
     
   }
 }
@@ -1229,6 +1229,7 @@ a { color: inherit; cursor:none; }
   display: flex;
 flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 .footer__copy {
   max-width: 880px;

@@ -42,10 +42,7 @@ function Hero() {
     }
   };
 
-  const scrollTo = (id) => {
-    const el = document.getElementById(id);
-    if (el) window.scrollTo({ top: el.offsetTop, behavior: "smooth" });
-  };
+
   return (
     <section
       className="section hero"

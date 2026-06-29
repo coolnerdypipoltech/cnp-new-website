@@ -134,8 +134,8 @@ export default function DinoGame() {
   return (
     <div
       style={{
-        width: "100vw",
-        height: "100vh",
+        width: "100dvw",
+        height: "100dvh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -159,15 +159,8 @@ export default function DinoGame() {
             zIndex: 999,
           }}
         >
-          <div className="horizon">Loading...</div>
-          <div
-            className="horizon"
-            style={{ marginTop: "10px", fontSize: "24px" }}
-          >
-            {Math.round(loadingProgression * 100)}%
-          </div>
-          <div
-            style={{ width: "100%", display: "flex", justifyContent: "center" }}
+                    <div
+            style={{ width: "100%", display: "flex", justifyContent: "center", paddingBottom: "20px" }}
           >
             <div
               className="social-btn_spacer"
@@ -180,6 +173,14 @@ export default function DinoGame() {
               />
             </div>
           </div>
+          <div className="horizon">Loading...</div>
+          <div
+            className="horizon"
+            style={{ marginTop: "10px", fontSize: "24px" }}
+          >
+            {Math.round(loadingProgression * 100)}%
+          </div>
+
         </div>
       )}
 
