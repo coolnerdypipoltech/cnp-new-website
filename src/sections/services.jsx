@@ -232,6 +232,7 @@ function Services() {
           showPath={false}
           itemCallbacks={{
             2: { onHover: handleOrbit3Hover, onLeave: handleOrbit3Leave },
+            3: { onHover: () => window.open('https://www.goodreads.com/coolnerdypeople', '_blank') },
             5: { onHover: () => navigate('/game') },
             4: { onHover: () => scrollTo("contacto") }
           }}

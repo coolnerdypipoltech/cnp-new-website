@@ -31,7 +31,7 @@ export default function DinoGame() {
           );
           setFinishLoading(true);
         }, 1000);
-        setupMicrophone();
+        //setupMicrophone();
         checkTimeOfDay();
         if (window.screen.width < 500) {
           sendMessage("GameManager", "isMobile");

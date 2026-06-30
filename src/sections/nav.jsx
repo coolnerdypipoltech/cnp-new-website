@@ -10,7 +10,7 @@ const SOCIAL_ICONS = {
     ),
     label: "LinkedIn",
     sub: "Connect with us",
-    link: "https://www.linkedin.com/",
+    link: "https://mx.linkedin.com/company/coolnerdypeople",
   },
   instagram: {
     icon: (
@@ -30,7 +30,7 @@ const SOCIAL_ICONS = {
     ),
     label: "Instagram",
     sub: "Follow our work",
-    link: "https://www.instagram.com/",
+    link: "https://www.instagram.com/coolnerdypeople",
   },
   spacer: {
     icon: (
