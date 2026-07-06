@@ -58,13 +58,13 @@ function SocialBtn({ s }) {
         className={`social-btn${hovered ? " social-btn--hover" : ""}`}
         href={data.link || s.href}
         target="_blank"
-        style={{ width: "40px", height: "40px", background: !hovered ? "#9747FF" : "#9747FF" }}
+        style={{ width: "30px", height: "30px", background: !hovered ? "#9747FF" : "#9747FF" }}
         rel="noreferrer noopener"
         aria-label={data.label || s.label}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
-        <span className="social-btn__icon" style={{ width: "18px", height: "18px" }}>{data.icon}</span>
+        <span className="social-btn__icon" style={{ width: "14px", height: "14px" }}>{data.icon}</span>
       </a>
 
 
@@ -74,7 +74,7 @@ function SocialBtn({ s }) {
 
 function SocialBar() {
   return (
-    <div className="social-bar" style={{justifyContent: "flex-start", marginLeft: "16px", gap: "16px"}}>
+    <div className="social-bar" style={{justifyContent: "center", marginTop: "5px", gap: "16px"}}>
       {CNP_SOCIAL.map((s) => (
         <SocialBtn key={s.id} s={s} />
       ))}
@@ -89,7 +89,7 @@ const NAV_SECTIONS = [
   { label: 'Collabs', id: 'proyectos', color: "#2892FB" },
   { label: 'The Spark',  id: 'services', color: "#22B656" },
   { label: 'Drops',     id: 'drops', color: "#F35544" },
-  { label: 'Contacto',  id: 'contacto', color: "#D142A4" },
+  { label: 'Contact',  id: 'contacto', color: "#D142A4" },
 ];
 
 function FloatingMenu() {

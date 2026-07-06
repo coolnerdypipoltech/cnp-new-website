@@ -1,5 +1,5 @@
 // ── CONTACTO + SOCIAL + FOOTER ────────────────────────────────────
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { CNP_SOCIAL } from "../data";
 import Particles from "../components/Particles";
 import { useViewport } from "../context/ViewportContext";
@@ -270,29 +270,9 @@ function Contacto() {
       <footer className="section footer" data-screen-label="Footer">
         <div className="merch__marquee" aria-hidden="true">
           {isMobile ? (
-            <>
-            <div style={{ width: "100%" }}>
-                           <div
-           
-          >
-
-          </div>
-              <p
-                style={{
-                  fontSize: "10px",
-                  marginTop: "8px",
-                  marginBottom: "8px",
-                  fontWeight: "500",
-                  textAlign: "center",
-                }}
-              >
-                ✦ TECHNOLOGY SHOULD FEEL HUMAN ✦
-              </p>
-
+            <div className="footer__mobile-marquee">
+              <JSMarquee text={MARQUEE_TEXT} speed={0.45} fontSize="8px" />
             </div>
-
-            </>
-            
           ) : (
             <div className="merch__marquee-track">
               {Array.from({ length: 2 }).map((_, k) => (

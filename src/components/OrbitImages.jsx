@@ -4,7 +4,7 @@
 import { useMemo, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useTransform, animate } from "motion/react";
 import "./OrbitImages.css";
-
+import { useViewport } from "../context/ViewportContext";
 function generateEllipsePath(cx, cy, rx, ry) {
   return `M ${cx - rx} ${cy} A ${rx} ${ry} 0 1 0 ${cx + rx} ${cy} A ${rx} ${ry} 0 1 0 ${cx - rx} ${cy}`;
 }
@@ -73,7 +73,7 @@ function generateWavePath(cx, cy, w, amplitude, waves) {
 
 function HoverImage({ imgA, imgB, alt, text, onHover, onLeave }) {
   const [hovered, setHovered] = useState(false);
-  
+    const { isMobile } = useViewport();
   return (
     <div
       className={`orbit-image-pair${hovered ? " orbit-image-pair--hovered" : ""}`}
@@ -95,7 +95,7 @@ function HoverImage({ imgA, imgB, alt, text, onHover, onLeave }) {
         draggable={false}
         className="orbit-image orbit-image--b"
       />
-      {hovered && (
+      {(hovered ) && (
         <div style={{position: "absolute",
               marginTop: "120px",
               display: "flex",
@@ -125,6 +125,42 @@ function HoverImage({ imgA, imgB, alt, text, onHover, onLeave }) {
             <span
               className="horizon"
               style={{ textAlign: "center", fontSize: "12px", width: text === "Our curated playlist" ? "140px" : "auto",  }}
+            >
+              {text}
+            </span>
+          </span>
+        </div>
+      )}
+
+      {(isMobile ) && (
+        <div style={{position: "absolute",
+              marginTop: "120px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+              width: "100%",}}>
+          <span
+            className="social-btn__tag"
+            style={{
+              position: "relative",
+              background: "#00ABFF",
+              display: "flex",
+              top: "200px",
+              alignSelf: "center",
+              justifyContent: "center",
+              alignItems: "center",
+              
+           
+              borderRadius: "4px",
+              flexDirection: "column",
+              color: "var(--cnp-white)",
+              width: "100%",
+            }}
+          >
+            <span
+              className="horizon"
+              style={{ textAlign: "center", fontSize: "48px", width:  "100%", padding: "20px"  }}
             >
               {text}
             </span>

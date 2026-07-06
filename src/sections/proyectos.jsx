@@ -4,7 +4,6 @@ import React, {
   useEffect,
   useRef,
   useCallback,
-  useReducer,
 } from "react";
 import { gsap } from "gsap";
 import Icon from "../components/icons";
@@ -143,20 +142,43 @@ function BtnPop({ onClick, style, children }) {
 
 
 
-function VideoPlayer({ src, title, onPlayingChange }) {
+function VideoPlayer({ src, title, onPlayingChange, coverSrc, showCover }) {
   const videoRef = useRef(null);
   const [playing, setPlaying] = useState(false);
+  const [coverVisible, setCoverVisible] = useState(showCover);
 
-  const updatePlaying = (val) => {
-    setPlaying(val);
-    onPlayingChange?.(val);
-  };
+  const updatePlaying = useCallback(
+    (val) => {
+      setPlaying(val);
+      onPlayingChange?.(val);
+    },
+    [onPlayingChange],
+  );
   const [hovered, setHovered] = useState(false);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const { isTrueMobile } = useViewport();
+
+  useEffect(() => {
+    setCoverVisible(showCover);
+    updatePlaying(false);
+  }, [showCover, src, updatePlaying]);
+
   const togglePlay = () => {
     const v = videoRef.current;
     if (!v) return;
+
+    if (v.paused) {
+      const playPromise = v.play();
+      setCoverVisible(false);
+      if (playPromise?.catch) {
+        playPromise.catch(() => {
+          setCoverVisible(showCover);
+        });
+      }
+      return;
+    }
+
+    v.pause();
   };
 
   const onMouseMove = (e) => {
@@ -185,9 +207,41 @@ function VideoPlayer({ src, title, onPlayingChange }) {
         
         onPlay={() => updatePlaying(true)}
         onPause={() => updatePlaying(false)}
+        onEnded={() => {
+          updatePlaying(false);
+          setCoverVisible(showCover);
+        }}
       >
         <source src={src} type="video/mp4" />
       </video>
+      {coverVisible && coverSrc && (
+        <button
+          type="button"
+          aria-label={`Reproducir ${title}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            togglePlay();
+          }}
+          style={{
+            position: "absolute",
+            inset: 0,
+            padding: 0,
+            border: "none",
+            background: "transparent",
+            cursor: "pointer",
+          }}
+        >
+          <img
+            src={coverSrc}
+            alt={`${title} cover`}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+            }}
+          />
+        </button>
+      )}
       {hovered && (
         <div
           style={{
@@ -221,6 +275,9 @@ function ProjectModal({ project, onClose }) {
   const [videoPlaying, setVideoPlaying] = useState(false);
   const [videoIndex, setVideoIndex] = useState(0);
   const { isMobile, isTrueMobile } = useViewport();
+  const videoSources =
+    isMobile && project?.videoMobil?.length ? project.videoMobil : project?.video;
+
   const handleClose = useCallback(() => {
     setClosing(true);
     setTimeout(() => onClose(), 320);
@@ -237,6 +294,10 @@ function ProjectModal({ project, onClose }) {
       document.body.style.overflow = "";
     };
   }, [handleClose]);
+
+  useEffect(() => {
+    setVideoIndex(0);
+  }, [project?.id, isMobile]);
 
   if (!project) return null;
 
@@ -269,15 +330,14 @@ function ProjectModal({ project, onClose }) {
         }}
       >
         <div style={{ display: "flex", flexDirection: "row", gap: "12px" }}>
-          {project.video.length > 1 && (
+          {videoSources.length > 1 && (
             <>
               <button
                 className="modal__close modal__close--outside"
                 style={{ background: project.bg, width: "50px" }}
                 onClick={(e) => {
                   setVideoIndex(
-                    (prev) =>
-                      (prev - 1 + project.video.length) % project.video.length,
+                    (prev) => (prev - 1 + videoSources.length) % videoSources.length,
                   );
                 }}
                 aria-label="Cerrar"
@@ -292,7 +352,7 @@ function ProjectModal({ project, onClose }) {
                 className="modal__close modal__close--outside"
                 style={{ background: project.bg, width: "50px" }}
                 onClick={(e) => {
-                  setVideoIndex((prev) => (prev + 1) % project.video.length);
+                  setVideoIndex((prev) => (prev + 1) % videoSources.length);
                 }}
                 aria-label="Cerrar"
               >
@@ -327,9 +387,11 @@ function ProjectModal({ project, onClose }) {
         <div key={project.id} >
         <VideoPlayer
           key={videoIndex}
-          src={project.video[videoIndex]}
+          src={videoSources[videoIndex]}
           title={project.name}
           onPlayingChange={setVideoPlaying}
+          coverSrc={project.cover}
+          showCover={isMobile}
         /></div>
 
         {/* Title overlay — top */}
@@ -341,7 +403,7 @@ function ProjectModal({ project, onClose }) {
           }}
         >
           <span className="eyebrow">
-            {project.tag} — {project.year}
+            {project.year}
           </span>
           <h2 className="horizon modal__title">{project.name}</h2>
           <span className="modal__client">{project.client}</span>
@@ -485,15 +547,16 @@ function Proyectos() {
         textAlign="left"
         style={{
           color: "#000000",
-          fontSize: window.innerWidth < 600 ? "28px" : "60px",
+          fontSize: window.innerWidth < 600 ? "22px" : "60px",
           maxWidth: "1200px",
-          width: window.innerWidth < 600 ? "80%" : "70%",
+          width: window.innerWidth < 600 ? "85%" : "70%",
           position: "absolute",
           left: "50%",
           transform: "translateX(-50%)",
           textAlign: "center",
           zIndex: 0,
           pointerEvents: "none",
+          top: window.innerWidth < 600 ? "22.5vh" : "auto"
         }}
       />
 
@@ -535,7 +598,32 @@ function Proyectos() {
             </button>
           </>
         ) : (
-          <></>
+          <>
+            <button
+              className="proy__arrow proy__arrow--l"
+              onClick={() => {
+                go(-1);
+                audio.volume = 0.2;
+                audio.play();
+              }}
+              aria-label="Anterior"
+              style={{ marginLeft: "20px", borderWidth: "0px" }}
+            >
+              <Icon name="arrow-left" />
+            </button>
+            <button
+              className="proy__arrow proy__arrow--r"
+              onClick={() => {
+                go(1);
+                audio.volume = 0.2;
+                audio.play();
+              }}
+              aria-label="Siguiente"
+              style={{  marginRight: "20px", borderWidth: "0px", width: "48px", height: "48px" }}
+            >
+              <Icon name="arrow-right" style={{}} />
+            </button>
+          </>
         )}
         <div className="proy__stage">
           <div
@@ -592,8 +680,8 @@ function Proyectos() {
                   onClick={() => { setDir(i > index ? 1 : -1); setIndex(i); }}
                   aria-label={`Proyecto ${i + 1}`}
                   style={{
-                    width: i === index ? "24px" : "8px",
-                    height: "8px",
+                    width: i === index ? "24px" : "6px",
+                    height: "6px",
                     borderRadius: "4px",
                     background: "#000000",
                     opacity: i === index ? 1 : 0.3,

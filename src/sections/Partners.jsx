@@ -8,7 +8,6 @@ function Partners() {
   const sponsors = [
     { name: 'Sponsor 1', image: `${process.env.PUBLIC_URL}/assets/partners/Logo_1.png` },
     { name: 'Sponsor 2', image: `${process.env.PUBLIC_URL}/assets/partners/Logo_2.png` },
-    { name: 'Sponsor 3', image: `${process.env.PUBLIC_URL}/assets/partners/Logo_3.png` },
     { name: 'Sponsor 4', image: `${process.env.PUBLIC_URL}/assets/partners/Logo_4.png` },
     { name: 'Sponsor 5', image: `${process.env.PUBLIC_URL}/assets/partners/Logo_5.png` },
     { name: 'Sponsor 6', image: `${process.env.PUBLIC_URL}/assets/partners/Logo_6.png` },
@@ -17,7 +16,6 @@ function Partners() {
     { name: 'Sponsor 9', image: `${process.env.PUBLIC_URL}/assets/partners/Logo_9.png` },
     { name: 'Sponsor 10', image: `${process.env.PUBLIC_URL}/assets/partners/Logo_10.png` },
         { name: 'Sponsor 11', image: `${process.env.PUBLIC_URL}/assets/partners/Logo_11.png` },
-    { name: 'Sponsor 12', image: `${process.env.PUBLIC_URL}/assets/partners/Logo_12.png` },
     { name: 'Sponsor 13', image: `${process.env.PUBLIC_URL}/assets/partners/Logo_13.png` },
     { name: 'Sponsor 14', image: `${process.env.PUBLIC_URL}/assets/partners/Logo_14.png` },
     { name: 'Sponsor 15', image: `${process.env.PUBLIC_URL}/assets/partners/Logo_15.png` },

@@ -1,6 +1,6 @@
 .patrocinadores-section {
   width: 100%;
-  padding: 10px 10px;
+  padding: 10px 0px;
   background: #1E1E1E;
   text-align: center;
   display: flex;
@@ -41,7 +41,7 @@
   overflow: hidden;
   background: rgba(255, 255, 255, 0);
   border-radius: 8px;
-  padding: 10px 0;
+  padding: 10px ;
   position: relative;
 }
 

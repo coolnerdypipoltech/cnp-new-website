@@ -382,7 +382,9 @@ a { color: inherit; cursor:none; }
 
 @media  (max-width: 800px) {
   .proy__art img  {
-    height: 50vh;
+    height: 35vh;
+    margin-bottom: 6vh;
+    margin-top: 6vh;
     
   }
 
@@ -402,7 +404,8 @@ a { color: inherit; cursor:none; }
 
 @media  (max-width: 800px) {
   .proy__art__logo {
-    margin-top: 20px;
+    position: relative;
+    top: -20px;
     
   }
 
@@ -706,6 +709,7 @@ a { color: inherit; cursor:none; }
 @media  (max-width: 800px) {
   .modal__bottom-btn {
     padding-left: 12px;
+    text-align: center;
   }
 }
 
@@ -1009,6 +1013,33 @@ a { color: inherit; cursor:none; }
 }
 @media (prefers-reduced-motion: reduce) { .merch__marquee-track { animation: none; } }
 
+.footer__mobile-marquee {
+  width: 100%;
+  padding: 8px 0;
+}
+
+.js-marquee__outer {
+  width: 100%;
+  overflow: hidden;
+}
+
+.js-marquee__track {
+  display: inline-flex;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.js-marquee__item {
+  display: inline-block;
+  padding-right: 24px;
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #cfeed6;
+}
+
 /* ============================================================
    CONTACTO + FOOTER
    ============================================================ */
@@ -1087,14 +1118,17 @@ a { color: inherit; cursor:none; }
 
 .ball-title{
   font-family: var(--font-display);
-  font-size: clamp(14px, 5vw, 56px);
+  font-size: clamp(14px, 5vw, 48px);
   position: relative;
   padding-bottom: 0px;
+  text-align: center;
+  margin: 10px;
+  margin-top: 56px;
 }
 
 
 .ball-img{
-  width: 450px;
+  width: 45vh;
   pointer-events: none;
   padding-top: 40px;
   bottom: 0px;
@@ -1103,12 +1137,7 @@ a { color: inherit; cursor:none; }
   margin: auto;
 }
 
-@media  (max-height: 800px) {
-  .ball-img{
-    width: 30vh !important;
-    
-  }
-}
+
 
 .ball-close{
   background: #000000;
@@ -1148,17 +1177,21 @@ a { color: inherit; cursor:none; }
 .btn-signal:active { transform: translateY(1px) scale(0.99); }
 
 
+@media  (max-width: 760px) {
+    .ball-img {
+    width: 300px;
+    top: 200px;
+    
+  }
+}
+
 @media  (max-width: 800px) {
   .btn-signal{
     padding: 12px 24px;
     font-size: 14px;
   }
 
-  .ball-img {
-    width: 300px;
-    top: 200px;
-    
-  }
+
 
   .merch__marquee-track{
     font-size: 10px;
@@ -1166,6 +1199,7 @@ a { color: inherit; cursor:none; }
 
   .ball-title{
     bottom: -10px;
+    
   }
 
   .ball-close{
@@ -1179,7 +1213,7 @@ a { color: inherit; cursor:none; }
   display: flex;
   justify-content: center;
   gap: 24px;
-  margin-top: 20px;
+  margin-top: 0px;
 }
 .social-btn {
   width: 56px; height: 56px;
@@ -1263,6 +1297,7 @@ flex-direction: column;
   .reveal { transform: none; }
   .reveal.in { animation: none; }
 }
+
 
 
 /* ============================================================

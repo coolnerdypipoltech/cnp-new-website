@@ -49,6 +49,14 @@ const DROP_ITEMS = [
     label: "Studio Tote",
   },
 
+    {
+    id: "cap1",
+    kind: "obj",
+    img: `${process.env.PUBLIC_URL}/assets/merch/merch5.png`,
+    pill: "Studio Cap",
+    label: "Studio Cap",
+  },
+
 
 ];
 

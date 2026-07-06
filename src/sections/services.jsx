@@ -192,7 +192,7 @@ function Services() {
               animation: "ballFadeIn 0.4s ease forwards",
             }}
           >
-            <p className="ball-title">La bola dice</p>
+            <p className="ball-title">La bola Cool Nerdy People dice:</p>
             <div className="breathing-ani" style={{width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}} >
               <img
                 src={ballImg}

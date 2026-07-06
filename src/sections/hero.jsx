@@ -63,7 +63,7 @@ function Hero() {
       <video
         ref={videoRef}
         className="hero__bg-video"
-        src={isMobile ? `${process.env.PUBLIC_URL}/assets/videos/VIDEO_mobil.mp4` : `${process.env.PUBLIC_URL}/assets/videos/VIDEO_WEB.mp4`}
+        src={isMobile ? `${process.env.PUBLIC_URL}/assets/videos/VIDEO_movil.mp4` : `${process.env.PUBLIC_URL}/assets/videos/VIDEO_WEB.mp4`}
         autoPlay
         loop
         muted
