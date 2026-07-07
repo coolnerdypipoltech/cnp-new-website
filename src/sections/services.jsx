@@ -12,12 +12,12 @@ const ORBIT_IMAGES = [
   {
     a: `${PU}/assets/orbit/orbit1A.png`,
     b: `${PU}/assets/orbit/orbit1B.png`,
-    text: "Our curated playlist",
+    text: "curated playlist",
   },
   {
     a: `${PU}/assets/orbit/orbit2A.png`,
     b: `${PU}/assets/orbit/orbit2B.png`,
-    text: "Come to the creative-nerd side, we have cookies",
+    text: "Gluten free nerds",
   },
   {
     a: `${PU}/assets/orbit/orbit3A.png`,
@@ -27,7 +27,7 @@ const ORBIT_IMAGES = [
   {
     a: `${PU}/assets/orbit/orbit4A.png`,
     b: `${PU}/assets/orbit/orbit4B.png`,
-    text: "Infinite recommended TBR",
+    text: "Infinite TBR",
   },
   {
     a: `${PU}/assets/orbit/orbit5A.png`,
@@ -250,9 +250,9 @@ function Services() {
               </h2>
               {isMobile && (
                 <p className="services__sub reveal">
-                  Desbloquea tu inspiración:
+                  Feed your brain:
                   <br />
-                  Elige un elemento
+                  Tap an object
                 </p>
               )}
             </div>) : null

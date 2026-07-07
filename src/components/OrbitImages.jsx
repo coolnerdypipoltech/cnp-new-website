@@ -160,7 +160,7 @@ function HoverImage({ imgA, imgB, alt, text, onHover, onLeave }) {
           >
             <span
               className="horizon"
-              style={{ textAlign: "center", fontSize: "48px", width:  "100%", padding: "20px"  }}
+              style={{ textAlign: "center", fontSize: "38px", width:  "100%", padding: "20px"  }}
             >
               {text}
             </span>

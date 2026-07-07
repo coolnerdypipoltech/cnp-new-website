@@ -140,6 +140,36 @@ function BtnPop({ onClick, style, children }) {
   );
 }
 
+function SideRibbon({ side }) {
+  const repeatedWords = Array.from({ length: 10 }, (_, index) => index);
+
+  return (
+    <div
+      className={`proy__ribbon proy__ribbon--${side}`}
+      aria-hidden="true"
+    >
+      <div
+        className={`proy__ribbon-track${side === "right" ? " proy__ribbon-track--reverse" : ""}`}
+      >
+        <div className="proy__ribbon-group">
+          {repeatedWords.map((index) => (
+            <span key={`${side}-a-${index}`} className="proy__ribbon-word">
+              CLIENT COLLABS
+            </span>
+          ))}
+        </div>
+        <div className="proy__ribbon-group">
+          {repeatedWords.map((index) => (
+            <span key={`${side}-b-${index}`} className="proy__ribbon-word">
+              CLIENT COLLABS
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 
 
 function VideoPlayer({ src, title, onPlayingChange, coverSrc, showCover }) {
@@ -333,28 +363,27 @@ function ProjectModal({ project, onClose }) {
           {videoSources.length > 1 && (
             <>
               <button
-                className="modal__close modal__close--outside"
-                style={{ background: project.bg, width: "50px" }}
+                className="player__buttons "
+                style={{ background: project.bg, width: "50px", left: "3vw" }}
                 onClick={(e) => {
                   setVideoIndex(
                     (prev) => (prev - 1 + videoSources.length) % videoSources.length,
                   );
                 }}
-                aria-label="Cerrar"
               >
                 <img
                   src={`${process.env.PUBLIC_URL}/assets/icons/arrow_back.svg`}
                   alt="Anterior"
-                  style={{ width: "32px", height: "32px" }}
+                  style={{ width: "32px", height: "32px", }}
                 />
               </button>
               <button
-                className="modal__close modal__close--outside"
-                style={{ background: project.bg, width: "50px" }}
+                className="player__buttons"
+                style={{ background: project.bg, width: "50px", right: "3vw"  }}
                 onClick={(e) => {
                   setVideoIndex((prev) => (prev + 1) % videoSources.length);
                 }}
-                aria-label="Cerrar"
+
               >
                 <img
                   src={`${process.env.PUBLIC_URL}/assets/icons/arrow_back.svg`}
@@ -528,6 +557,9 @@ function Proyectos() {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
+      <SideRibbon side="left" />
+      <SideRibbon side="right" />
+
       {/* background watermark headline */}
 
       <SplitText
@@ -547,27 +579,21 @@ function Proyectos() {
         textAlign="left"
         style={{
           color: "#000000",
-          fontSize: window.innerWidth < 600 ? "22px" : "60px",
+          fontSize: isMobile ? "22px" : "60px",
           maxWidth: "1200px",
-          width: window.innerWidth < 600 ? "85%" : "70%",
+          width: isMobile ? "85%" : "70%",
           position: "absolute",
           left: "50%",
           transform: "translateX(-50%)",
           textAlign: "center",
           zIndex: 0,
           pointerEvents: "none",
-          top: window.innerWidth < 600 ? "22.5vh" : "auto"
+          top: isMobile ? "19vh" : "auto"
         }}
       />
 
       <div className="wrap proy__inner">
-        <div className="proy__topbar">
-          <span className="eyebrow">Collabs</span>
-          <span className="eyebrow ">
-            {String(index + 1).padStart(2, "0")} /{" "}
-            {String(projects.length).padStart(2, "0")}
-          </span>
-        </div>
+        
 
 
         {!isMobile ? (
@@ -580,7 +606,7 @@ function Proyectos() {
                 audio.play();
               }}
               aria-label="Anterior"
-              style={{ borderColor: "#000000", color: "#000000" }}
+              style={{ borderColor: "#000000", color: "#000000", position: "absolute", left: "55px" }}
             >
               <Icon name="arrow-left" />
             </button>
@@ -592,7 +618,7 @@ function Proyectos() {
                 audio.play();
               }}
               aria-label="Siguiente"
-              style={{ borderColor: "#000000", color: "#000000" }}
+              style={{ borderColor: "#000000", color: "#000000", position: "absolute", right: "55px" }}
             >
               <Icon name="arrow-right" />
             </button>
@@ -645,11 +671,11 @@ function Proyectos() {
             <div
               style={{
                 position: "relative",
-                top: "-12px",
+                top: isMobile ? "0px" : "-12px",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                gap: "16px",
+                gap: isMobile ? "32px" : "16px",
               }}
             >
               <span className="proy__client">{active.client}</span>
