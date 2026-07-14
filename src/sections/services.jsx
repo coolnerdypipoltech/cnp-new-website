@@ -4,6 +4,7 @@ import SplashCursor from "../components/SplashCursor";
 import OrbitImages from "../components/OrbitImages";
 import { useViewport } from "../context/ViewportContext";
 import { useNavigate } from 'react-router-dom'
+import useBodyScrollLock from "../hooks/useBodyScrollLock";
 
 
 const PU = process.env.PUBLIC_URL;
@@ -60,35 +61,36 @@ const BallResponses = [
   `${PU}/assets/orbit/8ball/bola-ocho_16.png`,
   `${PU}/assets/orbit/8ball/bola-ocho_17.png`,
   `${PU}/assets/orbit/8ball/bola-ocho_18.png`,
-  `${PU}/assets/orbit/8ball/bola-ocho_19.png`,
 ];
 
 function Services() {
   const navigate = useNavigate()
-  const [ballImg, setBallImg] = useState(null);
+  const [ballStage, setBallStage] = useState(null);
+  const [selectedBallImg, setSelectedBallImg] = useState(null);
     const [visible, setVisible] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const { isMobile } = useViewport();
   const { isTrueMobile } = useViewport();
+  useBodyScrollLock(Boolean(ballStage));
   const sectionRef = useRef(null);
   const orbitSectionRef = useRef(null);
-    const [visibleOrbit, setVisibleOrbit] = useState(false);
 
   const handleOrbit3Hover = useCallback(() => {
     const random =
-      BallResponses[Math.floor(Math.random() * (BallResponses.length - 1))];
+      BallResponses[Math.floor(Math.random() * BallResponses.length)];
 
       console.log("Selected 8ball response:", random); // Debug log
-    setBallImg(random);
+    setSelectedBallImg(random);
+    setBallStage("prompt");
   }, []);
 
-    useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => setVisibleOrbit(entry.isIntersecting),
-      { threshold: 0.1 },
-    );
-    if (orbitSectionRef.current) observer.observe(orbitSectionRef.current);
-    return () => observer.disconnect();
+  const handleDareClick = useCallback(() => {
+    setBallStage("result");
+  }, []);
+
+  const closeBallModal = useCallback(() => {
+    setBallStage(null);
+    setSelectedBallImg(null);
   }, []);
 
   const handleOrbit3Leave = useCallback(() => {
@@ -174,12 +176,12 @@ function Services() {
       {visible && !isTrueMobile && <SplashCursor />}
 
       {/* 8-ball overlay */}
-      {ballImg && (
+      {ballStage && (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", position: "fixed", top: 0, left: 0, width: "100vw", height: "100dvh", backgroundColor: "rgba(0, 0, 0, 0.8)", zIndex: 1000 }}>
           <button
             className="modal__close modal__close--outside ball-close"
 
-            onClick={() => setBallImg(null)}
+            onClick={closeBallModal}
             aria-label="Cerrar"
           >
             <p style={{ color: "#ffffff" }}>Cerrar</p>
@@ -192,17 +194,50 @@ function Services() {
               animation: "ballFadeIn 0.4s ease forwards",
             }}
           >
-            <p className="ball-title">La bola Cool Nerdy People dice:</p>
-            <div className="breathing-ani" style={{width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}} >
-              <img
-                src={ballImg}
-                alt="8ball response"
-                draggable={false}
-                
-                className="ball-img"
-              />
-
-            </div>
+            {ballStage === "prompt" ? (
+              <>
+                <p className="ball-title">ONE QUESTION ONLY</p>
+                <div className="breathing-ani" style={{ width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", flex: 1 }}>
+                  <img
+                    src={`${PU}/assets/bola8_blank.png`}
+                    alt="8ball"
+                    draggable={false}
+                    className="ball-img2"
+                    style={{ paddingTop: 0 }}
+                  />
+                  
+                </div>
+                <button
+                    className="btn-signal dare-btn"
+                    onClick={handleDareClick}
+                    aria-label="DARE"
+                    
+                  >
+                    DARE!
+                  </button>
+              </>
+            ) : (
+              <>
+                <p className="ball-title">La bola Cool Nerdy People dice:</p>
+                <div className="breathing-ani" style={{ width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", flex: 1 }}>
+                  <img
+                    src={selectedBallImg}
+                    alt="8ball response"
+                    draggable={false}
+                    className="ball-img"
+                  />
+                </div>
+                                <button
+                    className="btn-signal dare-btn"
+                    onClick={handleDareClick}
+                    style={{ scale: "0" }}
+                    aria-label="DARE"
+                    
+                  >
+                    DARE!
+                  </button>
+              </>
+            )}
           </div>
         </div>
       )}
@@ -218,7 +253,7 @@ function Services() {
         }
       `}</style>
 
-      {!ballImg && (
+      {!ballStage && (
         <div className="services__stage" ref={orbitSectionRef}>
         <OrbitImages
           images={ORBIT_IMAGES}
@@ -238,7 +273,7 @@ function Services() {
           }}
           centerContent={
 
-            !ballImg ? (<div className="services__center">
+            !ballStage ? (<div className="services__center">
               <h2 className="horizon services__head reveal">
                 Get
                 <br />

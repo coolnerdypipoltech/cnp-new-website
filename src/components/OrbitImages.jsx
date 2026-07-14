@@ -116,7 +116,7 @@ function HoverImage({ imgA, imgB, alt, text, onHover, onLeave }) {
               padding: "4px 8px",
               paddingTop: "6px",
               marginLeft: "2px",
-              borderRadius: "4px",
+              borderRadius: "16px",
               flexDirection: "column",
               color: "var(--cnp-white)",
               width: "auto",
@@ -152,7 +152,7 @@ function HoverImage({ imgA, imgB, alt, text, onHover, onLeave }) {
               alignItems: "center",
               
            
-              borderRadius: "4px",
+              borderRadius: "16px",
               flexDirection: "column",
               color: "var(--cnp-white)",
               width: "100%",

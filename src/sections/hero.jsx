@@ -1,55 +1,165 @@
 // ── HERO ──────────────────────────────────────────────────────────
-import React, { useRef, useState } from "react";
-import SplitText from "../components/SplitText";
+import React, { useEffect, useRef, useState } from "react";
+import HeroWordHeadline from "../components/HeroWordHeadline";
 import { useViewport } from "../context/ViewportContext";
-function HeroButton({ kind, img, label, sub, onClick }) {
-  const [hover, setHover] = React.useState(false);
 
-  const isPager = kind === "pager";
-  return (
-    <button
-      className={`hero-btn hero-btn--${kind}`}
-      onClick={onClick}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      aria-label={label}
-    >
-      <span className="hero-btn__art">
-        <img src={img} alt={label} draggable="false" />
-      </span>
-      <span
-        className="hero-btn__tag"
-        style={{
-          background: isPager ? "#00BF63" : "#00ABFF",
-          color: "var(--cnp-white)",
-        }}
-      >
-        <span className="horizon">{label}</span>
-        <em>{sub}</em>
-      </span>
-    </button>
-  );
-}
+const HERO_WORDS = [
+  "Coolture Creative Company",
+  "Awakening human potential through creativity, culture & tech",
+];
+
+const WORD_CHANGE_SCROLL_THRESHOLD = 85;
 
 function Hero() {
+  const heroRef = useRef(null);
   const videoRef = useRef(null);
-  const [muted, setMuted] = useState(true);
+  const lastTouchYRef = useRef(null);
+  const wheelDeltaAccumulatorRef = useRef(0);
+  const touchDeltaAccumulatorRef = useRef(0);
+  const isTransitioningRef = useRef(false);
+  const [activeWordIndex, setActiveWordIndex] = useState(0);
+  const [scrollDirection, setScrollDirection] = useState(1);
   const { isMobile } = useViewport();
-  const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-      setMuted(videoRef.current.muted);
+  const isFirstWord = activeWordIndex <= 0;
+  const isLastWord = activeWordIndex >= HERO_WORDS.length - 1;
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
+
+    const isHeroActive = () => {
+      const rect = hero.getBoundingClientRect();
+      return rect.top <= 0 && rect.bottom >= window.innerHeight;
+    };
+
+    const canChangeWordInDirection = (deltaY) => {
+      if (deltaY > 0) {
+        return !isLastWord;
+      }
+
+      if (deltaY < 0) {
+        return !isFirstWord;
+      }
+
+      return false;
+    };
+
+    const tryChangeWord = (deltaY, event) => {
+      if (deltaY === 0 || isTransitioningRef.current || !isHeroActive()) {
+        return;
+      }
+
+      if (deltaY > 0 && isLastWord) {
+        return;
+      }
+
+      if (deltaY < 0 && isFirstWord) {
+        return;
+      }
+
+      event.preventDefault();
+      isTransitioningRef.current = true;
+
+      setScrollDirection(deltaY > 0 ? 1 : -1);
+      setActiveWordIndex((prev) => {
+        if (deltaY > 0) {
+          return Math.min(prev + 1, HERO_WORDS.length - 1);
+        }
+
+        return Math.max(prev - 1, 0);
+      });
+
+      window.setTimeout(() => {
+        isTransitioningRef.current = false;
+      }, 520);
+    };
+
+    const accumulateAndTryChange = (rawDeltaY, event, source) => {
+      const accumulatorRef = source === "wheel" ? wheelDeltaAccumulatorRef : touchDeltaAccumulatorRef;
+
+      if (!isHeroActive()) {
+        accumulatorRef.current = 0;
+        return;
+      }
+
+      if (!canChangeWordInDirection(rawDeltaY)) {
+        accumulatorRef.current = 0;
+        return;
+      }
+
+      event.preventDefault();
+
+      const currentDirection = Math.sign(rawDeltaY);
+      const accumulatedDirection = Math.sign(accumulatorRef.current);
+      if (currentDirection !== 0 && accumulatedDirection !== 0 && currentDirection !== accumulatedDirection) {
+        accumulatorRef.current = 0;
+      }
+
+      accumulatorRef.current += rawDeltaY;
+
+      if (Math.abs(accumulatorRef.current) < WORD_CHANGE_SCROLL_THRESHOLD) {
+        return;
+      }
+
+      const effectiveDelta = accumulatorRef.current;
+      accumulatorRef.current = 0;
+      tryChangeWord(effectiveDelta, event);
+    };
+
+    const onWheel = (event) => {
+      accumulateAndTryChange(event.deltaY, event, "wheel");
+    };
+
+    const onTouchStart = (event) => {
+      lastTouchYRef.current = event.touches[0]?.clientY ?? null;
+      touchDeltaAccumulatorRef.current = 0;
+    };
+
+    const onTouchMove = (event) => {
+      const currentY = event.touches[0]?.clientY ?? 0;
+      const lastTouchY = lastTouchYRef.current;
+      if (lastTouchY == null) {
+        lastTouchYRef.current = currentY;
+        return;
+      }
+
+      const deltaY = lastTouchY - currentY;
+      lastTouchYRef.current = currentY;
+      accumulateAndTryChange(deltaY, event, "touch");
+    };
+
+    const onTouchEnd = () => {
+      lastTouchYRef.current = null;
+      touchDeltaAccumulatorRef.current = 0;
+    };
+
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
+
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
+    };
+  }, [isFirstWord, isLastWord]);
+
+  useEffect(() => {
+    if (activeWordIndex > 0) {
+      videoRef.current?.play();
     }
-  };
-
-
+  }, [activeWordIndex]);
+  
   return (
     <section
+      ref={heroRef}
       className="section hero"
       id="top"
       style={{
         position: "relative",
-        minHeight: "100vh",
+        height: "100vh",
         width: "100%",
         display: "flex",
         flexDirection: "column",
@@ -64,55 +174,24 @@ function Hero() {
         ref={videoRef}
         className="hero__bg-video"
         src={isMobile ? `${process.env.PUBLIC_URL}/assets/videos/VIDEO_movil.mp4` : `${process.env.PUBLIC_URL}/assets/videos/VIDEO_WEB.mp4`}
-        autoPlay
+        
         loop
         muted
         playsInline
       />
 
-      {/* Mute indicator 
-      <div className={`hero__mute-badge${muted ? '' : ' hero__mute-badge--on'}`}>
-        {muted ? '🔇' : '🔊'}
-      </div>
-      */}
       <div className="hero__scrim" />
 
       <div className="hero__content">
-        <SplitText
-          tag="h1"
-          text=" 
-            In a world of infinite
-              generation, taste becomes power."
-          className="hero__head horizon reveal"
-          splitType="words"
-          delay={120}
-          initialDelay={0}
-          duration={2.5}
-          ease="power3.out"
-          from={{ opacity: 0, y: 30 }}
-          to={{ opacity: 1, y: 0 }}
-          threshold={0.1}
-          rootMargin="-60px"
-          textAlign="left"
-          style={{ color: "#ffffff", maxWidth: "1000px", minWidth: "300px" }}
+        <HeroWordHeadline
+          text={HERO_WORDS[activeWordIndex]}
+          activeWordIndex={activeWordIndex}
+          direction={scrollDirection}
         />
       </div>
 
       <div className="hero__buttons">
-        {/* <HeroButton
-          kind="pager"
-          img={`${process.env.PUBLIC_URL}/assets/btn-contacto.png`}
-          label="Contacto"
-          sub="Send us a message"
-          onClick={() => scrollTo("contacto")}
-        />
-        <HeroButton
-          kind="pet"
-          img={`${process.env.PUBLIC_URL}/assets/tamagochi.png`}
-          label="Game"
-          sub="Play the game"
-          onClick={() => {}}
-        />*/}
+
       </div>
     </section>
   );

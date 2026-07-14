@@ -64,6 +64,7 @@ function Partners() {
         onMouseEnter={() => { hoveredRef.current = true; }}
         onMouseLeave={() => { hoveredRef.current = false; }}
       >
+        <p className='text-partners'>Our Clients</p>
         <div className="sponsors-scroll" ref={scrollRef}>
           {[...sponsors, ...sponsors].map((sponsor, index) => (
             <div key={index} className="sponsor-item">

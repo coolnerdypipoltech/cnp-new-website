@@ -86,10 +86,13 @@ function SocialBar() {
 
 const NAV_SECTIONS = [
   { label: 'Home',    id: 'top', color: "#E2FF0D" },
+  { label: 'About',  id: 'about', color: "#D1B742" },
   { label: 'Collabs', id: 'proyectos', color: "#2892FB" },
   { label: 'The Spark',  id: 'services', color: "#22B656" },
   { label: 'Drops',     id: 'drops', color: "#F35544" },
   { label: 'Contact',  id: 'contacto', color: "#D142A4" },
+  
+
 ];
 
 function FloatingMenu() {
@@ -171,8 +174,13 @@ function Nav() {
       lastY.current = y;
 
       const section = document.getElementById('services');
+      const section2 = document.getElementById('about');
       if (section) {
         const rect = section.getBoundingClientRect();
+        setInServices(rect.top <= 80 && rect.bottom > 80);
+      }
+      if (section2) {
+        const rect = section2.getBoundingClientRect();
         setInServices(rect.top <= 80 && rect.bottom > 80);
       }
     };

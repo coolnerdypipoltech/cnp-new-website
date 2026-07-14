@@ -1022,11 +1022,8 @@ function SplashCursor({
       <canvas
         ref={canvasRef}
         id="fluid"
-        style={{
-          width: '100vw',
-          height: '100vh',
-          display: 'block'
-        }}
+        className="fluid-canvas"
+        
       />
     </div>
   );

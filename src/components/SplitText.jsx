@@ -20,6 +20,7 @@ const SplitText = ({
   rootMargin = '-100px',
   textAlign = 'center',
   tag = 'p',
+  preserveLineBreaks = false,
   style: styleProp = {},
   onLetterAnimationComplete
 }) => {
@@ -129,7 +130,7 @@ const SplitText = ({
     overflow: 'hidden',
     width: "70%",
     display: 'inline-block',
-    whiteSpace: 'normal',
+    whiteSpace: preserveLineBreaks ? 'pre-line' : 'normal',
     wordWrap: 'break-word',
     willChange: 'transform, opacity',
     ...styleProp

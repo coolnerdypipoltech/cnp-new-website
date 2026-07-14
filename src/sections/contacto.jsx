@@ -248,7 +248,7 @@ function Contacto() {
               required
             />
             {error && <p className="contacto__error">{error}</p>}
-            <button className="btn-signal" type="submit" disabled={loading}>
+            <button className="btn-signal" type="submit" disabled={loading} style={{position: "initial"}}>
               {sent
                 ? "Signal received ✦"
                 : loading

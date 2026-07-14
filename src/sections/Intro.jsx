@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import './Intro.css';
 
 import { useViewport } from "../context/ViewportContext";
@@ -8,8 +8,14 @@ function Intro({ onDone }) {
   const { isMobile } = useViewport();
   const handleEnded = () => {
     setFading(true);
-    setTimeout(() => onDone(), 700);
+    setTimeout(() => onDone(), 100);
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      handleEnded();
+      }, 2000);
+  }, [] )
 
   return (
     <div className={`intro${fading ? ' intro--fade' : ''}`}>

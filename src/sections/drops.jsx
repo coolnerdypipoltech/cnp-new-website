@@ -43,7 +43,8 @@ const DROP_ITEMS = [
 
   {
     id: "Tote1",
-    kind: "obj",
+    kind: "video",
+    src: `${process.env.PUBLIC_URL}/assets/merch/merch1.mp4`,
     img: `${process.env.PUBLIC_URL}/assets/merch/merch1.png`,
     pill: "Studio Tote",
     label: "Studio Tote",
@@ -51,11 +52,24 @@ const DROP_ITEMS = [
 
     {
     id: "cap1",
-    kind: "obj",
-    img: `${process.env.PUBLIC_URL}/assets/merch/merch5.png`,
+    kind: "video",
+    img: `${process.env.PUBLIC_URL}/assets/merch/merch5_thumbs.png`,
+    src: `${process.env.PUBLIC_URL}/assets/merch/merch5.mp4`,
     pill: "Studio Cap",
     label: "Studio Cap",
   },
+
+  
+  {
+    id: "key1",
+    kind: "video",
+    img: `${process.env.PUBLIC_URL}/assets/merch/merch6_thumbs.png`,
+    src: `${process.env.PUBLIC_URL}/assets/merch/merch6.mp4`,
+    pill: "Studio Key",
+    label: "Studio Key",
+  },
+  
+  
 
 
 ];
@@ -97,11 +111,11 @@ function Drops() {
           <>
 
             <h2 className="horizon drops__head reveal">
-              Human First.
+              Human First
               <br />
-              <span className="drops__acid">Tech as Tool.</span>
+              <span className="drops__acid">Tech as Tool</span>
               <br />
-              Culture as Signal.
+              Culture as Signal
 
                
             </h2>
@@ -146,7 +160,7 @@ function Drops() {
                         }}
                       />
                     ) : (
-                      <img src={it.img} alt={it.label} draggable="false" />
+                      <img src={it.src} alt={it.label} draggable="false" />
                     )}
                     <span
                       className="drops__pill horizon"
@@ -166,21 +180,21 @@ function Drops() {
           {!isMobile && (
             <>
               <h2 className="horizon drops__head reveal">
-                Human First.
+                Human First
                 <br />
-                <span className="drops__acid">Tech as Tool.</span>
+                <span className="drops__acid">Tech as Tool</span>
                 <br />
                 Culture as
                 <br />
-                Signal.
+                Signal
               </h2>
               
             </>
           )}
           <p className="drops__sub">
-                This isn't merch.
+                Ready-to-Wear 
                 <br />
-                It's an extension of the brand.
+                2027 Collection - Coming Soon
               </p>
           <div className="drops__objects">
             {items.slice(0).map((o, i) => {

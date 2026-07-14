@@ -6,10 +6,11 @@ import React, {
   useCallback,
 } from "react";
 import { gsap } from "gsap";
-import Icon from "../components/icons";
+
 import { CNP_PROJECTS } from "../data";
 import { useViewport } from "../context/ViewportContext";
 import SplitText from "../components/SplitText";
+import ProjectModal from "../components/ProjectModal";
 function BtnPop({ onClick, style, children }) {
   const btnRef = useRef(null);
   const circleRef = useRef(null);
@@ -172,358 +173,14 @@ function SideRibbon({ side }) {
 
 
 
-function VideoPlayer({ src, title, onPlayingChange, coverSrc, showCover }) {
-  const videoRef = useRef(null);
-  const [playing, setPlaying] = useState(false);
-  const [coverVisible, setCoverVisible] = useState(showCover);
-
-  const updatePlaying = useCallback(
-    (val) => {
-      setPlaying(val);
-      onPlayingChange?.(val);
-    },
-    [onPlayingChange],
-  );
-  const [hovered, setHovered] = useState(false);
-  const [cursor, setCursor] = useState({ x: 0, y: 0 });
-  const { isTrueMobile } = useViewport();
-
-  useEffect(() => {
-    setCoverVisible(showCover);
-    updatePlaying(false);
-  }, [showCover, src, updatePlaying]);
-
-  const togglePlay = () => {
-    const v = videoRef.current;
-    if (!v) return;
-
-    if (v.paused) {
-      const playPromise = v.play();
-      setCoverVisible(false);
-      if (playPromise?.catch) {
-        playPromise.catch(() => {
-          setCoverVisible(showCover);
-        });
-      }
-      return;
-    }
-
-    v.pause();
-  };
-
-  const onMouseMove = (e) => {
-    if(isTrueMobile) {
-      return;
-    }
-    const rect = e.currentTarget.getBoundingClientRect();
-    setCursor({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
-
-  return (
-    <div
-      className="modal__bg-video"
-      style={{ position: "relative", cursor: "none" }}
-      onClick={togglePlay}
-      onMouseMove={onMouseMove}
-      onMouseEnter={() => {if(!isTrueMobile) setHovered(true)}}
-      onMouseLeave={() => {if(!isTrueMobile) setHovered(false)}}
-    >
-      <video
-        ref={videoRef}
-        style={{ height: "82vh", objectFit: "contain" }}
-        width="100%"
-        height="100%"
-        controls={true}
-        
-        onPlay={() => updatePlaying(true)}
-        onPause={() => updatePlaying(false)}
-        onEnded={() => {
-          updatePlaying(false);
-          setCoverVisible(showCover);
-        }}
-      >
-        <source src={src} type="video/mp4" />
-      </video>
-      {coverVisible && coverSrc && (
-        <button
-          type="button"
-          aria-label={`Reproducir ${title}`}
-          onClick={(e) => {
-            e.stopPropagation();
-            togglePlay();
-          }}
-          style={{
-            position: "absolute",
-            inset: 0,
-            padding: 0,
-            border: "none",
-            background: "transparent",
-            cursor: "pointer",
-          }}
-        >
-          <img
-            src={coverSrc}
-            alt={`${title} cover`}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "contain",
-            }}
-          />
-        </button>
-      )}
-      {hovered && (
-        <div
-          style={{
-            position: "absolute",
-            left: cursor.x,
-            top: cursor.y + 20,
-            transform: "translate(-50%, -50%)",
-            pointerEvents: "none",
-            color: "#fff",
-            fontFamily: "var(--font-body)",
-            fontWeight: 700,
-            fontSize: "13px",
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
-            padding: "10px 18px",
-
-            whiteSpace: "nowrap",
-            transition: "opacity 120ms",
-          }}
-        >
-          {playing ? "Pausa" : "Play"}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function ProjectModal({ project, onClose }) {
-  const [activePanel, setActivePanel] = useState(null);
-  const [closing, setClosing] = useState(false);
-  const [videoPlaying, setVideoPlaying] = useState(false);
-  const [videoIndex, setVideoIndex] = useState(0);
-  const { isMobile, isTrueMobile } = useViewport();
-  const videoSources =
-    isMobile && project?.videoMobil?.length ? project.videoMobil : project?.video;
-
-  const handleClose = useCallback(() => {
-    setClosing(true);
-    setTimeout(() => onClose(), 320);
-  }, [onClose]);
-
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === "Escape") handleClose();
-    };
-    document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [handleClose]);
-
-  useEffect(() => {
-    setVideoIndex(0);
-  }, [project?.id, isMobile]);
-
-  if (!project) return null;
-
-  const togglePanel = (panel) =>  {
-    console.log(panel, activePanel);
-    if(activePanel === panel) {
-      setActivePanel(null);
-      
-    } else {
-      setActivePanel(panel);
-    }
-  };
-
-  return (
-    <div
-      className={`modal-backdrop${closing ? " modal-backdrop--closing" : ""}`}
-      onMouseDown={(e) => {
-        if (e.target === e.currentTarget) handleClose();
-      }}
-    >
-      {/* Close button — floating outside modal, top right */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          position: "absolute",
-          width: "90%",
-          top: "calc(5dvh - 18px)",
-        }}
-      >
-        <div style={{ display: "flex", flexDirection: "row", gap: "12px" }}>
-          {videoSources.length > 1 && (
-            <>
-              <button
-                className="player__buttons "
-                style={{ background: project.bg, width: "50px", left: "3vw" }}
-                onClick={(e) => {
-                  setVideoIndex(
-                    (prev) => (prev - 1 + videoSources.length) % videoSources.length,
-                  );
-                }}
-              >
-                <img
-                  src={`${process.env.PUBLIC_URL}/assets/icons/arrow_back.svg`}
-                  alt="Anterior"
-                  style={{ width: "32px", height: "32px", }}
-                />
-              </button>
-              <button
-                className="player__buttons"
-                style={{ background: project.bg, width: "50px", right: "3vw"  }}
-                onClick={(e) => {
-                  setVideoIndex((prev) => (prev + 1) % videoSources.length);
-                }}
-
-              >
-                <img
-                  src={`${process.env.PUBLIC_URL}/assets/icons/arrow_back.svg`}
-                  alt="Siguiente"
-                  style={{ width: "32px", height: "32px", scale: "-1" }}
-                />
-              </button>
-            </>
-          )}
-        </div>
-        <button
-          className="modal__close modal__close--outside"
-          style={{ background: project.bg, width: "110px" }}
-          onClick={handleClose}
-          aria-label="Cerrar"
-        >
-          <p>Cerrar</p>
-        </button>
-      </div>
-
-      <div
-        className="modal modal--h"
-        style={{
-          "--p-bg": project.bg,
-          "--p-fg": project.fg,
-          "--p-accent": project.accent,
-        }}
-      >
-        {/* Background video fills entire modal */}
-        <div key={project.id} >
-        <VideoPlayer
-          key={videoIndex}
-          src={videoSources[videoIndex]}
-          title={project.name}
-          onPlayingChange={setVideoPlaying}
-          coverSrc={project.cover}
-          showCover={isMobile}
-        /></div>
-
-        {/* Title overlay — top */}
-        <div
-          className="modal__title-overlay"
-          style={{
-            opacity: videoPlaying ? 0 : 1,
-            transition: "opacity 400ms ease",
-          }}
-        >
-          <span className="eyebrow">
-            {project.year}
-          </span>
-          <h2 className="horizon modal__title">{project.name}</h2>
-          <span className="modal__client">{project.client}</span>
-        </div>
-
-        {/* Bottom buttons */}
-        <div className="modal__btns">
-          {/* El Brief */}
-          <div
-            className="modal__btn-wrap"
-            onMouseEnter={() => { if (!isTrueMobile) setActivePanel("brief"); }}
-            onMouseLeave={() => { if (!isTrueMobile) setActivePanel(null); }}
-            onClick={() => togglePanel("brief")}
-          >
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <div></div>
-              {activePanel === "brief" && (
-                <div
-                  className="modal__btn-panel"
-                  style={{ borderRadius: "0px 16px 0px 0px" }}
-                >
-                  <span className="eyebrow modal__lab">The brief</span>
-                  <p className="modal__desc" style={{ color: "#fff" }}>
-                    {project.desc}
-                  </p>
-                  <div className="kw-row" style={{ marginTop: "12px" }}>
-                    {project.keywords.map((k) => (
-                      <span
-                        key={k}
-                        className="kw"
-                        style={{
-                          borderColor: "rgba(255,255,255,0.5)",
-                          color: "#fff",
-                        }}
-                      >
-                        {k}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-            <button
-              className="modal__bottom-btn"
-              style={{ background: project.bg }}
-            >
-              Overview
-            </button>
-          </div>
-
-          {/* Services */}
-          <div
-            className="modal__btn-wrap"
-            onMouseEnter={() => { if (!isTrueMobile) setActivePanel("services"); }}
-            onMouseLeave={() => { if (!isTrueMobile) setActivePanel(null); }}
-            onClick={() => togglePanel("services")}
-          >
-            {activePanel === "services" && (
-              <div className="modal__btn-panel" style={{ left: isMobile ? "-45dvw" : "auto" }}>
-                <span className="eyebrow modal__lab">We worked on the</span>
-                <ul className="svc-list">
-                  {project.services.map((s) => (
-                    <li key={s} style={{ "--accent": project.accent }}>
-                      {s}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            <button
-              className="modal__bottom-btn"
-              style={{ background: project.bg }}
-            >
-              Services
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function Proyectos() {
   var audio = new Audio(`${process.env.PUBLIC_URL}/assets/audio/sound2.mp3`);
-  const projects = CNP_PROJECTS;
+  let projects = CNP_PROJECTS.slice(1); // Exclude the first project (CNP) from the slider
+  
+
+
+
   const [index, setIndex] = useState(0);
   const [dir, setDir] = useState(1);
   const [open, setOpen] = useState(false);
@@ -564,9 +221,9 @@ function Proyectos() {
 
       <SplitText
         tag="h1"
-        text=" 
-            Awakening Human Potential through culture, creativity and tech."
+        text={"In a world of\n infinite generation, taste becomes power"}
         className=" horizon reveal"
+        preserveLineBreaks
         splitType="words"
         delay={120}
         initialDelay={3.25}
@@ -579,16 +236,16 @@ function Proyectos() {
         textAlign="left"
         style={{
           color: "#000000",
-          fontSize: isMobile ? "22px" : "60px",
+          fontSize: isMobile ? "22px" : "50px",
           maxWidth: "1200px",
-          width: isMobile ? "85%" : "70%",
+          width: isMobile ? "80%" : "65%",
           position: "absolute",
           left: "50%",
           transform: "translateX(-50%)",
           textAlign: "center",
           zIndex: 0,
           pointerEvents: "none",
-          top: isMobile ? "19vh" : "auto"
+          top: isMobile ? "22vh" : "auto"
         }}
       />
 
@@ -608,7 +265,11 @@ function Proyectos() {
               aria-label="Anterior"
               style={{ borderColor: "#000000", color: "#000000", position: "absolute", left: "55px" }}
             >
-              <Icon name="arrow-left" />
+              <img
+                  src={`${process.env.PUBLIC_URL}/assets/icons/arrow_back.svg`}
+                  alt="Anterior"
+                  style={{ width: "32px", height: "32px",  }}
+                />
             </button>
             <button
               className="proy__arrow proy__arrow--r"
@@ -620,7 +281,11 @@ function Proyectos() {
               aria-label="Siguiente"
               style={{ borderColor: "#000000", color: "#000000", position: "absolute", right: "55px" }}
             >
-              <Icon name="arrow-right" />
+              <img
+                  src={`${process.env.PUBLIC_URL}/assets/icons/arrow_back.svg`}
+                  alt="Siguiente"
+                  style={{ width: "32px", height: "32px", scale: "-1", }}
+                />
             </button>
           </>
         ) : (
@@ -635,7 +300,11 @@ function Proyectos() {
               aria-label="Anterior"
               style={{ marginLeft: "20px", borderWidth: "0px" }}
             >
-              <Icon name="arrow-left" />
+              <img
+                  src={`${process.env.PUBLIC_URL}/assets/icons/arrow_back_white.svg`}
+                  alt="Anterior"
+                  style={{ width: "32px", height: "32px", }}
+                />
             </button>
             <button
               className="proy__arrow proy__arrow--r"
@@ -647,26 +316,31 @@ function Proyectos() {
               aria-label="Siguiente"
               style={{  marginRight: "20px", borderWidth: "0px", width: "48px", height: "48px" }}
             >
-              <Icon name="arrow-right" style={{}} />
+              <img
+                  src={`${process.env.PUBLIC_URL}/assets/icons/arrow_back_white.svg`}
+                  alt="Siguiente"
+                  style={{ width: "32px", height: "32px", scale: "-1", }}
+                />
             </button>
           </>
         )}
+        <img
+              className="proy__art__logo"
+              style={{ height: "70px", position: "absolute", top: "0px", left: "50%", transform: "translateX(-50%)" }}
+              src={active.logo}
+              alt={active.name}
+              draggable="false"
+            />
         <div className="proy__stage">
           <div
             key={active.id}
             className={`proy__card ${dir > 0 ? "in-right" : "in-left"}`}
           >
-            <img
-              className="proy__art__logo"
-              style={{ height: "70px" }}
-              src={active.logo}
-              alt={active.name}
-              draggable="false"
-            />
+
 
             
             <div className="proy__art">
-              <img src={active.img} alt={active.name}  draggable="false" />
+              <img src={active.img} alt={active.name} style={{scale: active.id === "cnp" ? "0" : "1"}} draggable="false" />
             </div>
             <div
               style={{

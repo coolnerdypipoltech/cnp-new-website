@@ -15,6 +15,7 @@ import "./nav.css";
 import "./styles.css";
 
 import Partners from "./sections/Partners";
+import About from "./sections/About";
 
 function Main() {
   const [introDone, setIntroDone] = useState(false);
@@ -27,16 +28,18 @@ function Main() {
         setTimeout(() => setIntroDone(true), 100);
       }} />}
       {introDone && show && (
-        <>
+        <div className="AppContainer">
           <Nav />
           {!isTrueMobile && <StarCursor />}
           <Hero />
+          <About/>
           <Proyectos />
           <Partners />
           <Services />
           <Drops />
+          
           <Contacto />
-        </>
+        </div>
       )}
     </React.Fragment>
   );
