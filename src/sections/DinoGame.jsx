@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Unity, useUnityContext } from "react-unity-webgl";
@@ -6,7 +6,7 @@ const PU = process.env.PUBLIC_URL;
 export default function DinoGame() {
   const navigate = useNavigate();
   const [finishLoading, setFinishLoading] = useState(false);
-  const { unityProvider, isLoaded, loadingProgression, sendMessage } =
+  const { unityProvider, isLoaded, loadingProgression, sendMessage, addEventListener, removeEventListener } =
     useUnityContext({
       loaderUrl: `${PU}/Build/Build.loader.js`,
       dataUrl: `${PU}/Build/Build.data`,
@@ -20,6 +20,22 @@ export default function DinoGame() {
   const unityReadyRef = useRef(false);
 
   const JUMP_THRESHOLD = 30;
+  
+
+  const handleGameOver = useCallback((userName, score) => {
+    navigate('/')
+  }, []);
+
+
+  useEffect(() => {
+    addEventListener("GameOver", handleGameOver);
+    return () => {
+      removeEventListener("GameOver", handleGameOver);
+    };
+  }, [addEventListener, removeEventListener, handleGameOver]);
+
+
+
 
   useEffect(() => {
     if (isLoaded && !unityReadyRef.current) {
@@ -66,14 +82,6 @@ export default function DinoGame() {
     }
   };
 
-  const howToPlay = () => {
-    sendMessage("GameManager", "PauseGame");
-    if (window.screen.width < 800) {
-      sendMessage("GameManager", "isMobile");
-    } else {
-      sendMessage("GameManager", "isPc");
-    }
-  };
 
   const setupMicrophone = async () => {
     try {
@@ -195,6 +203,7 @@ export default function DinoGame() {
           visibility: finishLoading ? "visible" : "hidden",
         }}
       />
+
     </div>
   );
 }

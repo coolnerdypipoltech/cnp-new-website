@@ -158,6 +158,7 @@ function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [inServices, setInServices] = useState(false);
+  const [inServices2, setInServices2] = useState(false);
   const lastY = useRef(0);
 
   useEffect(() => {
@@ -181,7 +182,7 @@ function Nav() {
       }
       if (section2) {
         const rect = section2.getBoundingClientRect();
-        setInServices(rect.top <= 80 && rect.bottom > 80);
+        setInServices2(rect.top <= 80 && rect.bottom > 80);
       }
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -194,7 +195,7 @@ function Nav() {
       <div className={`nav__container${hidden ? " navContainer--hidden" : ""}`}>
         <button className="nav__logo" aria-label="Inicio" onClick={toTop}>
         <img
-          src={`${process.env.PUBLIC_URL}/assets/logo/${inServices ? "CNP_BrandBlack.png" : "CNP_Brand.png"}`}
+          src={`${process.env.PUBLIC_URL}/assets/logo/${inServices || inServices2 ? "CNP_BrandBlack.png" : "CNP_Brand.png"}`}
           alt="Nerdy People"
         />
       </button>

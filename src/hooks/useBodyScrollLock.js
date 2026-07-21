@@ -4,6 +4,8 @@ let lockCount = 0;
 let savedBodyOverflow = "";
 let savedBodyPaddingRight = "";
 
+console.log(lockCount)
+
 const getScrollbarWidth = () => {
   if (typeof window === "undefined") {
     return 0;
@@ -13,9 +15,12 @@ const getScrollbarWidth = () => {
 };
 
 const applyLock = () => {
+  console.log(typeof document)
   if (typeof document === "undefined") {
     return;
   }
+  lockCount = 0;
+  console.log(lockCount)
 
   if (lockCount === 0) {
     savedBodyOverflow = document.body.style.overflow;
@@ -37,7 +42,9 @@ const releaseLock = () => {
     return;
   }
 
-  lockCount -= 1;
+  console.log(lockCount)
+
+  lockCount  = 0;
 
   if (lockCount === 0) {
     document.body.style.overflow = savedBodyOverflow;

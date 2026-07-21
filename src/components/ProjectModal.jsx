@@ -248,6 +248,7 @@ function ProjectModal({ project, onClose }) {
           "--p-bg": project.bg,
           "--p-fg": project.fg,
           "--p-accent": project.accent,
+          height: project.id === "cnp" && "82dvh" ,
         }}
       >
         {/* Background video fills entire modal */}
@@ -295,7 +296,7 @@ function ProjectModal({ project, onClose }) {
         </div>
 
         {/* Bottom buttons */}
-        <div className="modal__btns">
+        {project.id !== "cnp" && (<div className="modal__btns">
           {/* El Brief */}
           <div
             className="modal__btn-wrap"
@@ -315,6 +316,7 @@ function ProjectModal({ project, onClose }) {
                 <div
                   className="modal__btn-panel"
                   style={{ borderRadius: "0px 16px 0px 0px" }}
+                  onClick={(e) => e.stopPropagation()}
                 >
                   <span className="eyebrow modal__lab">The brief</span>
                   <p className="modal__desc" style={{ color: "#fff" }}>
@@ -353,7 +355,11 @@ function ProjectModal({ project, onClose }) {
             onClick={() => togglePanel("services")}
           >
             {activePanel === "services" && (
-              <div className="modal__btn-panel" style={{ left: isMobile ? "-45dvw" : "auto" }}>
+              <div
+                className="modal__btn-panel"
+                style={{ left: isMobile ? "-45dvw" : "auto" }}
+                onClick={(e) => e.stopPropagation()}
+              >
                 <span className="eyebrow modal__lab">We worked on the</span>
                 <ul className="svc-list">
                   {project.services.map((s) => (
@@ -371,7 +377,7 @@ function ProjectModal({ project, onClose }) {
               Services
             </button>
           </div>
-        </div>
+        </div>)}
       </div>
     </div>
   );

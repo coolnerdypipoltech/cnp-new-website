@@ -79,7 +79,7 @@ function Services() {
     const random =
       BallResponses[Math.floor(Math.random() * BallResponses.length)];
 
-      console.log("Selected 8ball response:", random); // Debug log
+
     setSelectedBallImg(random);
     setBallStage("prompt");
   }, []);
@@ -107,7 +107,7 @@ function Services() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-  console.log(windowWidth)
+
 
   const itemSizeHelper = () => {
     let size = 180;
@@ -146,7 +146,7 @@ function Services() {
       }
     }
 
-    console.log("radiusYHelper:", size);
+
 
     return size;
   }
@@ -283,13 +283,17 @@ function Services() {
                 <br />
                 <span style={{ color: "#00ABFF" }}>SPARK</span>
               </h2>
-              {isMobile && (
+              {isMobile ? (
                 <p className="services__sub reveal">
                   Feed your brain:
                   <br />
                   Tap an object
                 </p>
-              )}
+              ) : <p className="services__sub reveal" style={{ fontSize: "12px", marginTop: "0px" }}>
+                  Feed your brain: Tap an object
+
+                  
+                </p>}
             </div>) : null
           }
         />

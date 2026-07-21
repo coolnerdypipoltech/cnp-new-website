@@ -221,7 +221,7 @@ function Proyectos() {
 
       <SplitText
         tag="h1"
-        text={"In a world of\n infinite generation, taste becomes power"}
+        text={"In a world of infinite \n generation, taste becomes power"}
         className=" horizon reveal"
         preserveLineBreaks
         splitType="words"
@@ -238,7 +238,7 @@ function Proyectos() {
           color: "#000000",
           fontSize: isMobile ? "22px" : "50px",
           maxWidth: "1200px",
-          width: isMobile ? "80%" : "65%",
+          width: isMobile ? "80%" : "70%",
           position: "absolute",
           left: "50%",
           transform: "translateX(-50%)",
