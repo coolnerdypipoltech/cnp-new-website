@@ -141,7 +141,7 @@ function JSMarquee({ text, speed = 0.6, fontSize }) {
   );
 }
 
-const SEND_EMAIL_URL = "https://example.com/send-email";
+const SEND_EMAIL_URL = "https://localhost:4000/send-email"; // Replace with your actual endpoint
 
 function Contacto() {
   const [sent, setSent] = useState(false);
