@@ -52,12 +52,10 @@ function About() {
         title: "Cooltural Partnerships",
         bullets: [
           "Celebrity Brand Partnerships Strategy ",
-          "Talent Contracting",
-          "Management & Direction",
-          "Deal Structuring & Legal ",
-          "Advisory",
-          "Music, Sports, Lifestyle",
-          "Gaming & Esports"
+          "Talent Contracting, Management & Direction",
+          "Deal Structuring & Legal Advisory",
+          "Music, Sports, Lifestyle, Gaming & Esports",
+
         ],
         image: `${process.env.PUBLIC_URL}/assets/about/About-1.png`,
         color: "#2892fb",
@@ -66,14 +64,12 @@ function About() {
       {
         title: "Technology",
         bullets: [
-          "Apps, WebApps and Web",
-          "Development",
-          "Augmented Reality/ Virtual",
-          "Reality/ Mixed Reality",
+          "Apps, WebApps and Web Development",
+          "Augmented Reality/ Virtual Reality/ Mixed Reality",
           "AI Product Development",
           "Game Development",
-          "Immersive & Phygital",
-          "Experiences"
+          "Immersive & Phygital Experiences",
+          
         ],
         image: `${process.env.PUBLIC_URL}/assets/about/About-2.png`,
         color: "#820cea",
