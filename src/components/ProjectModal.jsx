@@ -295,7 +295,7 @@ function ProjectModal({ project, onClose }) {
             {project.year}
           </span>
           <h2 className="horizon modal__title">{project.name}</h2>
-          <span className="modal__client">{project.client}</span>
+          <span className="modal__client">{project.videoTitle}</span>
         </div>
 
         {/* Bottom buttons */}

@@ -125,7 +125,7 @@ function FloatingMenu() {
             style={{  '--i': i, '--hover-bg': s.color, ...(s.id === 'top' ? { '--hover-color': '#000' } : {}) }}
             onClick={() => {
               scrollTo(s.id);
-              console.log("play")
+
               audio.play();
             }}
           >
@@ -138,7 +138,7 @@ function FloatingMenu() {
       <button
         className={`fnav__trigger${open ? ' fnav__trigger--open' : ''}`}
         onClick={() => {setOpen(!open); 
-          console.log("play")
+
           audio.play();
         }}
         onMouseEnter={() => {

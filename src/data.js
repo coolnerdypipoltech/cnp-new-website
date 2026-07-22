@@ -145,7 +145,8 @@ export const CNP_PROJECTS = [
   {
     id: "axe",
     name: "AXE",
-    client: "Axess App",
+    client: "Axess — App",
+    videoTitle: "Axess App",
     year: "2024",
     img: A("/assets/proyects/axe.png"),
     logo: A("/assets/proyects/logos/Logo_AxessbyAxe.png"),
