@@ -160,7 +160,7 @@ function Drops() {
                         }}
                       />
                     ) : (
-                      <img src={it.src} alt={it.label} draggable="false" />
+                      <img src={it.src} alt={it.label} draggable="false" loading="lazy"/>
                     )}
                     <span
                       className="drops__pill horizon"
@@ -208,7 +208,7 @@ function Drops() {
                   aria-label={o.label}
                   aria-pressed={active === idx}
                 >
-                  <img src={o.img} alt={o.label} draggable="false" />
+                  <img src={o.img} alt={o.label} draggable="false" loading="lazy"/>
                   {!isMobile && <figcaption>{o.label}</figcaption>}
                 </button>
               );

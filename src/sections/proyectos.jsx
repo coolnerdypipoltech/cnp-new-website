@@ -269,6 +269,7 @@ function Proyectos() {
                   src={`${process.env.PUBLIC_URL}/assets/icons/arrow_back.svg`}
                   alt="Anterior"
                   style={{ width: "32px", height: "32px",  }}
+                  loading="lazy"
                 />
             </button>
             <button
@@ -285,6 +286,7 @@ function Proyectos() {
                   src={`${process.env.PUBLIC_URL}/assets/icons/arrow_back.svg`}
                   alt="Siguiente"
                   style={{ width: "32px", height: "32px", scale: "-1", }}
+                  loading="lazy"
                 />
             </button>
           </>
@@ -304,6 +306,7 @@ function Proyectos() {
                   src={`${process.env.PUBLIC_URL}/assets/icons/arrow_back_white.svg`}
                   alt="Anterior"
                   style={{ width: "32px", height: "32px", }}
+                  loading="lazy"
                 />
             </button>
             <button
@@ -320,6 +323,7 @@ function Proyectos() {
                   src={`${process.env.PUBLIC_URL}/assets/icons/arrow_back_white.svg`}
                   alt="Siguiente"
                   style={{ width: "32px", height: "32px", scale: "-1", }}
+                  loading="lazy"
                 />
             </button>
           </>
@@ -330,6 +334,7 @@ function Proyectos() {
               src={active.logo}
               alt={active.name}
               draggable="false"
+              loading="lazy"
             />
         <div className="proy__stage">
           <div
@@ -340,7 +345,7 @@ function Proyectos() {
 
             
             <div className="proy__art">
-              <img src={active.img} alt={active.name} style={{scale: active.id === "cnp" ? "0" : "1"}} draggable="false" />
+              <img src={active.img} alt={active.name} style={{scale: active.id === "cnp" ? "0" : "1"}} draggable="false" loading="lazy"/>
             </div>
             <div
               style={{

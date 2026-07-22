@@ -178,6 +178,7 @@ export default function DinoGame() {
               <img
                 src={`${process.env.PUBLIC_URL}/assets/icons/Signal.png`}
                 alt=""
+                loading="lazy"
               />
             </div>
           </div>

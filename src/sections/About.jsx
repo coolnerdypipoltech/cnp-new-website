@@ -162,6 +162,7 @@ function About() {
             src={`${process.env.PUBLIC_URL}/assets/about/About-01.png`}
             className="about-image"
             alt="About Us"
+            loading="lazy"
           />
         )}
         <div
@@ -229,6 +230,7 @@ function About() {
           src={`${process.env.PUBLIC_URL}/assets/about/About-01.png`}
           className="about-image"
           alt="About Us"
+          loading="lazy"
         />
       )}
 
@@ -266,6 +268,7 @@ function About() {
                       src={item.image}
                       alt={item.title}
                       className="about-popup-image"
+                      loading="lazy"
                     />
                     <div className="about-popup-copy">
                       <p className="about-text-title">
@@ -318,6 +321,7 @@ function About() {
                     src={`${process.env.PUBLIC_URL}/assets/icons/arrow_back_white.svg`}
                     alt="Servicio anterior"
                     style={{ width: "32px", height: "32px" }}
+                    loading="lazy"
                   />
                 </button>
                 <button
@@ -336,6 +340,7 @@ function About() {
                     src={`${process.env.PUBLIC_URL}/assets/icons/arrow_back_white.svg`}
                     alt="Servicio siguiente"
                     style={{ width: "32px", height: "32px", scale: "-1" }}
+                    loading="lazy"
                   />
                 </button>
                 <div
@@ -351,6 +356,7 @@ function About() {
                         src={card.image}
                         alt={card.title}
                         className="about-popup-image"
+                        loading="lazy"
                       />
                       <div className="service-stack-copy">
                         <div>

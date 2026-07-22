@@ -34,7 +34,7 @@ const SOCIAL_ICONS = {
   },
   spacer: {
     icon: (
-      <img src={`${process.env.PUBLIC_URL}/assets/icons/Signal.png`} alt="" />
+      <img src={`${process.env.PUBLIC_URL}/assets/icons/Signal.png`} alt="" loading="lazy"/>
     ),
     label: "",
     sub: "",
@@ -148,7 +148,7 @@ function FloatingMenu() {
         aria-expanded={open}
       >
         <span className="fnav__pulse" aria-hidden="true" />
-        <img style={{ width: "24px", height: "24px", }} src={ `${process.env.PUBLIC_URL}/assets/icons/CNP_Star_2.svg`} alt="Nerdy People" />
+        <img style={{ width: "24px", height: "24px", }} src={ `${process.env.PUBLIC_URL}/assets/icons/CNP_Star_2.svg`} alt="Nerdy People" loading="lazy"/>
       </button>
     </div>
   );
@@ -197,6 +197,7 @@ function Nav() {
         <img
           src={`${process.env.PUBLIC_URL}/assets/logo/${inServices || inServices2 ? "CNP_BrandBlack.png" : "CNP_Brand.png"}`}
           alt="Nerdy People"
+          loading="lazy"
         />
       </button>
       <FloatingMenu />

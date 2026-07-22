@@ -88,12 +88,14 @@ function HoverImage({ imgA, imgB, alt, text, onHover, onLeave }) {
         alt={alt}
         draggable={false}
         className="orbit-image orbit-image--a"
+        loading="lazy"
       />
       <img
         src={imgB}
         alt={alt}
         draggable={false}
         className="orbit-image orbit-image--b"
+        loading="lazy"
       />
       {(hovered ) && (
         <div style={{position: "absolute",

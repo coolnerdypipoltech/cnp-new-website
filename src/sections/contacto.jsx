@@ -36,7 +36,7 @@ const SOCIAL_ICONS = {
   },
   spacer: {
     icon: (
-      <img src={`${process.env.PUBLIC_URL}/assets/icons/Signal.png`} alt="" />
+      <img src={`${process.env.PUBLIC_URL}/assets/icons/Signal.png`} alt="" lazy />
     ),
     label: "",
     sub: "",
@@ -220,6 +220,7 @@ function Contacto() {
               className="twinkle"
               src={`${process.env.PUBLIC_URL}/assets/icons/thecursor.svg`}
               alt=""
+              loading="lazy"
             />
           </div>
           <h2 className="horizon contacto__head reveal">
@@ -263,6 +264,7 @@ function Contacto() {
             className="contacto__logo"
             src={`${process.env.PUBLIC_URL}/assets/logo/CNP_Brand.png`}
             alt="Nerdy People"
+            loading="lazy"
           />
         </div>
       </section>

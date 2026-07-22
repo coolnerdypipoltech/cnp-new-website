@@ -204,6 +204,7 @@ function Services() {
                     draggable={false}
                     className="ball-img2"
                     style={{ paddingTop: 0 }}
+                    loading="lazy"
                   />
                   
                 </div>
@@ -225,6 +226,7 @@ function Services() {
                     alt="8ball response"
                     draggable={false}
                     className="ball-img"
+                    loading="lazy"
                   />
                 </div>
                                 <button

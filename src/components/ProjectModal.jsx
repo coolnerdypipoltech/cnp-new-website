@@ -104,6 +104,7 @@ function VideoPlayer({ src, title, onPlayingChange, coverSrc, showCover, fullMod
               height: "100%",
               objectFit: fullModal ? "cover" : "contain",
             }}
+            loading="lazy"
           />
         </button>
       )}
@@ -216,6 +217,7 @@ function ProjectModal({ project, onClose }) {
                   src={`${process.env.PUBLIC_URL}/assets/icons/arrow_back_white.svg`}
                   alt="Anterior"
                   style={{ width: "32px", height: "32px", }}
+                  loading="lazy"
                 />
               </button>
               <button
@@ -230,6 +232,7 @@ function ProjectModal({ project, onClose }) {
                   src={`${process.env.PUBLIC_URL}/assets/icons/arrow_back_white.svg`}
                   alt="Siguiente"
                   style={{ width: "32px", height: "32px", scale: "-1", }}
+                  loading="lazy"
                 />
               </button>
             </>
@@ -269,7 +272,7 @@ function ProjectModal({ project, onClose }) {
           />
         ) : (
           <img
-
+            loading="lazy"
             src={videoSources[videoIndex]}
             alt={project.name}
             style={{
