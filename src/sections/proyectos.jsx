@@ -237,7 +237,7 @@ function Proyectos() {
         style={{
           color: "#000000",
           fontSize: isMobile ? "22px" : "50px",
-          maxWidth: "1200px",
+          maxWidth: "1020px",
           width: isMobile ? "80%" : "70%",
           position: "absolute",
           left: "50%",

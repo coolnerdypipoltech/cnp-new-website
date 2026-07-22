@@ -25,7 +25,10 @@ function VideoPlayer({ src, title, onPlayingChange, coverSrc, showCover, fullMod
     updatePlaying(false);
   }, [showCover, src, updatePlaying]);
 
-  const togglePlay = () => {
+  const togglePlay = (e) => {
+    // If the click comes from the native <video>, let browser controls handle it.
+    if (e?.target instanceof HTMLVideoElement) return;
+
     const v = videoRef.current;
     if (!v) return;
 
@@ -176,7 +179,7 @@ function ProjectModal({ project, onClose }) {
     }
   };
 
-  console.log(project.cover)
+
 
   return (
     <div
@@ -318,7 +321,7 @@ function ProjectModal({ project, onClose }) {
                   style={{ borderRadius: "0px 16px 0px 0px" }}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <span className="eyebrow modal__lab">The brief</span>
+                  <span className="eyebrow modal__lab">Our work</span>
                   <p className="modal__desc" style={{ color: "#fff" }}>
                     {project.desc}
                   </p>
