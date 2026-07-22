@@ -4,16 +4,20 @@ import './Intro.css';
 import { useViewport } from "../context/ViewportContext";
 function Intro({ onDone }) {
   const [fading, setFading] = useState(false);
+  const ended = useRef(false);
   const videoRef = useRef(null);
   const { isMobile } = useViewport();
   const handleEnded = () => {
+    ended.current = true;
     setFading(true);
     setTimeout(() => onDone(), 100);
   };
 
   useEffect(() => {
     setTimeout(() => {
-      handleEnded();
+      if(ended.current === false) {
+        handleEnded();
+      }
       }, 2000);
   }, [] )
 
