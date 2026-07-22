@@ -33,7 +33,7 @@ export const CNP_PROJECTS = [
   },
   {
     id: "barrios",
-    name: "Activision",
+    name: "Call of Duty Mobile",
     client: "Call of Duty Mobile — Barrios Latinos",
     videoTitle: "Barrios Latinos",
     year: "2026",
