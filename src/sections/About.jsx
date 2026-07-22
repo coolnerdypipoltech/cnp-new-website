@@ -38,10 +38,12 @@ function About() {
         title: "Creativity",
         bullets: [
           "360° Campaigns",
-          "Digital Content & Film Production",
-          "AI-Creative Workflows",
-          "Event Production & Brand Experiences",
-          "Gamification & Loyalty Programs",
+          "Digital Content",
+          "Full-Service Production",
+          "AI- Creative Workflows",
+          "Event Productions & Brand",
+          "Experiences",
+          "Gamification"
         ],
         image: `${process.env.PUBLIC_URL}/assets/about/About-3.png`,
         color: "#5944ff",
@@ -49,11 +51,13 @@ function About() {
       {
         title: "Cooltural Partnerships",
         bullets: [
-          "Talent Strategy & Selection",
-          "Deal Structuring & Legal Advisory",
-          "Talent Creative Direction & Campaign Execution",
-          "Celebrities & Influencers (end-to-end)",
-          "Music, Sports & Lifestyle, Gaming & Esports",
+          "Celebrity Brand Partnerships Strategy ",
+          "Talent Contracting",
+          "Management & Direction",
+          "Deal Structuring & Legal ",
+          "Advisory",
+          "Music, Sports, Lifestyle",
+          "Gaming & Esports"
         ],
         image: `${process.env.PUBLIC_URL}/assets/about/About-1.png`,
         color: "#2892fb",
@@ -62,11 +66,14 @@ function About() {
       {
         title: "Technology",
         bullets: [
-          "Apps & WebApps.",
-          "AR/VR/MR",
-          "Fake Out of Home",
+          "Apps, WebApps and Web",
+          "Development",
+          "Augmented Reality/ Virtual",
+          "Reality/ Mixed Reality",
+          "AI Product Development",
           "Game Development",
-          "Immersive & Phygital Experiences",
+          "Immersive & Phygital",
+          "Experiences"
         ],
         image: `${process.env.PUBLIC_URL}/assets/about/About-2.png`,
         color: "#820cea",
@@ -269,7 +276,7 @@ function About() {
                         ABOUT <span style={{ color: "#E5FF21" }}>US</span>
                       </p>
                       <p className="about-text" style={{ fontWeight: "600" }}>
-                        Cool Nerdy People - Coolture Creative Company
+                        Coolture Creative Company
                       </p>
                       <p className="about-text">
                         Through strategy, creativity, technology and cooltural

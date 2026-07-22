@@ -141,7 +141,7 @@ function JSMarquee({ text, speed = 0.6, fontSize }) {
   );
 }
 
-const SEND_EMAIL_URL = "http://localhost:4000/send-email"; // Replace with your actual endpoint
+const SEND_EMAIL_URL = "https://coolnerdypeople.com/api/send-email"; // Replace with your actual endpoint
 
 function Contacto() {
   const [sent, setSent] = useState(false);
