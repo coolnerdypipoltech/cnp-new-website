@@ -2074,7 +2074,10 @@ flex-direction: column;
 @media (max-width: 650px){
 
   .about-popup-image{
-    width: 25vh !important;
+    width: 23vh !important;
+  }
+  .service-stack-card{
+    padding-top: 0px !important;
   }
 }
 
