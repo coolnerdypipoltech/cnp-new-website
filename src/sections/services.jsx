@@ -231,12 +231,12 @@ function Services() {
                 </div>
                                 <button
                     className="btn-signal dare-btn"
-                    onClick={handleDareClick}
-                    style={{ scale: "0" }}
+                    onClick={handleOrbit3Hover}
+                    style={{ scale: "1" }}
                     aria-label="DARE"
                     
                   >
-                    DARE!
+                    Go again
                   </button>
               </>
             )}

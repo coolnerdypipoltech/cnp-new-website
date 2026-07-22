@@ -1,13 +1,18 @@
 // ── Inline SVG icons (React-safe; no DOM mutation) ────────────────
-import React, { useRef, useState, useCallback, useEffect } from 'react';
-import { useViewport } from '../context/ViewportContext';
+import React, { useRef, useState, useCallback, useEffect } from "react";
+import { useViewport } from "../context/ViewportContext";
 
-function VideoPlayer({ src, title, onPlayingChange, coverSrc, showCover, fullModal }) {
+function VideoPlayer({
+  src,
+  title,
+  onPlayingChange,
+  coverSrc,
+  showCover,
+  fullModal,
+}) {
   const videoRef = useRef(null);
   const [playing, setPlaying] = useState(false);
   const [coverVisible, setCoverVisible] = useState(true);
-
-
 
   const updatePlaying = useCallback(
     (val) => {
@@ -21,7 +26,6 @@ function VideoPlayer({ src, title, onPlayingChange, coverSrc, showCover, fullMod
   const { isTrueMobile } = useViewport();
 
   useEffect(() => {
-
     updatePlaying(false);
   }, [showCover, src, updatePlaying]);
 
@@ -47,7 +51,7 @@ function VideoPlayer({ src, title, onPlayingChange, coverSrc, showCover, fullMod
   };
 
   const onMouseMove = (e) => {
-    if(isTrueMobile) {
+    if (isTrueMobile) {
       return;
     }
     const rect = e.currentTarget.getBoundingClientRect();
@@ -60,8 +64,12 @@ function VideoPlayer({ src, title, onPlayingChange, coverSrc, showCover, fullMod
       style={{ position: "relative", cursor: "none" }}
       onClick={togglePlay}
       onMouseMove={onMouseMove}
-      onMouseEnter={() => {if(!isTrueMobile) setHovered(true)}}
-      onMouseLeave={() => {if(!isTrueMobile) setHovered(false)}}
+      onMouseEnter={() => {
+        if (!isTrueMobile) setHovered(true);
+      }}
+      onMouseLeave={() => {
+        if (!isTrueMobile) setHovered(false);
+      }}
     >
       <video
         ref={videoRef}
@@ -69,7 +77,6 @@ function VideoPlayer({ src, title, onPlayingChange, coverSrc, showCover, fullMod
         width="100%"
         height="100%"
         controls={true}
-        
         onPlay={() => updatePlaying(true)}
         onPause={() => updatePlaying(false)}
         onEnded={() => {
@@ -142,7 +149,9 @@ function ProjectModal({ project, onClose }) {
   const [videoIndex, setVideoIndex] = useState(0);
   const { isMobile, isTrueMobile } = useViewport();
   const videoSources =
-    isMobile && project?.videoMobil?.length ? project.videoMobil : project?.video;
+    isMobile && project?.videoMobil?.length
+      ? project.videoMobil
+      : project?.video;
 
   const handleClose = useCallback(() => {
     setClosing(true);
@@ -169,18 +178,13 @@ function ProjectModal({ project, onClose }) {
 
   const playerButtonsZIndex = activePanel ? 0 : 200;
 
-  const togglePanel = (panel) =>  {
-
-    
-    if(activePanel === panel) {
+  const togglePanel = (panel) => {
+    if (activePanel === panel) {
       setActivePanel(null);
-      
     } else {
       setActivePanel(panel);
     }
   };
-
-
 
   return (
     <div
@@ -205,33 +209,42 @@ function ProjectModal({ project, onClose }) {
             <>
               <button
                 className="player__buttons "
-                style={{ background: 
-                  "#00000050", width: "50px", left: "3vw", zIndex: playerButtonsZIndex }}
+                style={{
+                  background: "#00000050",
+                  width: "50px",
+                  left: "3vw",
+                  zIndex: playerButtonsZIndex,
+                }}
                 onClick={(e) => {
                   setVideoIndex(
-                    (prev) => (prev - 1 + videoSources.length) % videoSources.length,
+                    (prev) =>
+                      (prev - 1 + videoSources.length) % videoSources.length,
                   );
                 }}
               >
                 <img
                   src={`${process.env.PUBLIC_URL}/assets/icons/arrow_back_white.svg`}
                   alt="Anterior"
-                  style={{ width: "32px", height: "32px", }}
+                  style={{ width: "32px", height: "32px" }}
                   loading="lazy"
                 />
               </button>
               <button
                 className="player__buttons"
-                style={{ background: "#00000050", width: "50px", right: "3vw", zIndex: playerButtonsZIndex  }}
+                style={{
+                  background: "#00000050",
+                  width: "50px",
+                  right: "3vw",
+                  zIndex: playerButtonsZIndex,
+                }}
                 onClick={(e) => {
                   setVideoIndex((prev) => (prev + 1) % videoSources.length);
                 }}
-
               >
                 <img
                   src={`${process.env.PUBLIC_URL}/assets/icons/arrow_back_white.svg`}
                   alt="Siguiente"
-                  style={{ width: "32px", height: "32px", scale: "-1", }}
+                  style={{ width: "32px", height: "32px", scale: "-1" }}
                   loading="lazy"
                 />
               </button>
@@ -254,37 +267,42 @@ function ProjectModal({ project, onClose }) {
           "--p-bg": project.bg,
           "--p-fg": project.fg,
           "--p-accent": project.accent,
-          height: project.id === "cnp" && "82dvh" ,
+          height: project.id === "cnp" && "82dvh",
         }}
       >
         {/* Background video fills entire modal */}
-        <div key={project.id} >
-
-        {project.cover[videoIndex] !== "" ? (
-          <VideoPlayer
-            key={videoIndex}
-            src={videoSources[videoIndex]}
-            title={project.name}
-            onPlayingChange={setVideoPlaying}
-            coverSrc={isMobile ? project.cover[videoIndex] : project.deskCover[videoIndex]}
-            showCover={isMobile}
-            fullModal={project.videoFill[videoIndex]}
-          />
-        ) : (
-          <img
-            loading="lazy"
-            src={videoSources[videoIndex]}
-            alt={project.name}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: isMobile ? (project.videoFill[videoIndex] ? "cover" : "contain") : "cover",
-            }}
-          />
-        )}
+        <div key={project.id}>
+          {project.cover[videoIndex] !== "" ? (
+            <VideoPlayer
+              key={videoIndex}
+              src={videoSources[videoIndex]}
+              title={project.name}
+              onPlayingChange={setVideoPlaying}
+              coverSrc={
+                isMobile
+                  ? project.cover[videoIndex]
+                  : project.deskCover[videoIndex]
+              }
+              showCover={isMobile}
+              fullModal={project.videoFill[videoIndex]}
+            />
+          ) : (
+            <img
+              loading="lazy"
+              src={videoSources[videoIndex]}
+              alt={project.name}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: isMobile
+                  ? project.videoFill[videoIndex]
+                    ? "cover"
+                    : "contain"
+                  : "cover",
+              }}
+            />
+          )}
         </div>
-
-
 
         {/* Title overlay — top */}
         <div
@@ -294,96 +312,146 @@ function ProjectModal({ project, onClose }) {
             transition: "opacity 400ms ease",
           }}
         >
-          <span className="eyebrow">
-            {project.year}
-          </span>
+          <span className="eyebrow">{project.year}</span>
           <h2 className="horizon modal__title">{project.name}</h2>
           <span className="modal__client">{project.videoTitle}</span>
         </div>
 
         {/* Bottom buttons */}
-        {project.id !== "cnp" && (<div className="modal__btns">
-          {/* El Brief */}
-          <div
-            className="modal__btn-wrap"
-            onMouseEnter={() => { if (!isTrueMobile) setActivePanel("brief"); }}
-            onMouseLeave={() => { if (!isTrueMobile) setActivePanel(null); }}
-            onClick={() => togglePanel("brief")}
-          >
+        {project.id !== "cnp" && (
+          <div className="modal__btns">
+            {/* El Brief */}
             <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
+              className="modal__btn-wrap"
+              onMouseEnter={() => {
+                if (!isTrueMobile) setActivePanel("brief");
               }}
+              onMouseLeave={() => {
+                if (!isTrueMobile) setActivePanel(null);
+              }}
+              onClick={() => togglePanel("brief")}
             >
-              <div></div>
-              {activePanel === "brief" && (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <div></div>
+                {activePanel === "brief" && (
+                  <div
+                    className="modal__btn-panel"
+                    style={{ borderRadius: "0px 16px 0px 0px" }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div
+                      style={{
+                        height: "0px",
+                        width: "0px",
+                        position: "relative",
+                        top: "-10px",
+                        left: "90%",
+                      }}
+                    >
+                      <button
+                        className="modal__close "
+                        style={{
+                          background: project.bg,
+                          width: "30px",
+                          height: "30px",
+                        }}
+                        onClick={() => setActivePanel(null)}
+                      >
+                        X
+                      </button>
+                    </div>
+                    <span className="eyebrow modal__lab">Our work</span>
+                    <p className="modal__desc" style={{ color: "#fff" }}>
+                      {project.desc}
+                    </p>
+                    <div className="kw-row" style={{ marginTop: "12px" }}>
+                      {project.keywords.map((k) => (
+                        <span
+                          key={k}
+                          className="kw"
+                          style={{
+                            borderColor: "rgba(255,255,255,0.5)",
+                            color: "#fff",
+                          }}
+                        >
+                          {k}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+              <button
+                className="modal__bottom-btn"
+                style={{ background: project.bg }}
+              >
+                Overview
+              </button>
+            </div>
+
+            {/* Services */}
+            <div
+              className="modal__btn-wrap"
+              onMouseEnter={() => {
+                if (!isTrueMobile) setActivePanel("services");
+              }}
+              onMouseLeave={() => {
+                if (!isTrueMobile) setActivePanel(null);
+              }}
+              onClick={() => togglePanel("services")}
+            >
+              {activePanel === "services" && (
                 <div
                   className="modal__btn-panel"
-                  style={{ borderRadius: "0px 16px 0px 0px" }}
+                  style={{ left: isMobile ? "-45dvw" : "auto" }}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <span className="eyebrow modal__lab">Our work</span>
-                  <p className="modal__desc" style={{ color: "#fff" }}>
-                    {project.desc}
-                  </p>
-                  <div className="kw-row" style={{ marginTop: "12px" }}>
-                    {project.keywords.map((k) => (
-                      <span
-                        key={k}
-                        className="kw"
+                                      <div
+                      style={{
+                        height: "0px",
+                        width: "0px",
+                        position: "relative",
+                        top: "-10px",
+                        left: "90%",
+                      }}
+                    >
+                      <button
+                        className="modal__close "
                         style={{
-                          borderColor: "rgba(255,255,255,0.5)",
-                          color: "#fff",
+                          background: project.bg,
+                          width: "30px",
+                          height: "30px",
                         }}
+                        onClick={() => setActivePanel(null)}
                       >
-                        {k}
-                      </span>
+                        X
+                      </button>
+                    </div>
+                  <span className="eyebrow modal__lab">We worked on the</span>
+                  <ul className="svc-list">
+                    {project.services.map((s) => (
+                      <li key={s} style={{ "--accent": project.accent }}>
+                        {s}
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
               )}
-            </div>
-            <button
-              className="modal__bottom-btn"
-              style={{ background: project.bg }}
-            >
-              Overview
-            </button>
-          </div>
-
-          {/* Services */}
-          <div
-            className="modal__btn-wrap"
-            onMouseEnter={() => { if (!isTrueMobile) setActivePanel("services"); }}
-            onMouseLeave={() => { if (!isTrueMobile) setActivePanel(null); }}
-            onClick={() => togglePanel("services")}
-          >
-            {activePanel === "services" && (
-              <div
-                className="modal__btn-panel"
-                style={{ left: isMobile ? "-45dvw" : "auto" }}
-                onClick={(e) => e.stopPropagation()}
+              <button
+                className="modal__bottom-btn"
+                style={{ background: project.bg }}
               >
-                <span className="eyebrow modal__lab">We worked on the</span>
-                <ul className="svc-list">
-                  {project.services.map((s) => (
-                    <li key={s} style={{ "--accent": project.accent }}>
-                      {s}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            <button
-              className="modal__bottom-btn"
-              style={{ background: project.bg }}
-            >
-              Services
-            </button>
+                Services
+              </button>
+            </div>
           </div>
-        </div>)}
+        )}
       </div>
     </div>
   );

@@ -157,6 +157,7 @@ function Drops() {
                           width: "100%",
                           height: "100%",
                           objectFit: "cover",
+                          objectPosition: it.id === "cap1" ? "top" : "center center",
                         }}
                       />
                     ) : (

@@ -249,7 +249,7 @@ function About() {
                 style={{
                   top: activePopup === "who" ? "-70px" : "-40px",
                   backgroundColor:
-                    activePopup === "who" ? "#9747FF" : "#DA48AC",
+                    activePopup === "who" ? "#5944ff" : "#DA48AC",
                 }}
               >
                 Cerrar
