@@ -740,7 +740,7 @@ a { color: inherit; cursor:none; }
 
 /* Horizontal modal layout */
 .modal--h {
-  width: 84dvw;
+  width: 90dvw;
   height: calc(95dvh - 50px);
   display: flex;
   top: 25px;

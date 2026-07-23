@@ -188,14 +188,16 @@ function VideoPlayer({
   );
 }
 
-function VimeoPlayer({ src, title, onPlayingChange }) {
+function VimeoPlayer({ src, title, onPlayingChange, id }) {
   const iframeRef = useRef(null);
   const playerRef = useRef(null);
+  const containerRef = useRef(null);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [ready, setReady] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -261,6 +263,15 @@ function VimeoPlayer({ src, title, onPlayingChange }) {
     };
   }, [onPlayingChange, src]);
 
+  useEffect(() => {
+    const onFullscreenChange = () => {
+      setIsFullscreen(document.fullscreenElement === containerRef.current);
+    };
+
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", onFullscreenChange);
+  }, []);
+
   const togglePlay = useCallback(() => {
     const player = playerRef.current;
     if (!player) return;
@@ -290,23 +301,28 @@ function VimeoPlayer({ src, title, onPlayingChange }) {
   );
 
   const toggleFullscreen = useCallback(() => {
-    const player = playerRef.current;
-    if (!player) return;
-    player.getFullscreen().then((isFullscreen) => {
-      if (isFullscreen) {
-        player.exitFullscreen().catch(() => {});
-      } else {
-        player.requestFullscreen().catch(() => {});
-      }
-    });
+    const container = containerRef.current;
+    if (!container) return;
+
+    if (document.fullscreenElement === container) {
+      document.exitFullscreen?.().catch(() => {});
+      return;
+    }
+
+    container.requestFullscreen?.().catch(() => {});
   }, []);
 
   const progress = duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0;
 
   return (
     <div className="modal__bg-video">
-      <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
+      <div
+        ref={containerRef}
+        style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}
+        
+      >
         <iframe
+        
           ref={iframeRef}
           src={buildVimeoSrc(src)}
           frameBorder="0"
@@ -317,12 +333,37 @@ function VimeoPlayer({ src, title, onPlayingChange }) {
           style={{ width: "100%", height: "100%", border: 0, display: "block" }}
         />
 
+        <button
+          type="button"
+          className="vp-center"
+          onClick={togglePlay}
+
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "47.5%",
+            transform: "translate(-50%, -50%)",
+            width: "100%",
+            height: "92.5%",
+            border: "none",
+            borderRadius: "999px",
+            background: "transparent",
+            color: "#fff",
+            display: "grid",
+            placeItems: "center",
+            cursor: "pointer",
+            zIndex: 9,
+          }}
+        >
+
+        </button>
+
         <div
           style={{
             position: "absolute",
             left: 0,
             right: 0,
-            bottom: 0,
+            bottom: id === "cnp" ? "0px" : "65px",
             top: "auto",
             display: "flex",
             alignItems: "center",
@@ -330,9 +371,10 @@ function VimeoPlayer({ src, title, onPlayingChange }) {
             padding: "10px 12px",
             background:
               "linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.64) 45%, rgba(0,0,0,0) 100%)",
-            color: "#fff",
+            color: "#ffffff",
             zIndex: 12,
             pointerEvents: "auto",
+            
           }}
         >
         <button
@@ -351,6 +393,7 @@ function VimeoPlayer({ src, title, onPlayingChange }) {
             cursor: "pointer",
             flex: "0 0 auto",
             fontSize: "12px",
+            
           }}
         >
           {playing ? "II" : "▶"}
@@ -396,7 +439,7 @@ function VimeoPlayer({ src, title, onPlayingChange }) {
         <button
           type="button"
           onClick={toggleFullscreen}
-          aria-label="Pantalla completa"
+          aria-label={isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}
           style={{
             minWidth: "32px",
             height: "32px",
@@ -409,7 +452,7 @@ function VimeoPlayer({ src, title, onPlayingChange }) {
             fontSize: "12px",
           }}
         >
-          ⤢
+          {isFullscreen ? "X" : "[]"}
         </button>
         </div>
 
@@ -583,6 +626,7 @@ function ProjectModal({ project, onClose }) {
               src={videoSources[videoIndex]}
               title={`${project.name} Vimeo ${videoIndex + 1}`}
               onPlayingChange={setVideoPlaying}
+              id={project.id}
             />
           ) : project.cover[videoIndex] !== "" ? (
             <VideoPlayer
