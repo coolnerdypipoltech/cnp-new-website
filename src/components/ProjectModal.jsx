@@ -198,6 +198,13 @@ function VimeoPlayer({ src, title, onPlayingChange, id }) {
   const [currentTime, setCurrentTime] = useState(0);
   const [ready, setReady] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isIPhone, setIsIPhone] = useState(false);
+
+  useEffect(() => {
+    if (typeof navigator === "undefined") return;
+    const ua = navigator.userAgent || "";
+    setIsIPhone(/iPhone|iPod/i.test(ua));
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -208,6 +215,7 @@ function VimeoPlayer({ src, title, onPlayingChange, id }) {
     setDuration(0);
     setCurrentTime(0);
     setReady(false);
+    setIsFullscreen(false);
     onPlayingChange?.(false);
 
     loadVimeoPlayerApi()
@@ -265,11 +273,17 @@ function VimeoPlayer({ src, title, onPlayingChange, id }) {
 
   useEffect(() => {
     const onFullscreenChange = () => {
-      setIsFullscreen(document.fullscreenElement === containerRef.current);
+      const activeElement =
+        document.fullscreenElement || document.webkitFullscreenElement;
+      setIsFullscreen(activeElement === containerRef.current);
     };
 
     document.addEventListener("fullscreenchange", onFullscreenChange);
-    return () => document.removeEventListener("fullscreenchange", onFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", onFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", onFullscreenChange);
+      document.removeEventListener("webkitfullscreenchange", onFullscreenChange);
+    };
   }, []);
 
   const togglePlay = useCallback(() => {
@@ -304,13 +318,46 @@ function VimeoPlayer({ src, title, onPlayingChange, id }) {
     const container = containerRef.current;
     if (!container) return;
 
-    if (document.fullscreenElement === container) {
-      document.exitFullscreen?.().catch(() => {});
+    const fullscreenElement =
+      document.fullscreenElement || document.webkitFullscreenElement;
+    const requestFullscreen =
+      container.requestFullscreen || container.webkitRequestFullscreen;
+    const exitFullscreen =
+      document.exitFullscreen || document.webkitExitFullscreen;
+
+    // Prefer native fullscreen in all browsers (including iOS Safari when available).
+    if (fullscreenElement === container) {
+      if (typeof exitFullscreen === "function") {
+        const exitResult = exitFullscreen.call(document);
+        exitResult?.catch?.(() => {});
+      }
       return;
     }
 
-    container.requestFullscreen?.().catch(() => {});
-  }, []);
+    if (typeof requestFullscreen === "function") {
+      const requestResult = requestFullscreen.call(container);
+      requestResult?.catch?.(() => {
+        if (isIPhone) setIsFullscreen((prev) => !prev);
+      });
+      return;
+    }
+
+    if (isIPhone) {
+      setIsFullscreen((prev) => !prev);
+    }
+  }, [isIPhone]);
+
+  const fullscreenContainerStyle =
+    isIPhone && isFullscreen
+      ? {
+          position: "fixed",
+          inset: 0,
+          width: "100vw",
+          height: "100dvh",
+          background: "#000",
+          zIndex: 2147483647,
+        }
+      : null;
 
   const progress = duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0;
 
@@ -318,8 +365,13 @@ function VimeoPlayer({ src, title, onPlayingChange, id }) {
     <div className="modal__bg-video">
       <div
         ref={containerRef}
-        style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}
-        
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "100%",
+          overflow: "hidden",
+          ...fullscreenContainerStyle,
+        }}
       >
         <iframe
         
@@ -363,7 +415,7 @@ function VimeoPlayer({ src, title, onPlayingChange, id }) {
             position: "absolute",
             left: 0,
             right: 0,
-            bottom: id === "cnp" ? "0px" : "65px",
+            bottom: id === "cnp" ? "0px" : isFullscreen ? "0px" : "60px",
             top: "auto",
             display: "flex",
             alignItems: "center",
@@ -433,7 +485,10 @@ function VimeoPlayer({ src, title, onPlayingChange, id }) {
             fontSize: "12px",
           }}
         >
-          {muted ? "MUTE" : "VOL"}
+          <img
+            src={!muted ? `${process.env.PUBLIC_URL}/assets/icons/volume_icon.svg` : `${process.env.PUBLIC_URL}/assets/icons/volume_off.svg`}
+            alt={!muted ? "Muted" : "Unmuted"}
+          />
         </button>
 
         <button
@@ -452,7 +507,10 @@ function VimeoPlayer({ src, title, onPlayingChange, id }) {
             fontSize: "12px",
           }}
         >
-          {isFullscreen ? "X" : "[]"}
+          <img
+            src={!isFullscreen ? `${process.env.PUBLIC_URL}/assets/icons/fullscreen_icon.svg` : `${process.env.PUBLIC_URL}/assets/icons/fullscreen_exit.svg`}
+            alt={!isFullscreen ? "Enter Fullscreen" : "Exit Fullscreen"}
+          />
         </button>
         </div>
 
@@ -620,14 +678,32 @@ function ProjectModal({ project, onClose }) {
         }}
       >
         {/* Background video fills entire modal */}
-        <div key={project.id}>
+        <div key={project.id} style={{ position: "relative", width: "100%", height: "100%" }}>
           {hasVimeoSource ? (
-            <VimeoPlayer
+            <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            {
+              project.cover[videoIndex] === "" ? (<img
+              loading="lazy"
+              src={videoSources[videoIndex]}
+              alt={project.name}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: isMobile
+                  ? project.videoFill[videoIndex]
+                    ? "cover"
+                    : "contain"
+                  : "cover",
+              }}
+            />) : (<VimeoPlayer
+              key={`${project.id}-${isMobile ? "mobile" : "desktop"}-${videoIndex}`}
               src={videoSources[videoIndex]}
               title={`${project.name} Vimeo ${videoIndex + 1}`}
               onPlayingChange={setVideoPlaying}
               id={project.id}
-            />
+            />)
+            }
+            </div>
           ) : project.cover[videoIndex] !== "" ? (
             <VideoPlayer
               key={videoIndex}
