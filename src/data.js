@@ -14,6 +14,8 @@ export const CNP_PROJECTS = [
     year: "Since 2024",
     img: A("/assets/proyects/CNP.png"),
     logo: A("/assets/proyects/logos/Logo_CNPBlack.png"),
+        video: [A("/assets/proyects/videos/CNP.mp4")],
+    videoMobil: [A("/assets/proyects/videos/CNP.mp4")],
     vimeoEmbed: "https://player.vimeo.com/video/1212204300?badge=0&autopause=0&player_id=0&app_id=58479",
     vimeoTitle: "AFTERMOVIE BARRIOS LATINOS",
     deskCover: [A("/assets/proyects/videos/thumbnailDesktop/others/cnp-Cover.jpg")],
