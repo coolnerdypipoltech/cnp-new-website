@@ -740,7 +740,7 @@ a { color: inherit; cursor:none; }
 
 /* Horizontal modal layout */
 .modal--h {
-  width: 90dvw;
+  width: 84dvw;
   height: calc(95dvh - 50px);
   display: flex;
   top: 25px;
@@ -759,10 +759,14 @@ a { color: inherit; cursor:none; }
   z-index: 0;
 }
 .modal__bg-video iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
+  width: 100vw;
+  height: 56.25vw; /* Given a 16:9 aspect ratio, 9/16*100 = 56.25 */
+  min-height: 100vh;
+  min-width: 177.77vh; /* Given a 16:9 aspect ratio, 16/9*100 = 177.77 */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* Close button — top left floating */

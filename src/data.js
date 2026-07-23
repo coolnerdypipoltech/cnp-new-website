@@ -16,8 +16,8 @@ export const CNP_PROJECTS = [
     logo: A("/assets/proyects/logos/Logo_CNPBlack.png"),
         video: [A("/assets/proyects/videos/CNP.mp4")],
     videoMobil: [A("/assets/proyects/videos/CNP.mp4")],
-    vimeoEmbed: "https://player.vimeo.com/video/1212204300?badge=0&autopause=0&player_id=0&app_id=58479",
-    vimeoTitle: "AFTERMOVIE BARRIOS LATINOS",
+    vimeoDesktop: ["https://player.vimeo.com/video/1212204300?badge=0&autopause=0&player_id=0&app_id=58479"],
+    vimeoMobile: ["https://player.vimeo.com/video/1212204300?badge=0&autopause=0&player_id=0&app_id=58479"],
     deskCover: [A("/assets/proyects/videos/thumbnailDesktop/others/cnp-Cover.jpg")],
     cover: [A("/assets/proyects/videos/thumbnail/others/cnp-Cover.png")],
     videoFill: [true],
@@ -46,7 +46,8 @@ export const CNP_PROJECTS = [
     deskCover: [A("/assets/proyects/videos/thumbnailDesktop/barrios/barrios-1.jpg"), A("/assets/proyects/videos/thumbnailDesktop/barrios/barrios-2.jpg")],
     cover: [A("/assets/proyects/videos/thumbnail/barrios/barrios-1.jpg"), A("/assets/proyects/videos/thumbnail/barrios/barrios-2.jpg")],
     videoFill: [true, true],
-    
+        vimeoDesktop: [""],
+    vimeoMobile: [""],
     // palette
     bg: "#FFEA2E",
     fg: "#000000",
@@ -74,7 +75,8 @@ export const CNP_PROJECTS = [
     videoMobil : [A("/assets/proyects/videos/sams/Mobil/9X16_Preventa_Sams.mp4"),A("/assets/proyects/videos/sams/Mobil/9X16_Livestream_Sams.mp4"),A("/assets/proyects/videos/sams/Mobil/9X16_Warmup_Sams.mp4"),A("/assets/proyects/videos/sams/SamsBotanas.mp4")],
     videoFill: [true, true, true, true],
     deskCover: [A("/assets/proyects/videos/thumbnailDesktop/sams/sams-1.jpg"), A("/assets/proyects/videos/thumbnailDesktop/sams/sams-2.jpg"), A("/assets/proyects/videos/thumbnailDesktop/sams/sams-3.jpg"), A("/assets/proyects/videos/thumbnailDesktop/sams/sams-4.jpg")],
-
+        vimeoDesktop: [""],
+    vimeoMobile: [""],
     cover: [A("/assets/proyects/videos/thumbnail/sams/sams-4.jpg"), A("/assets/proyects/videos/thumbnail/sams/sams-1.jpg"), A("/assets/proyects/videos/thumbnail/sams/sams-3.jpg"), A("/assets/proyects/videos/thumbnail/sams/sams-2.jpg")],
     
     bg: "#3979FB",
@@ -104,7 +106,8 @@ export const CNP_PROJECTS = [
     videoMobil: [A("/assets/proyects/videos/femenine/mobile/9X16_Femenine_TVC.mp4"), A("/assets/proyects/videos/femenine/mobile/19X6_Femenine_Image.jpg"), A("/assets/proyects/videos/femenine/Femenine_Eva1.mp4"), A("/assets/proyects/videos/femenine/Femenine_Eva2.mp4"), A("/assets/proyects/videos/femenine/mobile/9X16_Femenine_Stand.mp4")],
     videoFill: [true, true, true, true, true, true],
     deskCover: [A("/assets/proyects/videos/thumbnailDesktop/depend/depend-1.jpg"), "", A("/assets/proyects/videos/thumbnailDesktop/depend/depend-2.jpg"), A("/assets/proyects/videos/thumbnailDesktop/depend/depend-3.jpg"), A("/assets/proyects/videos/thumbnailDesktop/depend/depend-4.jpg")],
-
+        vimeoDesktop: [""],
+    vimeoMobile: [""],
     cover: [A("/assets/proyects/videos/thumbnail/depend/depend-1.jpg"), "", A("/assets/proyects/videos/thumbnail/depend/depend-2.jpg"), A("/assets/proyects/videos/thumbnail/depend/depend-3.jpg"), A("/assets/proyects/videos/thumbnail/depend/depend-4.jpg")],
     bg: "#CB6CE6",
     fg: "#ffffff",
@@ -132,6 +135,8 @@ export const CNP_PROJECTS = [
     videoMobil: [A("/assets/proyects/videos/COSTA.mp4")],
     videoFill: [true],
     deskCover: [A("/assets/proyects/videos/thumbnailDesktop/others/costa-Cover.jpg")],
+            vimeoDesktop: [""],
+    vimeoMobile: [""],
     cover: [A("/assets/proyects/videos/thumbnail/others/costa-Cover.jpg")],
     bg: "#F38CE5",
     fg: "#ffffff",
@@ -152,7 +157,8 @@ export const CNP_PROJECTS = [
     year: "2024",
     img: A("/assets/proyects/axe.png"),
     logo: A("/assets/proyects/logos/Logo_AxessbyAxe.png"),
-    
+            vimeoDesktop: [""],
+    vimeoMobile: [""],
     video: [A("/assets/proyects/videos/AXESS.mp4")],
     videoMobil: [A("/assets/proyects/videos/AXESS.mp4")],
     videoFill: [true],

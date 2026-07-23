@@ -148,10 +148,20 @@ function ProjectModal({ project, onClose }) {
   const [videoPlaying, setVideoPlaying] = useState(false);
   const [videoIndex, setVideoIndex] = useState(0);
   const { isMobile, isTrueMobile } = useViewport();
-  const videoSources =
-    isMobile && project?.videoMobil?.length
+  const vimeoSources =
+    isMobile && project?.vimeoMobile?.length
+      ? project.vimeoMobile
+      : project?.vimeoDesktop;
+  const hasVimeoSource =
+    Array.isArray(vimeoSources) &&
+    typeof vimeoSources[0] === "string" &&
+    vimeoSources[0].trim() !== "";
+  const videoSources = hasVimeoSource
+    ? vimeoSources
+    : isMobile && project?.videoMobil?.length
       ? project.videoMobil
       : project?.video;
+  const mediaCount = videoSources?.length ?? 0;
 
   const handleClose = useCallback(() => {
     setClosing(true);
@@ -173,6 +183,10 @@ function ProjectModal({ project, onClose }) {
   useEffect(() => {
     setVideoIndex(0);
   }, [project?.id, isMobile]);
+
+  useEffect(() => {
+    if (hasVimeoSource) setVideoPlaying(false);
+  }, [hasVimeoSource, videoIndex]);
 
   if (!project) return null;
 
@@ -205,7 +219,7 @@ function ProjectModal({ project, onClose }) {
         }}
       >
         <div style={{ display: "flex", flexDirection: "row", gap: "12px" }}>
-          {videoSources.length > 1 && (
+          {mediaCount > 1 && (
             <>
               <button
                 className="player__buttons "
@@ -218,7 +232,7 @@ function ProjectModal({ project, onClose }) {
                 onClick={(e) => {
                   setVideoIndex(
                     (prev) =>
-                      (prev - 1 + videoSources.length) % videoSources.length,
+                      (prev - 1 + mediaCount) % mediaCount,
                   );
                 }}
               >
@@ -238,7 +252,7 @@ function ProjectModal({ project, onClose }) {
                   zIndex: playerButtonsZIndex,
                 }}
                 onClick={(e) => {
-                  setVideoIndex((prev) => (prev + 1) % videoSources.length);
+                  setVideoIndex((prev) => (prev + 1) % mediaCount);
                 }}
               >
                 <img
@@ -272,7 +286,18 @@ function ProjectModal({ project, onClose }) {
       >
         {/* Background video fills entire modal */}
         <div key={project.id}>
-          {project.cover[videoIndex] !== "" ? (
+          {hasVimeoSource ? (
+            <div className="modal__bg-video">
+              <iframe
+                src={videoSources[videoIndex]}
+                frameBorder="0"
+                allow="autoplay; fullscreen; cover; clipboard-write; encrypted-media; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                title={`${project.name} Vimeo ${videoIndex + 1}`}
+                allowFullScreen
+              />
+            </div>
+          ) : project.cover[videoIndex] !== "" ? (
             <VideoPlayer
               key={videoIndex}
               src={videoSources[videoIndex]}
