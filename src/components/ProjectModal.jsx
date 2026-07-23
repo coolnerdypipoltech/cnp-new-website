@@ -2,6 +2,52 @@
 import React, { useRef, useState, useCallback, useEffect } from "react";
 import { useViewport } from "../context/ViewportContext";
 
+let vimeoPlayerApiPromise = null;
+
+function loadVimeoPlayerApi() {
+  if (typeof window === "undefined") return Promise.reject(new Error("No window"));
+  if (window.Vimeo?.Player) return Promise.resolve(window.Vimeo.Player);
+  if (!vimeoPlayerApiPromise) {
+    vimeoPlayerApiPromise = new Promise((resolve, reject) => {
+      const existingScript = document.querySelector(
+        'script[src="https://player.vimeo.com/api/player.js"]',
+      );
+
+      if (existingScript) {
+        existingScript.addEventListener("load", () => resolve(window.Vimeo.Player), {
+          once: true,
+        });
+        existingScript.addEventListener("error", reject, { once: true });
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = "https://player.vimeo.com/api/player.js";
+      script.async = true;
+      script.onload = () => resolve(window.Vimeo.Player);
+      script.onerror = reject;
+      document.body.appendChild(script);
+    });
+  }
+
+  return vimeoPlayerApiPromise;
+}
+
+function buildVimeoSrc(src) {
+  try {
+    const url = new URL(src);
+    url.searchParams.set("controls", "0");
+    url.searchParams.set("title", "0");
+    url.searchParams.set("byline", "0");
+    url.searchParams.set("portrait", "0");
+    url.searchParams.set("dnt", "1");
+    url.searchParams.set("playsinline", "1");
+    return url.toString();
+  } catch {
+    return src;
+  }
+}
+
 function VideoPlayer({
   src,
   title,
@@ -138,6 +184,252 @@ function VideoPlayer({
           {playing ? "Pausa" : "Play"}
         </div>
       )}
+    </div>
+  );
+}
+
+function VimeoPlayer({ src, title, onPlayingChange }) {
+  const iframeRef = useRef(null);
+  const playerRef = useRef(null);
+  const [playing, setPlaying] = useState(false);
+  const [muted, setMuted] = useState(false);
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    let player = null;
+
+    setPlaying(false);
+    setMuted(false);
+    setDuration(0);
+    setCurrentTime(0);
+    setReady(false);
+    onPlayingChange?.(false);
+
+    loadVimeoPlayerApi()
+      .then((Player) => {
+        if (cancelled || !iframeRef.current) return;
+
+        player = new Player(iframeRef.current);
+        playerRef.current = player;
+
+        player.on("play", () => {
+          setPlaying(true);
+          onPlayingChange?.(true);
+        });
+        player.on("pause", () => {
+          setPlaying(false);
+          onPlayingChange?.(false);
+        });
+        player.on("ended", () => {
+          setPlaying(false);
+          onPlayingChange?.(false);
+          setCurrentTime(0);
+        });
+        player.on("timeupdate", (data) => {
+          setCurrentTime(data.seconds || 0);
+          if (data.duration) setDuration(data.duration);
+        });
+        player.on("volumechange", (data) => {
+          setMuted(Boolean(data?.muted));
+        });
+
+        return Promise.all([
+          player.getMuted(),
+          player.getDuration().catch(() => 0),
+          player.getCurrentTime().catch(() => 0),
+        ]).then(([isMuted, totalDuration, seconds]) => {
+          if (cancelled) return;
+          setMuted(Boolean(isMuted));
+          setDuration(totalDuration || 0);
+          setCurrentTime(seconds || 0);
+          setReady(true);
+        });
+      })
+      .catch(() => {
+        if (!cancelled) setReady(true);
+      });
+
+    return () => {
+      cancelled = true;
+      if (playerRef.current) {
+        playerRef.current.destroy?.();
+        playerRef.current = null;
+      }
+    };
+  }, [onPlayingChange, src]);
+
+  const togglePlay = useCallback(() => {
+    const player = playerRef.current;
+    if (!player) return;
+    if (playing) {
+      player.pause().catch(() => {});
+    } else {
+      player.play().catch(() => {});
+    }
+  }, [playing]);
+
+  const toggleMute = useCallback(() => {
+    const player = playerRef.current;
+    if (!player) return;
+    player.setMuted(!muted).catch(() => {});
+    setMuted((prev) => !prev);
+  }, [muted]);
+
+  const handleSeek = useCallback(
+    (e) => {
+      const nextTime = Number(e.target.value);
+      const player = playerRef.current;
+      setCurrentTime(nextTime);
+      if (!player) return;
+      player.setCurrentTime(nextTime).catch(() => {});
+    },
+    [],
+  );
+
+  const toggleFullscreen = useCallback(() => {
+    const player = playerRef.current;
+    if (!player) return;
+    player.getFullscreen().then((isFullscreen) => {
+      if (isFullscreen) {
+        player.exitFullscreen().catch(() => {});
+      } else {
+        player.requestFullscreen().catch(() => {});
+      }
+    });
+  }, []);
+
+  const progress = duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0;
+
+  return (
+    <div className="modal__bg-video">
+      <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
+        <iframe
+          ref={iframeRef}
+          src={buildVimeoSrc(src)}
+          frameBorder="0"
+          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          title={title}
+          allowFullScreen
+          style={{ width: "100%", height: "100%", border: 0, display: "block" }}
+        />
+
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            top: "auto",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            padding: "10px 12px",
+            background:
+              "linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.64) 45%, rgba(0,0,0,0) 100%)",
+            color: "#fff",
+            zIndex: 12,
+            pointerEvents: "auto",
+          }}
+        >
+        <button
+          type="button"
+          onClick={togglePlay}
+          aria-label={playing ? "Pausa" : "Play"}
+          style={{
+            width: "32px",
+            height: "32px",
+            borderRadius: "999px",
+            border: "1px solid rgba(255,255,255,0.28)",
+            background: "rgba(255,255,255,0.12)",
+            color: "#fff",
+            display: "grid",
+            placeItems: "center",
+            cursor: "pointer",
+            flex: "0 0 auto",
+            fontSize: "12px",
+          }}
+        >
+          {playing ? "II" : "▶"}
+        </button>
+
+        <input
+          type="range"
+          min="0"
+          max={duration || 0}
+          step="0.1"
+          value={currentTime}
+          onChange={handleSeek}
+          aria-label="Progreso"
+          style={{
+            flex: "1 1 auto",
+            accentColor: "#fff",
+            cursor: "pointer",
+            height: "4px",
+            borderRadius: "999px",
+            background: `linear-gradient(to right, #fff 0%, #fff ${progress}%, rgba(255,255,255,0.28) ${progress}%, rgba(255,255,255,0.28) 100%)`,
+          }}
+        />
+
+        <button
+          type="button"
+          onClick={toggleMute}
+          aria-label={muted ? "Activar sonido" : "Silenciar"}
+          style={{
+            minWidth: "32px",
+            height: "32px",
+            borderRadius: "999px",
+            border: "1px solid rgba(255,255,255,0.28)",
+            background: "rgba(255,255,255,0.12)",
+            color: "#fff",
+            cursor: "pointer",
+            flex: "0 0 auto",
+            fontSize: "12px",
+          }}
+        >
+          {muted ? "MUTE" : "VOL"}
+        </button>
+
+        <button
+          type="button"
+          onClick={toggleFullscreen}
+          aria-label="Pantalla completa"
+          style={{
+            minWidth: "32px",
+            height: "32px",
+            borderRadius: "999px",
+            border: "1px solid rgba(255,255,255,0.28)",
+            background: "rgba(255,255,255,0.12)",
+            color: "#fff",
+            cursor: "pointer",
+            flex: "0 0 auto",
+            fontSize: "12px",
+          }}
+        >
+          ⤢
+        </button>
+        </div>
+
+        {!ready && (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "grid",
+              placeItems: "center",
+              color: "#fff",
+              background: "rgba(0,0,0,0.12)",
+              zIndex: 8,
+              pointerEvents: "none",
+            }}
+          >
+            Loading
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -287,16 +579,11 @@ function ProjectModal({ project, onClose }) {
         {/* Background video fills entire modal */}
         <div key={project.id}>
           {hasVimeoSource ? (
-            <div className="modal__bg-video">
-              <iframe
-                src={videoSources[videoIndex]}
-                frameBorder="0"
-                allow="autoplay; fullscreen; cover; clipboard-write; encrypted-media; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                title={`${project.name} Vimeo ${videoIndex + 1}`}
-                allowFullScreen
-              />
-            </div>
+            <VimeoPlayer
+              src={videoSources[videoIndex]}
+              title={`${project.name} Vimeo ${videoIndex + 1}`}
+              onPlayingChange={setVideoPlaying}
+            />
           ) : project.cover[videoIndex] !== "" ? (
             <VideoPlayer
               key={videoIndex}

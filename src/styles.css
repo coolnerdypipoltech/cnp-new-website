@@ -760,13 +760,19 @@ a { color: inherit; cursor:none; }
 }
 .modal__bg-video iframe {
   width: 100vw;
-  height: 56.25vw; /* Given a 16:9 aspect ratio, 9/16*100 = 56.25 */
-  min-height: 100vh;
-  min-width: 177.77vh; /* Given a 16:9 aspect ratio, 16/9*100 = 177.77 */
-  position: absolute;
+  height: 56.25vw;
+  /*Givena16:;
+  9aspectratio,9/16*100=56.25*/min-height: 100vh;
+  min-width: 177.77vh;
+  /*Givena16:;
+  9aspectratio,16/9*100=177.77*/position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
 }
 
 /* Close button — top left floating */
