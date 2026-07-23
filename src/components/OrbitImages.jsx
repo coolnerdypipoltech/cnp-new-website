@@ -109,24 +109,24 @@ function HoverImage({ imgA, imgB, alt, text, onHover, onLeave }) {
             className="social-btn__tag"
             style={{
               position: "relative",
-              background: "#00ABFF",
+              border: "1px solid #00ABFF",
               display: "flex",
-              top: "30px",
+              top: "40px",
               alignSelf: "center",
               justifyContent: "center",
               alignItems: "center",
               padding: "4px 8px",
               paddingTop: "6px",
               marginLeft: "2px",
-              borderRadius: "16px",
+              borderRadius: "64px",
               flexDirection: "column",
               color: "var(--cnp-white)",
               width: "auto",
             }}
           >
             <span
-              className="horizon"
-              style={{ textAlign: "center", fontSize: "12px", width: text === "Our curated playlist" ? "140px" : "auto",  }}
+              className="montserrat"
+              style={{ textAlign: "center", color: "black", fontSize: "12px", width: text === "Our curated playlist" ? "140px" : "auto",  }}
             >
               {text}
             </span>
@@ -146,23 +146,23 @@ function HoverImage({ imgA, imgB, alt, text, onHover, onLeave }) {
             className="social-btn__tag"
             style={{
               position: "relative",
-              background: "#00ABFF",
+              
               display: "flex",
               top: "200px",
               alignSelf: "center",
               justifyContent: "center",
               alignItems: "center",
-              
+              border: "1px solid #00ABFF",
            
-              borderRadius: "16px",
+              borderRadius: "64px",
               flexDirection: "column",
               color: "var(--cnp-white)",
               width: "100%",
             }}
           >
             <span
-              className="horizon"
-              style={{ textAlign: "center", fontSize: "38px", width:  "100%", padding: "20px"  }}
+              className="montserrat"
+              style={{ textAlign: "center", fontSize: "28px", width:  "100%", padding: "20px", color: "black", fontWeight: "500" }}
             >
               {text}
             </span>

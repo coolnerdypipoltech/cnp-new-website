@@ -77,6 +77,14 @@ h1, h2, h3, h4 { margin: 0; }
 }
 
 
+.montserrat {
+  font-family: var(--font-body);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 0.96;
+}
+
 
 .eyebrow {
   font-family: var(--font-body);
@@ -545,7 +553,8 @@ a { color: inherit; cursor:none; }
     height: 35vh;
     margin-bottom: 3vh;
     margin-top: 6vh;
-    
+    position: relative;
+    top: 30px;
   }
 
   .proy__art img {
@@ -759,14 +768,16 @@ a { color: inherit; cursor:none; }
   z-index: 0;
 }
 .modal__bg-video iframe {
-  width: 100vw;
-  height: 56.25vw; /* Given a 16:9 aspect ratio, 9/16*100 = 56.25 */
-  min-height: 100vh;
-  min-width: 177.77vh; /* Given a 16:9 aspect ratio, 16/9*100 = 177.77 */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+
+  width: 100%;
+  height: 90%;
+}
+
+@media (max-width: 800px) {
+  .modal__bg-video iframe {
+      width: 100%;
+  height: 100%;
+  }
 }
 
 /* Close button — top left floating */
@@ -1012,14 +1023,14 @@ a { color: inherit; cursor:none; }
 }
 
 .fluid-canvas{
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   display: block;
 }
 
 @media (min-width: 1535px) {
   .services {   height: calc(100dvh + 200px);}
-  .fluid-canvas{ height: calc(100dvh + 200px);}
+  .fluid-canvas{ height: 100%;}
 }
 
 
