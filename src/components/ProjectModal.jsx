@@ -825,13 +825,23 @@ function ProjectModal({ project, onClose }) {
                       <button
                         className="modal__close "
                         style={{
-                          background: project.bg,
+                          background: "#00000050",
                           width: "30px",
                           height: "30px",
+                          position: "relative",
+                          left: "-20px",
+                          top: "0px",
+                          color: "white",
+                          border: "white 1px solid",
+                          fontFamily: "var(--font-body)",
+                          fontWeight: 700,
+                          fontSize: "15px",
+                          letterSpacing: "0.0em",
+                          textTransform: "uppercase",
                         }}
                         onClick={() => setActivePanel(null)}
                       >
-                        X
+                        <div style={{position: "relative", top: "-1px", left: "0.5px"}}>X</div>
                       </button>
                     </div>
                     <span className="eyebrow modal__lab">Our work</span>
@@ -892,13 +902,23 @@ function ProjectModal({ project, onClose }) {
                       <button
                         className="modal__close "
                         style={{
-                          background: project.bg,
+                          background: "#00000050",
                           width: "30px",
                           height: "30px",
+                          position: "relative",
+                          left: "-0px",
+                          top: "0px",
+                          color: "white",
+                          border: "white 1px solid",
+                          fontFamily: "var(--font-body)",
+                          fontWeight: 700,
+                          fontSize: "15px",
+                          letterSpacing: "0.0em",
+                          textTransform: "uppercase",
                         }}
                         onClick={() => setActivePanel(null)}
                       >
-                        X
+                        <div style={{position: "relative", top: "-1px", left: "-0.5px"}}>X</div>
                       </button>
                     </div>
                   <span className="eyebrow modal__lab">We worked on the</span>

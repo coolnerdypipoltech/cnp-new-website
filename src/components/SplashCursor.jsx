@@ -17,7 +17,8 @@ function SplashCursor({
   BACK_COLOR = { r: 0.5, g: 0, b: 0 },
   TRANSPARENT = true,
   RAINBOW_MODE = true,
-  COLOR = '#ff0000'
+  COLOR = '#ff0000',
+  boundsRef = null
 }) {
   const canvasRef = useRef(null);
   const animationFrameId = useRef(null);
@@ -924,6 +925,17 @@ function SplashCursor({
       return Math.floor(input * pixelRatio);
     }
 
+    function getPointerPositionInCanvas(clientX, clientY) {
+      const rect = canvas.getBoundingClientRect();
+      const x = ((clientX - rect.left) * canvas.width) / rect.width;
+      const y = ((clientY - rect.top) * canvas.height) / rect.height;
+
+      return {
+        x: Math.max(0, Math.min(canvas.width, x)),
+        y: Math.max(0, Math.min(canvas.height, y))
+      };
+    }
+
     function hashCode(s) {
       if (s.length === 0) return 0;
       let hash = 0;
@@ -936,8 +948,7 @@ function SplashCursor({
 
     function handleMouseDown(e) {
       let pointer = pointers[0];
-      let posX = scaleByPixelRatio(e.clientX);
-      let posY = scaleByPixelRatio(e.clientY);
+      const { x: posX, y: posY } = getPointerPositionInCanvas(e.clientX, e.clientY);
       updatePointerDownData(pointer, -1, posX, posY);
       clickSplat(pointer);
     }
@@ -945,8 +956,7 @@ function SplashCursor({
     let firstMouseMoveHandled = false;
     function handleMouseMove(e) {
       let pointer = pointers[0];
-      let posX = scaleByPixelRatio(e.clientX);
-      let posY = scaleByPixelRatio(e.clientY);
+      const { x: posX, y: posY } = getPointerPositionInCanvas(e.clientX, e.clientY);
       if (!firstMouseMoveHandled) {
         let color = generateColor();
         updatePointerMoveData(pointer, posX, posY, color);
@@ -960,8 +970,7 @@ function SplashCursor({
       const touches = e.targetTouches;
       let pointer = pointers[0];
       for (let i = 0; i < touches.length; i++) {
-        let posX = scaleByPixelRatio(touches[i].clientX);
-        let posY = scaleByPixelRatio(touches[i].clientY);
+        const { x: posX, y: posY } = getPointerPositionInCanvas(touches[i].clientX, touches[i].clientY);
         updatePointerDownData(pointer, touches[i].identifier, posX, posY);
       }
     }
@@ -970,8 +979,7 @@ function SplashCursor({
       const touches = e.targetTouches;
       let pointer = pointers[0];
       for (let i = 0; i < touches.length; i++) {
-        let posX = scaleByPixelRatio(touches[i].clientX);
-        let posY = scaleByPixelRatio(touches[i].clientY);
+        const { x: posX, y: posY } = getPointerPositionInCanvas(touches[i].clientX, touches[i].clientY);
         updatePointerMoveData(pointer, posX, posY, pointer.color);
       }
     }
@@ -984,11 +992,13 @@ function SplashCursor({
       }
     }
 
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('touchstart', handleTouchStart);
-    window.addEventListener('touchmove', handleTouchMove, false);
-    window.addEventListener('touchend', handleTouchEnd);
+    const interactionElement = boundsRef && boundsRef.current ? boundsRef.current : window;
+
+    interactionElement.addEventListener('mousedown', handleMouseDown);
+    interactionElement.addEventListener('mousemove', handleMouseMove);
+    interactionElement.addEventListener('touchstart', handleTouchStart);
+    interactionElement.addEventListener('touchmove', handleTouchMove, false);
+    interactionElement.addEventListener('touchend', handleTouchEnd);
 
     updateFrame();
 
@@ -998,11 +1008,11 @@ function SplashCursor({
         cancelAnimationFrame(animationFrameId.current);
         animationFrameId.current = null;
       }
-      window.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleTouchEnd);
+      interactionElement.removeEventListener('mousedown', handleMouseDown);
+      interactionElement.removeEventListener('mousemove', handleMouseMove);
+      interactionElement.removeEventListener('touchstart', handleTouchStart);
+      interactionElement.removeEventListener('touchmove', handleTouchMove);
+      interactionElement.removeEventListener('touchend', handleTouchEnd);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

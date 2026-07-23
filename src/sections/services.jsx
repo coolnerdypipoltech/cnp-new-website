@@ -173,7 +173,7 @@ function Services() {
       data-screen-label="Services"
       ref={sectionRef}
     >
-      {visible && !isTrueMobile && <SplashCursor />}
+      {visible && !isTrueMobile && <SplashCursor boundsRef={sectionRef} />}
 
       {/* 8-ball overlay */}
       {ballStage && (
