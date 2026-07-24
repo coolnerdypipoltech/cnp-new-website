@@ -1,7 +1,7 @@
 // ── Inline SVG icons (React-safe; no DOM mutation) ────────────────
 import React, { useRef, useState, useCallback, useEffect } from "react";
 import { useViewport } from "../context/ViewportContext";
-
+import { useVimeo } from "../context/VimeoContext";
 let vimeoPlayerApiPromise = null;
 
 function loadVimeoPlayerApi() {
@@ -188,7 +188,7 @@ function VideoPlayer({
   );
 }
 
-function VimeoPlayer({ src, title, onPlayingChange, id }) {
+function VimeoPlayer({ src, title, onPlayingChange, id, fullModal }) {
   const iframeRef = useRef(null);
   const playerRef = useRef(null);
   const containerRef = useRef(null);
@@ -199,11 +199,11 @@ function VimeoPlayer({ src, title, onPlayingChange, id }) {
   const [ready, setReady] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isIPhone, setIsIPhone] = useState(false);
-
+  const { setIsFullscreenVimeo } = useVimeo();
   useEffect(() => {
     if (typeof navigator === "undefined") return;
     const ua = navigator.userAgent || "";
-    setIsIPhone(/iPhone|iPod/i.test(ua));
+    setIsIPhone(true);
   }, []);
 
   useEffect(() => {
@@ -286,6 +286,62 @@ function VimeoPlayer({ src, title, onPlayingChange, id }) {
     };
   }, []);
 
+
+
+  useEffect(() => {
+    if(isIPhone){
+      setIsFullscreenVimeo(isFullscreen);
+    }
+    const modalElement = containerRef.current?.closest(".modal--h");
+    const modalElement2 = containerRef.current?.closest(".modal-container");
+    const modalElement3 = containerRef.current?.closest(".modal-container2");
+    const elements = [modalElement, modalElement2, modalElement3].filter(Boolean);
+    if (elements.length === 0) return;
+
+    if (isIPhone && isFullscreen) {
+      elements.forEach((el) => el.classList.add("modal--h--iphone-fullscreen"));
+    } else {
+      elements.forEach((el) => el.classList.remove("modal--h--iphone-fullscreen"));
+    }
+
+    return () => {
+      elements.forEach((el) => el.classList.remove("modal--h--iphone-fullscreen"));
+    };
+  }, [isIPhone, isFullscreen]);
+
+  useEffect(() => {
+    if (!(isIPhone && isFullscreen)) return;
+
+    const html = document.documentElement;
+    const body = document.body;
+
+    const previousHtmlOverflow = html.style.overflow;
+    const previousHtmlTouchAction = html.style.touchAction;
+    const previousHtmlOverscroll = html.style.overscrollBehavior;
+
+    const previousBodyOverflow = body.style.overflow;
+    const previousBodyTouchAction = body.style.touchAction;
+    const previousBodyOverscroll = body.style.overscrollBehavior;
+
+    html.style.overflow = "hidden";
+    html.style.touchAction = "none";
+    html.style.overscrollBehavior = "none";
+
+    body.style.overflow = "hidden";
+    body.style.touchAction = "none";
+    body.style.overscrollBehavior = "none";
+
+    return () => {
+      html.style.overflow = previousHtmlOverflow;
+      html.style.touchAction = previousHtmlTouchAction;
+      html.style.overscrollBehavior = previousHtmlOverscroll;
+
+      body.style.overflow = previousBodyOverflow;
+      body.style.touchAction = previousBodyTouchAction;
+      body.style.overscrollBehavior = previousBodyOverscroll;
+    };
+  }, [isIPhone, isFullscreen]);
+
   const togglePlay = useCallback(() => {
     const player = playerRef.current;
     if (!player) return;
@@ -315,49 +371,27 @@ function VimeoPlayer({ src, title, onPlayingChange, id }) {
   );
 
   const toggleFullscreen = useCallback(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const fullscreenElement =
-      document.fullscreenElement || document.webkitFullscreenElement;
-    const requestFullscreen =
-      container.requestFullscreen || container.webkitRequestFullscreen;
-    const exitFullscreen =
-      document.exitFullscreen || document.webkitExitFullscreen;
-
-    // Prefer native fullscreen in all browsers (including iOS Safari when available).
-    if (fullscreenElement === container) {
-      if (typeof exitFullscreen === "function") {
-        const exitResult = exitFullscreen.call(document);
-        exitResult?.catch?.(() => {});
-      }
-      return;
-    }
-
-    if (typeof requestFullscreen === "function") {
-      const requestResult = requestFullscreen.call(container);
-      requestResult?.catch?.(() => {
-        if (isIPhone) setIsFullscreen((prev) => !prev);
-      });
-      return;
-    }
-
     if (isIPhone) {
       setIsFullscreen((prev) => !prev);
+      return;
+    }
+
+    const element = containerRef.current;
+    if (!element) return;
+
+    const activeElement = document.fullscreenElement || document.webkitFullscreenElement;
+    if (activeElement === element) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      } else {
+        document.webkitExitFullscreen?.();
+      }
+    } else if (element.requestFullscreen) {
+      element.requestFullscreen().catch(() => {});
+    } else {
+      element.webkitRequestFullscreen?.();
     }
   }, [isIPhone]);
-
-  const fullscreenContainerStyle =
-    isIPhone && isFullscreen
-      ? {
-          position: "fixed",
-          inset: 0,
-          width: "100vw",
-          height: "100dvh",
-          background: "#000",
-          zIndex: 2147483647,
-        }
-      : null;
 
   const progress = duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0;
 
@@ -370,7 +404,6 @@ function VimeoPlayer({ src, title, onPlayingChange, id }) {
           width: "100%",
           height: "100%",
           overflow: "hidden",
-          ...fullscreenContainerStyle,
         }}
       >
         <iframe
@@ -382,7 +415,7 @@ function VimeoPlayer({ src, title, onPlayingChange, id }) {
           referrerPolicy="strict-origin-when-cross-origin"
           title={title}
           allowFullScreen
-          style={{ width: "100%", height: "100%", border: 0, display: "block" }}
+          style={{ width: "100%", height:  isFullscreen && !fullModal ? "56.25vw" : "100%", minHeight: isFullscreen && !fullModal  ? "0%" : "auto", border: 0, display: "block" }}
         />
 
         <button
@@ -415,7 +448,7 @@ function VimeoPlayer({ src, title, onPlayingChange, id }) {
             position: "absolute",
             left: 0,
             right: 0,
-            bottom: id === "cnp" ? "0px" : isFullscreen ? "0px" : "60px",
+            bottom: id === "cnp" ? "0px" : isFullscreen ? "0px" : "55px",
             top: "auto",
             display: "flex",
             alignItems: "center",
@@ -541,6 +574,7 @@ function ProjectModal({ project, onClose }) {
   const [videoPlaying, setVideoPlaying] = useState(false);
   const [videoIndex, setVideoIndex] = useState(0);
   const { isMobile, isTrueMobile } = useViewport();
+  const { isFullscreenVimeo } = useVimeo();
   const vimeoSources =
     isMobile && project?.vimeoMobile?.length
       ? project.vimeoMobile
@@ -609,6 +643,7 @@ function ProjectModal({ project, onClose }) {
           position: "absolute",
           width: "90%",
           top: "calc(5dvh - 18px)",
+          
         }}
       >
         <div style={{ display: "flex", flexDirection: "row", gap: "12px" }}>
@@ -678,9 +713,9 @@ function ProjectModal({ project, onClose }) {
         }}
       >
         {/* Background video fills entire modal */}
-        <div key={project.id} style={{ position: "relative", width: "100%", height: "100%" }}>
+        <div key={project.id} style={{ position: "relative", width: "100%", height: "100%" }} className="modal-container">
           {hasVimeoSource ? (
-            <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"  }} className="modal-container2">
             {
               project.cover[videoIndex] === "" ? (<img
               loading="lazy"
@@ -691,9 +726,9 @@ function ProjectModal({ project, onClose }) {
                 height: "100%",
                 objectFit: isMobile
                   ? project.videoFill[videoIndex]
-                    ? "cover"
+                    ? "contain"
                     : "contain"
-                  : "cover",
+                  : "contain",
               }}
             />) : (<VimeoPlayer
               key={`${project.id}-${isMobile ? "mobile" : "desktop"}-${videoIndex}`}
@@ -701,6 +736,7 @@ function ProjectModal({ project, onClose }) {
               title={`${project.name} Vimeo ${videoIndex + 1}`}
               onPlayingChange={setVideoPlaying}
               id={project.id}
+              fullModal={project.vimeoFill[videoIndex]}
             />)
             }
             </div>
@@ -750,7 +786,7 @@ function ProjectModal({ project, onClose }) {
         </div>
 
         {/* Bottom buttons */}
-        {project.id !== "cnp" && (
+        {!isFullscreenVimeo && project.id !== "cnp" && (
           <div className="modal__btns">
             {/* El Brief */}
             <div

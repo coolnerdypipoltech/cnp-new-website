@@ -21,6 +21,7 @@ export const CNP_PROJECTS = [
     deskCover: [A("/assets/proyects/videos/thumbnailDesktop/others/cnp-Cover.jpg")],
     cover: [A("/assets/proyects/videos/thumbnail/others/cnp-Cover.png")],
     videoFill: [true],
+    vimeoFill: [false],
     // palette
     bg: "#00BF63",
     fg: "#000000",
@@ -46,6 +47,7 @@ export const CNP_PROJECTS = [
     deskCover: [A("/assets/proyects/videos/thumbnailDesktop/barrios/barrios-1.jpg"), A("/assets/proyects/videos/thumbnailDesktop/barrios/barrios-2.jpg")],
     cover: [A("/assets/proyects/videos/thumbnail/barrios/barrios-1.jpg"), A("/assets/proyects/videos/thumbnail/barrios/barrios-2.jpg")],
     videoFill: [true, true],
+    vimeoFill: [true, true],
         vimeoDesktop: ["https://player.vimeo.com/video/1212204300?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479", "https://player.vimeo.com/video/1212220175?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"],
     vimeoMobile: ["https://player.vimeo.com/video/1212224575?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479","https://player.vimeo.com/video/1212225897?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"],
     // palette
@@ -78,7 +80,7 @@ export const CNP_PROJECTS = [
         vimeoDesktop: ["https://player.vimeo.com/video/1212221852?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479", "https://player.vimeo.com/video/1212222801?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479", "https://player.vimeo.com/video/1212223626?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479", "https://player.vimeo.com/video/1212399709?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"],
     vimeoMobile: ["https://player.vimeo.com/video/1212226824?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479", "https://player.vimeo.com/video/1212227402?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479", "https://player.vimeo.com/video/1212228898?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479", "https://player.vimeo.com/video/1212399709?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"],
     cover: [A("/assets/proyects/videos/thumbnail/sams/sams-4.jpg"), A("/assets/proyects/videos/thumbnail/sams/sams-1.jpg"), A("/assets/proyects/videos/thumbnail/sams/sams-3.jpg"), A("/assets/proyects/videos/thumbnail/sams/sams-2.jpg")],
-    
+    vimeoFill: [true, true, true, true],
     bg: "#3979FB",
     fg: "#ffffff",
     accent: "#820cea",
@@ -108,7 +110,7 @@ export const CNP_PROJECTS = [
     deskCover: [A("/assets/proyects/videos/thumbnailDesktop/depend/depend-1.jpg"), A("/assets/proyects/videos/thumbnailDesktop/depend/depend-5.jpg"),  "",  A("/assets/proyects/videos/thumbnailDesktop/depend/depend-2.jpg"), A("/assets/proyects/videos/thumbnailDesktop/depend/depend-3.jpg"), A("/assets/proyects/videos/thumbnailDesktop/depend/depend-4.jpg")],
     vimeoDesktop: ["https://player.vimeo.com/video/1212229944?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479", "https://player.vimeo.com/video/1212233508?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479", A("/assets/proyects/videos/femenine/desktop/16X9_Femenine_Image.jpg"), "https://player.vimeo.com/video/1212230993?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479", "https://player.vimeo.com/video/1212231408?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479", "https://player.vimeo.com/video/1212233923?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"],
     vimeoMobile: ["https://player.vimeo.com/video/1212235354?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479", "https://player.vimeo.com/video/1212233508?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479", A("/assets/proyects/videos/femenine/mobile/19X6_Femenine_Image.jpg"), "https://player.vimeo.com/video/1212230993?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479", "https://player.vimeo.com/video/1212231408?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479", "https://player.vimeo.com/video/1212236149?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"],
-    
+    vimeoFill: [true, false, false, false, false, true],
     cover: [A("/assets/proyects/videos/thumbnail/depend/depend-1.jpg"), A("/assets/proyects/videos/thumbnail/depend/depend-5.jpg"),   "", A("/assets/proyects/videos/thumbnail/depend/depend-2.jpg"), A("/assets/proyects/videos/thumbnail/depend/depend-3.jpg"), A("/assets/proyects/videos/thumbnail/depend/depend-4.jpg")],
     bg: "#CB6CE6",
     fg: "#ffffff",
@@ -135,6 +137,7 @@ export const CNP_PROJECTS = [
     video: [A("/assets/proyects/videos/COSTA.mp4")],
     videoMobil: [A("/assets/proyects/videos/COSTA.mp4")],
     videoFill: [true],
+    vimeoFill: [false],
     deskCover: [A("/assets/proyects/videos/thumbnailDesktop/others/costa-Cover.jpg")],
     
     vimeoDesktop: ["https://player.vimeo.com/video/1212237390?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"],
@@ -165,6 +168,7 @@ export const CNP_PROJECTS = [
     video: [A("/assets/proyects/videos/AXESS.mp4")],
     videoMobil: [A("/assets/proyects/videos/AXESS.mp4")],
     videoFill: [true],
+    vimeoFill: [false],
     deskCover: [A("/assets/proyects/videos/thumbnailDesktop/others/axe-Cover.jpg")],
     cover: [A("/assets/proyects/videos/thumbnail/others/axe-Cover.jpg")],
     bg: "#F95C4B",

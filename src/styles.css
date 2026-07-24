@@ -752,6 +752,28 @@ a { color: inherit; cursor:none; }
   -o-border-radius: 20px;
 }
 
+.modal--h.modal--h--iphone-fullscreen {
+  position: fixed !important;
+  inset: 0;
+  width: 100vw !important;
+  height: 100dvh !important;
+  background: #000;
+  z-index: 2147483647 !important;
+  top: 0;
+  border-radius: 0;
+}
+
+.modal-container.modal--h--iphone-fullscreen,
+.modal-container2.modal--h--iphone-fullscreen {
+  position: fixed !important;
+  inset: 0;
+  width: 100vw !important;
+  height: 100dvh !important;
+  top: 0;
+  border-radius: 0;
+  z-index: 2147483647;
+}
+
 /* Video fills the entire modal background */
 .modal__bg-video {
   position: absolute;

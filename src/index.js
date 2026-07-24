@@ -4,13 +4,16 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ViewportProvider } from "./context/ViewportContext";
+import { VimeoProvider } from "./context/VimeoContext";
 import { BrowserRouter } from "react-router-dom";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ViewportProvider>
-        <App />
+        <VimeoProvider>
+          <App />
+        </VimeoProvider>
       </ViewportProvider>
     </BrowserRouter>
   </React.StrictMode>
