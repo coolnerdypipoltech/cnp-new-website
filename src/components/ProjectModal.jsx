@@ -415,7 +415,7 @@ function VimeoPlayer({ src, title, onPlayingChange, id, fullModal }) {
           referrerPolicy="strict-origin-when-cross-origin"
           title={title}
           allowFullScreen
-          style={{ width: "100%", height:  isFullscreen && !fullModal ? "56.25vw" : "100%", minHeight: isFullscreen && !fullModal  ? "0%" : "auto", border: 0, display: "block" }}
+          style={{ width: "100%", height:   !fullModal ? "56.25vw" : "100%", minHeight:  !fullModal  ? "0%" : "auto", border: 0, display: "block" }}
         />
 
         <button
@@ -448,7 +448,7 @@ function VimeoPlayer({ src, title, onPlayingChange, id, fullModal }) {
             position: "absolute",
             left: 0,
             right: 0,
-            bottom: id === "cnp" ? "0px" : isFullscreen ? "0px" : "55px",
+            bottom: id === "cnp" ? "0px" : isFullscreen ? "0px" : "60px",
             top: "auto",
             display: "flex",
             alignItems: "center",
@@ -477,11 +477,11 @@ function VimeoPlayer({ src, title, onPlayingChange, id, fullModal }) {
             placeItems: "center",
             cursor: "pointer",
             flex: "0 0 auto",
-            fontSize: "12px",
+            
             
           }}
         >
-          {playing ? "II" : "▶"}
+          <div style={{position: "relative", top:  playing ? "-1px" : "-8px", fontSize: playing ? "24px" : "32px"}}>{playing ? "II" : "▶"}</div>
         </button>
 
         <input
@@ -841,7 +841,7 @@ function ProjectModal({ project, onClose }) {
                         }}
                         onClick={() => setActivePanel(null)}
                       >
-                        <div style={{position: "relative", top: "-1px", left: "0.5px"}}>X</div>
+                        <img style={{position: "relative", left: "-0.5px"}} src={`${process.env.PUBLIC_URL}/assets/icons/close_24dp.svg`} alt="Close" />
                       </button>
                     </div>
                     <span className="eyebrow modal__lab">Our work</span>
@@ -918,7 +918,8 @@ function ProjectModal({ project, onClose }) {
                         }}
                         onClick={() => setActivePanel(null)}
                       >
-                        <div style={{position: "relative", top: "-1px", left: "-0.5px"}}>X</div>
+                        <img style={{position: "relative"}} src={`${process.env.PUBLIC_URL}/assets/icons/close_24dp.svg`} alt="Close" />
+                     
                       </button>
                     </div>
                   <span className="eyebrow modal__lab">We worked on the</span>

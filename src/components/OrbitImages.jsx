@@ -111,7 +111,7 @@ function HoverImage({ imgA, imgB, alt, text, onHover, onLeave }) {
               position: "relative",
               border: "1px solid #00ABFF",
               display: "flex",
-              top: "40px",
+              top: "55px",
               alignSelf: "center",
               justifyContent: "center",
               alignItems: "center",
