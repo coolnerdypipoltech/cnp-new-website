@@ -1,5 +1,5 @@
 // ── HERO ──────────────────────────────────────────────────────────
-import React, { useRef, } from "react";
+import React, { useRef, useEffect } from "react";
 import SplitText from "../components/SplitText";
 import { useViewport } from "../context/ViewportContext";
 
@@ -8,7 +8,15 @@ function Hero() {
   const videoRef = useRef(null);
   const { isMobile } = useViewport();
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
 
+    video.muted = true; // Requisito obligatorio para autoplay en iOS
+    video.play().catch((err) => {
+      console.warn("Autoplay bloqueado:", err);
+    });
+  }, [isMobile]); // Re-ejecuta si cambia la fuente del video
 
   return (
     <section
