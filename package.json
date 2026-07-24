@@ -1,7 +1,6 @@
 {
   "name": "new-cnp-website",
-  "version": "0.1.0",
-  "homepage": "https://coolnerdypeople.com/",
+  "version": "0.1.0", "homepage":"https://coolnerdypipoltech.github.io/cnp-new-website/",
   "private": true,
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
