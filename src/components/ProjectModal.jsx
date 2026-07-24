@@ -467,21 +467,28 @@ function VimeoPlayer({ src, title, onPlayingChange, id, fullModal }) {
           onClick={togglePlay}
           aria-label={playing ? "Pausa" : "Play"}
           style={{
-            width: "32px",
-            height: "32px",
+            width: "50px",
+            height: "40px",
             borderRadius: "999px",
             border: "1px solid rgba(255,255,255,0.28)",
             background: "rgba(255,255,255,0.12)",
             color: "#fff",
-            display: "grid",
+
             placeItems: "center",
             cursor: "pointer",
             flex: "0 0 auto",
-            
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
             
           }}
         >
-          <div style={{position: "relative", top:  playing ? "-1px" : "-8px", fontSize: playing ? "24px" : "32px"}}>{playing ? "II" : "▶"}</div>
+          <img
+            
+            src={!playing ? `${process.env.PUBLIC_URL}/assets/icons/play_arrow_24dp.svg` : `${process.env.PUBLIC_URL}/assets/icons/pause_24dp.svg`}
+            alt={!playing ? "Play" : "Pause"}
+          />
+
         </button>
 
         <input
@@ -507,8 +514,8 @@ function VimeoPlayer({ src, title, onPlayingChange, id, fullModal }) {
           onClick={toggleMute}
           aria-label={muted ? "Activar sonido" : "Silenciar"}
           style={{
-            minWidth: "32px",
-            height: "32px",
+            minWidth: "50px",
+            minHeight: "40px",
             borderRadius: "999px",
             border: "1px solid rgba(255,255,255,0.28)",
             background: "rgba(255,255,255,0.12)",
@@ -516,9 +523,13 @@ function VimeoPlayer({ src, title, onPlayingChange, id, fullModal }) {
             cursor: "pointer",
             flex: "0 0 auto",
             fontSize: "12px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
           <img
+            
             src={!muted ? `${process.env.PUBLIC_URL}/assets/icons/volume_icon.svg` : `${process.env.PUBLIC_URL}/assets/icons/volume_off.svg`}
             alt={!muted ? "Muted" : "Unmuted"}
           />
@@ -529,8 +540,8 @@ function VimeoPlayer({ src, title, onPlayingChange, id, fullModal }) {
           onClick={toggleFullscreen}
           aria-label={isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}
           style={{
-            minWidth: "32px",
-            height: "32px",
+            minWidth: "50px",
+            minHeight: "40px",
             borderRadius: "999px",
             border: "1px solid rgba(255,255,255,0.28)",
             background: "rgba(255,255,255,0.12)",
@@ -538,9 +549,13 @@ function VimeoPlayer({ src, title, onPlayingChange, id, fullModal }) {
             cursor: "pointer",
             flex: "0 0 auto",
             fontSize: "12px",
+                       display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
           <img
+            
             src={!isFullscreen ? `${process.env.PUBLIC_URL}/assets/icons/fullscreen_icon.svg` : `${process.env.PUBLIC_URL}/assets/icons/fullscreen_exit.svg`}
             alt={!isFullscreen ? "Enter Fullscreen" : "Exit Fullscreen"}
           />

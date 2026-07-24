@@ -5,6 +5,7 @@ import SplitText from "../components/SplitText";
 import { gsap } from "gsap";
 import { CNP_PROJECTS } from "../data";
 import ProjectModal from "../components/ProjectModal";
+import { px } from "motion";
 
 function BtnPop({ onClick, style, children }) {
   const btnRef = useRef(null);
@@ -329,12 +330,12 @@ function About() {
           className="about-buttons"
           style={{ width: "100%", display: "flex" }}
         >
-          <BtnPop type="button" style={{ "--btn-bg": "#5944FF", "--btn-fg": "#000000" }} onClick={openWhoWeAre}>
+          <BtnPop type="button" style={{ "--btn-bg": "#5944FF", "--btn-fg": "#ffffff", border: "1px solid #5944FF" }} onClick={openWhoWeAre}>
             ABOUT US
           </BtnPop>
           <BtnPop
             type="button"
-            style={{ backgroundColor: "#DA48AC", "--btn-bg": "#DA48AC", "--btn-fg": "#000000" }}
+            style={{ backgroundColor: "#DA48AC", "--btn-bg": "#DA48AC", "--btn-fg": "#ffffff", border: "1px solid #DA48AC" }}
             onClick={openServices}
             
           >
@@ -349,7 +350,7 @@ function About() {
           
           <BtnPop
             type="button"
-            style={{ backgroundColor: "#9747FF", "--btn-bg": "#9747FF", "--btn-fg": "#000000" }}
+            style={{ backgroundColor: "#9747FF", "--btn-bg": "#9747FF", "--btn-fg": "#ffffff", border: "1px solid #9747FF"  }}
             onClick={openHero}
           >
             Our Reel
@@ -372,6 +373,10 @@ function About() {
         <div className="about-popup-overlay" onClick={closePopup}>
           <div
             className="about-popup"
+            style={{
+              width: activePopup === "who" ? "90vw" : "95vw",
+              minHeight: activePopup === "who" ? "400px" : "500px",
+            }}
             onClick={(event) => event.stopPropagation()}
           >
             {activePopup !== "hero" && (
@@ -382,6 +387,7 @@ function About() {
                 aria-label="Close popup"
                 style={{
                   top: activePopup === "who" ? "-70px" : "-40px",
+                  right: activePopup === "who" ? "0px" : "30px",
                   backgroundColor:
                     activePopup === "who" ? "#5944ff" : "#DA48AC",
                 }}
