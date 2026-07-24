@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/cnp-new-website/static/css/main.530997b1.css",
-    "main.js": "/cnp-new-website/static/js/main.88d5ada4.js",
+    "main.css": "/cnp-new-website/static/css/main.6371e8e0.css",
+    "main.js": "/cnp-new-website/static/js/main.27b5eea9.js",
     "static/js/453.c080c17e.chunk.js": "/cnp-new-website/static/js/453.c080c17e.chunk.js",
     "static/media/Montserrat-VariableFont_wght.ttf": "/cnp-new-website/static/media/Montserrat-VariableFont_wght.0ba081b76521874cf46c.ttf",
     "static/media/Horizon.otf": "/cnp-new-website/static/media/Horizon.3d45dd95383aa5807d4b.otf",
     "index.html": "/cnp-new-website/index.html",
-    "main.530997b1.css.map": "/cnp-new-website/static/css/main.530997b1.css.map",
-    "main.88d5ada4.js.map": "/cnp-new-website/static/js/main.88d5ada4.js.map",
+    "main.6371e8e0.css.map": "/cnp-new-website/static/css/main.6371e8e0.css.map",
+    "main.27b5eea9.js.map": "/cnp-new-website/static/js/main.27b5eea9.js.map",
     "453.c080c17e.chunk.js.map": "/cnp-new-website/static/js/453.c080c17e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.530997b1.css",
-    "static/js/main.88d5ada4.js"
+    "static/css/main.6371e8e0.css",
+    "static/js/main.27b5eea9.js"
   ]
 }
