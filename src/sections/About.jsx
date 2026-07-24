@@ -1,10 +1,142 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import { releaseLock, applyLock } from "../hooks/useBodyScrollLock";
 import { useViewport } from "../context/ViewportContext";
 import SplitText from "../components/SplitText";
-
+import { gsap } from "gsap";
 import { CNP_PROJECTS } from "../data";
 import ProjectModal from "../components/ProjectModal";
+
+function BtnPop({ onClick, style, children }) {
+  const btnRef = useRef(null);
+  const circleRef = useRef(null);
+  const labelRef = useRef(null);
+  const labelHoverRef = useRef(null);
+  const tlRef = useRef(null);
+  const tweenRef = useRef(null);
+
+  useEffect(() => {
+    const btn = btnRef.current;
+    const circle = circleRef.current;
+    const label = labelRef.current;
+    const labelHover = labelHoverRef.current;
+    if (!btn || !circle) return;
+
+    const layout = () => {
+      const rect = btn.getBoundingClientRect();
+      const { width: w, height: h } = rect;
+      const R = ((w * w) / 4 + h * h) / (2 * h);
+      const D = Math.ceil(2 * R) + 2;
+      const delta =
+        Math.ceil(R - Math.sqrt(Math.max(0, R * R - (w * w) / 4))) + 1;
+      const originY = D - delta;
+
+      circle.style.width = `${D}px`;
+      circle.style.height = `${D}px`;
+      circle.style.bottom = `-${delta}px`;
+
+      gsap.set(circle, {
+        xPercent: -50,
+        scale: 0,
+        transformOrigin: `50% ${originY}px`,
+      });
+      if (label) gsap.set(label, { y: 0 });
+      if (labelHover) gsap.set(labelHover, { y: h + 12, opacity: 0 });
+
+      tlRef.current?.kill();
+      const tl = gsap.timeline({ paused: true });
+      tl.to(
+        circle,
+        {
+          scale: 1.2,
+          xPercent: -50,
+          duration: 2,
+          ease: "power3.easeOut",
+          overwrite: "auto",
+        },
+        0,
+      );
+      if (label)
+        tl.to(
+          label,
+          {
+            y: -(h + 8),
+            duration: 2,
+            ease: "power3.easeOut",
+            overwrite: "auto",
+          },
+          0,
+        );
+      if (labelHover) {
+        gsap.set(labelHover, { y: Math.ceil(h + 100), opacity: 0 });
+        tl.to(
+          labelHover,
+          {
+            y: 0,
+            opacity: 1,
+            duration: 2,
+            ease: "power3.easeOut",
+            overwrite: "auto",
+          },
+          0,
+        );
+      }
+      tlRef.current = tl;
+    };
+
+    layout();
+    window.addEventListener("resize", layout);
+    return () => window.removeEventListener("resize", layout);
+  }, []);
+
+  const handleEnter = () => {
+    const tl = tlRef.current;
+    if (!tl) return;
+    tweenRef.current?.kill();
+    tweenRef.current = tl.tweenTo(tl.duration(), {
+      duration: 0.3,
+      ease: "power3.easeOut",
+      overwrite: "auto",
+    });
+  };
+
+  const handleLeave = () => {
+    const tl = tlRef.current;
+    if (!tl) return;
+    tweenRef.current?.kill();
+    tweenRef.current = tl.tweenTo(0, {
+      duration: 0.2,
+      ease: "power3.easeOut",
+      overwrite: "auto",
+    });
+  };
+
+  return (
+    <button
+      ref={btnRef}
+      className="btn-pop"
+      onClick={onClick}
+      style={style}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+    >
+      <span className="btn-pop__circle" ref={circleRef} aria-hidden="true" />
+      <span className="btn-pop__label-stack">
+        <span className="btn-pop__label" ref={labelRef}>
+          {children}
+        </span>
+        <span
+          className="btn-pop__label-hover"
+          ref={labelHoverRef}
+          aria-hidden="true"
+        >
+          {children}
+        </span>
+      </span>
+    </button>
+  );
+}
+
+
 function About() {
   const [activePopup, setActivePopup] = useState(null);
   const [activeServiceIndex, setActiveServiceIndex] = useState(0);
@@ -197,29 +329,31 @@ function About() {
           className="about-buttons"
           style={{ width: "100%", display: "flex" }}
         >
-          <button type="button" style={{}} onClick={openWhoWeAre}>
+          <BtnPop type="button" style={{ "--btn-bg": "#5944FF", "--btn-fg": "#000000" }} onClick={openWhoWeAre}>
             ABOUT US
-          </button>
-          <button
+          </BtnPop>
+          <BtnPop
             type="button"
-            style={{ backgroundColor: "#DA48AC" }}
+            style={{ backgroundColor: "#DA48AC", "--btn-bg": "#DA48AC", "--btn-fg": "#000000" }}
             onClick={openServices}
+            
           >
             SERVICES
-          </button>
+          </BtnPop>
         </div>
 
         <div
           className="about-buttons"
           style={{ width: "100%", display: "flex", marginTop: "20px" }}
         >
-          <button
+          
+          <BtnPop
             type="button"
-            style={{ backgroundColor: "#9747FF" }}
+            style={{ backgroundColor: "#9747FF", "--btn-bg": "#9747FF", "--btn-fg": "#000000" }}
             onClick={openHero}
           >
             Our Reel
-          </button>
+          </BtnPop>
           {!isMobile && (
             <button style={{ maxHeight: "0px", scale: 0 }}>WHO WE ARE w</button>
           )}

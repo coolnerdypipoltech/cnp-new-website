@@ -2015,7 +2015,7 @@ flex-direction: column;
   min-width: 300px;
   height: auto;
   border-radius: 12px;
-  
+  animation: art-bob 5s ease-in-out infinite;
 }
 
 
