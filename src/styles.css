@@ -76,6 +76,13 @@ h1, h2, h3, h4 { margin: 0; }
   line-height: 0.96;
 }
 
+.montserrat {
+  font-family: var(--font-body);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 0.96;
+}
 
 
 .eyebrow {
@@ -1052,14 +1059,14 @@ a { color: inherit; cursor:none; }
 }
 
 .fluid-canvas{
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   display: block;
 }
 
 @media (min-width: 1535px) {
   .services {   height: calc(100dvh + 200px);}
-  .fluid-canvas{ height: calc(100dvh + 200px);}
+  .fluid-canvas{ height: 100%;}
 }
 
 
