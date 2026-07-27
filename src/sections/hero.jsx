@@ -44,6 +44,7 @@ function Hero() {
         loop
         muted
         playsInline
+
       />
 
       <div className="hero__scrim" />

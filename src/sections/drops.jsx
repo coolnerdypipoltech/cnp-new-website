@@ -153,6 +153,7 @@ function Drops() {
                         loop
                         muted
                         playsInline
+                        loading="lazy"
                         style={{
                           width: "100%",
                           height: "100%",
